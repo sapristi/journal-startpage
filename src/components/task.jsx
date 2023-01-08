@@ -1,21 +1,30 @@
 import React, {useState} from 'react';
 import create from 'zustand';
-import {EditableInput, EditableMarkdown} from "./editable"
-import { Card, Button, Icon } from 'semantic-ui-react'
 import {getTimestamp, DateElem} from '../utils'
+import { Card, Button, Icon } from 'semantic-ui-react'
+import {EditableMarkdown} from "./editable"
 
-const initData = [{
-  creationDate: 1000000,
-  name: "Some entry",
-  content: `
-this is a journal entry
+const initData = [
+  {
+    creationDate: 0,
+    status: "todo",
+    content: `
+this is a task
 - with some
 - items
 `
-}]
+  },{
+    creationDate: 1,
+    status: "done",
+    content: `
+this is done task
+- with one item
+`
+  }
+]
 
 
-const useEntriesStore = create((set) => ({
+const useTasksStore = create((set) => ({
   entries: initData,
   addEntry: (entry) => set((state) =>
     {return {entries: [{creationDate: getTimestamp(), ...entry}, ...state.entries]}}
@@ -35,25 +44,19 @@ const useEntriesStore = create((set) => ({
     }})
 }))
 
-
-const Entry = ({creationDate, name, content}) => {
-  const editEntry = useEntriesStore((state) => state.editEntry)
-  const removeEntry = useEntriesStore((state) => state.removeEntry)
-
+const Task = ({creationDate, status, content}) => {
+  const editEntry = useTasksStore((state) => state.editEntry)
+  const removeEntry = useTasksStore((state) => state.removeEntry)
   const handleContentChange = (newValue) => {
     editEntry(creationDate, "content", newValue)
   }
-  const handleNameChange = (newValue) => {
-    editEntry(creationDate, "name", newValue)
+  const handleStatusChange = (newValue) => {
+    editEntry(creationDate, "status", newValue)
   }
-
   return (
     <Card fluid>
       <Card.Content>
         <Button icon floated="right" onClick={() => removeEntry(creationDate)}><Icon name='delete'/></Button>
-        <Card.Header>
-          <EditableInput value={name} onChange={handleNameChange}/>
-        </Card.Header>
         <Card.Meta><DateElem timestamp={creationDate}/></Card.Meta>
         <Card.Description>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
@@ -63,19 +66,20 @@ const Entry = ({creationDate, name, content}) => {
   )
 }
 
-export const EntryList = () => {
-  const entries = useEntriesStore((state) => state.entries)
-  const addEntry = useEntriesStore((state) => state.addEntry)
+export const TaskList = () => {
+  const entries = useTasksStore((state) => state.entries)
+  const addTask = useTasksStore((state) => state.addEntry)
 
-  const addEmptyEntry = () => addEntry({name: "name", content: "content"})
+  const addEmptyTask = () => addTask({name: "name", content: "content"})
   return (
     <Card.Group style={{flexDirection: "column", display: "flex"}}>
       <Card fluid>
-        <Card.Header><Button onClick={addEmptyEntry}>Add entry</Button></Card.Header>
+        <Card.Header><Button onClick={addEmptyTask}>Add entry</Button></Card.Header>
       </Card>
       {
-        entries.map( (entry, i) => <Entry key={entry.creationDate} {...entry}/>)
+        entries.map( (entry, i) => <Task key={entry.creationDate} {...entry}/>)
       }
     </Card.Group>
   )
 }
+
