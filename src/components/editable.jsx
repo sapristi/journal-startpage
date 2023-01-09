@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown'
-import { Input, TextArea } from 'semantic-ui-react'
+import {TextareaAutosize} from '@mui/material';
 
 const useEditableState = (initial, onChange) => {
   const [active, setActive] = useState(false)
@@ -23,7 +23,7 @@ const useEditableState = (initial, onChange) => {
 export const EditableInput = ({value, onChange}) => {
   const [curValue, active, handleChange, commitChange, handleClick] = useEditableState(value, onChange)
   if (active) {
-    return <Input
+    return <input type="text"
              value={curValue}
              onChange={handleChange}
              onBlur={commitChange}
@@ -40,7 +40,8 @@ export const EditableMarkdown = ({value, onChange}) => {
   const [curValue, active, handleChange, commitChange, handleClick] = useEditableState(value, onChange)
 
   if (active) {
-    return <TextArea
+    return <TextareaAutosize
+             style={{width: "100%"}}
                value={curValue}
                onChange={handleChange}
                onBlur={commitChange}
@@ -48,8 +49,7 @@ export const EditableMarkdown = ({value, onChange}) => {
              />
   } else {
     return <div
-             className="content"
-             onClick={handleClick}
+             onDoubleClick={handleClick}
            >
              <ReactMarkdown>{value}</ReactMarkdown>
            </div>

@@ -3,15 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.4",
     "dayjs": "^1.11.7",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.4",
     "react-scripts": "5.0.1",
-    "rich-markdown-editor": "^11.21.3",
-    "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.4",
     "web-vitals": "^2.1.4",
     "zustand": "^4.2.0"
   },
@@ -38,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.57.1"
   }
 }

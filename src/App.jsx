@@ -1,51 +1,37 @@
 import './App.css';
-import {EntryList} from './components/entry'
-import {TaskList} from './components/task'
-import { Card, Header, Container } from 'semantic-ui-react'
-import Calendar from 'react-calendar';
-const TasksCard = () => (
-  <Card fluid>
-  <Card.Content style={{paddingRight: "2em"}}>
-      <Card.Header>
-        <Header as='h1'>Tasks</Header>
-      </Card.Header>
-      <Card.Description>
-        <TaskList/>
-      </Card.Description>
-    </Card.Content>
-  </Card>
-)
+import {Journal} from './components/journal'
+import {Tasks} from './components/tasks'
 
-const JournalCard = () => (
-  <Card fluid>
-    <Card.Content style={{paddingRight: "2em"}}>
-      <Card.Header>
-        <Header as='h1'>Journal</Header>
-      </Card.Header>
-      <Card.Description>
-        <EntryList/>
-      </Card.Description>
-    </Card.Content>
-  </Card>
-)
+import Calendar from 'react-calendar';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import {Container, Box,Paper} from '@mui/material';
+import {VFlex, HFlex} from "./components/base"
+
+const theme = createTheme ({palette: {mode: "dark"}})
 
 function App() {
   return (
-    <Container>
-      <div style={{display: "flex", flexDirection:"column"}}>
-        <div>
-          <Calendar/>
-        </div>
-        <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
-          <div>
-            <TasksCard/>
+    <ThemeProvider theme={theme}>
+    <Paper style={{minHeight: "100vh"}}>
+      <Container maxWidth="xl">
+        <VFlex style={{gap: "20px"}}>
+          <HFlex style={{justifyContent: "space-around"}}>
+            <div style={{maxWidth: "300px"}}>
+              <Calendar/>
+            </div>
+          </HFlex>
+          <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
+            <div>
+              <Tasks/>
+            </div>
+            <div>
+              <Journal/>
+            </div>
           </div>
-          <div>
-            <JournalCard/>
-          </div>
-        </div>
-      </div>
-    </Container>
+        </VFlex>
+      </Container>
+      </Paper>
+    </ThemeProvider>
   );
 }
 
