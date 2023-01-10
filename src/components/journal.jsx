@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import create from 'zustand';
 import { persist } from 'zustand/middleware'
 
-import {EditableInput, EditableMarkdown} from "./editable"
+import {EditableMarkdown} from "./editable"
 import {getTimestamp, DateElem, displayDate} from '../utils'
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Card, CardAction, CardHeader, CardContent, Typography, Button, Divider} from '@mui/material';
+import {Paper, Typography, Button, Divider} from '@mui/material';
 import {MainPaper, CardList, HFlex} from "./base"
 
 const initData = [{
@@ -54,9 +54,6 @@ const Entry = ({creationDate, content}) => {
   const handleContentChange = (newValue) => {
     editEntry(creationDate, "content", newValue)
   }
-  const handleNameChange = (newValue) => {
-    editEntry(creationDate, "name", newValue)
-  }
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
@@ -73,22 +70,6 @@ const Entry = ({creationDate, content}) => {
       <EditableMarkdown value={content} onChange={handleContentChange}/>
 
     </Paper>
-  )
-  return (
-    <Card raised={true}>
-      <CardContent>
-        <HFlex style={{justifyContent: "space-between"}}>
-          <div>
-            <Typography variant="h5">{displayDate(creationDate)}</Typography>
-            <Typography color="text.secondary"><DateElem timestamp={creationDate}/></Typography>
-          </div>
-          <div>
-            <Button onClick={() => removeEntry(creationDate)}><ClearIcon/></Button>
-          </div>
-        </HFlex>
-        <EditableMarkdown value={content} onChange={handleContentChange}/>
-      </CardContent>
-    </Card>
   )
 }
 

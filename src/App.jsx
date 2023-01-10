@@ -6,30 +6,36 @@ import Calendar from 'react-calendar';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import {Container, Box,Paper} from '@mui/material';
 import {VFlex, HFlex} from "./components/base"
-
-const theme = createTheme ({palette: {mode: "dark"}})
+import {deepOrange, blueGrey} from '@mui/material/colors';
+console.log("ORANGE", deepOrange)
+const theme = createTheme ({
+  palette: {
+    mode: "dark",
+    primary: blueGrey
+  }
+})
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-    <Paper style={{minHeight: "100vh"}}>
-      <Container maxWidth="xl">
-        <VFlex style={{gap: "20px"}}>
-          <HFlex style={{justifyContent: "space-around"}}>
-            <div style={{maxWidth: "300px"}}>
-              <Calendar/>
+      <Paper style={{minHeight: "100vh"}}>
+        <Container maxWidth="xl">
+          <VFlex style={{gap: "20px"}}>
+            <HFlex style={{justifyContent: "space-around"}}>
+              <div style={{maxWidth: "300px"}}>
+                <Calendar/>
+              </div>
+            </HFlex>
+            <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
+              <div>
+                <Tasks/>
+              </div>
+              <div>
+                <Journal/>
+              </div>
             </div>
-          </HFlex>
-          <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
-            <div>
-              <Tasks/>
-            </div>
-            <div>
-              <Journal/>
-            </div>
-          </div>
-        </VFlex>
-      </Container>
+          </VFlex>
+        </Container>
       </Paper>
     </ThemeProvider>
   );

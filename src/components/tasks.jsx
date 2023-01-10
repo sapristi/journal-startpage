@@ -50,9 +50,9 @@ const useTasksStore = create(
           entries: state.entries.filter(entry => entry.creationDate !== creationDate)
         }})
     })
-  ),
+  ,
   {name: "tasks-storage"}
-)
+  ))
 
 const Task = ({creationDate, status, content}) => {
   const editEntry = useTasksStore((state) => state.editEntry)
