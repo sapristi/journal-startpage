@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Paper, Typography} from '@mui/material';
+import {Paper} from '@mui/material';
 
 export const HFlex = ({children, style}) => (
   <div style={{display: "flex", flexDirection: "row",
@@ -15,9 +15,8 @@ export const VFlex = ({children, style}) => (
   </div>
 )
 
-export const MainPaper = ({title, children, props}) => (
-  <Paper style={{padding: "20px"}} elevation={5} {...props}>
-    <Typography variant="h3">{title}</Typography>
+export const MainPaper = ({title, children, style, ...props}) => (
+  <Paper style={{padding: "20px", ...style}} elevation={5} {...props}>
       {children}
   </Paper>
 )

@@ -7,12 +7,11 @@ import {EditableMarkdown} from "./editable"
 
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
-import { Card, Button, Paper} from '@mui/material';
+import {  Button, Paper, Typography, Divider } from '@mui/material';
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
 const initData = [
   {
     creationDate: 0,
-    status: "todo",
     content: `
 this is a task
 - with some
@@ -20,7 +19,6 @@ this is a task
 `
   },{
     creationDate: 1,
-    status: "done",
     content: `
 this is done task
 - with one item
@@ -32,22 +30,22 @@ this is done task
 const useTasksStore = create(
   persist(
     (set) => ({
-      entries: initData,
-      addEntry: (entry) => set((state) =>
-        {return {entries: [{creationDate: getTimestamp(), ...entry}, ...state.entries]}}
+      todo: initData,
+      done: [],
+      addEntry: (status, entry) => set((state) =>
+        {return {[status]: [{creationDate: getTimestamp(), ...entry}, ...state[status]]}}
       ),
-      editEntry: (creationDate, field, newValue) => set((state) => {
-        console.log("EDIT", creationDate, field, newValue)
-        const newEntries = state.entries.map((entry) => {
+      editEntry: (status, creationDate, field, newValue) => set((state) => {
+        const newEntries = state[status].map((entry) => {
           if (creationDate === entry.creationDate) {
             return {...entry, [field]: newValue}
           } else {return entry}
         });
-        return {entries: newEntries};
+        return {[status]: newEntries};
       }),
-      removeEntry: (creationDate) => set( (state) => {
+      removeEntry: (status, creationDate) => set( (state) => {
         return {
-          entries: state.entries.filter(entry => entry.creationDate !== creationDate)
+          [status]: state[status].filter(entry => entry.creationDate !== creationDate)
         }})
     })
   ,
@@ -55,23 +53,28 @@ const useTasksStore = create(
   ))
 
 const Task = ({creationDate, status, content}) => {
+  const addEntry = useTasksStore((state) => state.addEntry)
   const editEntry = useTasksStore((state) => state.editEntry)
   const removeEntry = useTasksStore((state) => state.removeEntry)
+
+  const switchStatus = () => {
+    const newStatus = (status === "todo")? "done" : "todo";
+    removeEntry(status, creationDate);
+    addEntry(newStatus, {creationDate, content});
+  }
   const handleContentChange = (newValue) => {
-    editEntry(creationDate, "content", newValue)
+    editEntry(status, creationDate, "content", newValue)
   }
-  const handleStatusChange = (newValue) => {
-    editEntry(creationDate, "status", newValue)
-  }
+  const textColor = (status == "done")? "text.disabled": "text.primary";
   return (
-    <Paper elevation={8} sx={{p: 1, pl: 2}}>
+    <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
       <HFlex style={{justifyContent: "space-between"}}>
         <div style={{flexGrow: 1}}>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
         <VFlex>
-          <Button onClick={() => removeEntry(creationDate)}><ClearIcon/></Button>
-          <Button ><CheckIcon/></Button>
+          <Button onClick={() => removeEntry(status, creationDate)}><ClearIcon/></Button>
+          <Button onClick={switchStatus}><CheckIcon/></Button>
         </VFlex>
       </HFlex>
     </Paper>
@@ -79,19 +82,38 @@ const Task = ({creationDate, status, content}) => {
 }
 
 export const Tasks = () => {
-  const entries = useTasksStore((state) => state.entries)
+  const todoTasks = useTasksStore((state) => state.todo)
+  const doneTasks = useTasksStore((state) => state.done)
   const addTask = useTasksStore((state) => state.addEntry)
 
-  const addEmptyTask = () => addTask({name: "name", content: "content"})
+  const addEmptyTask = () => addTask("todo", {name: "name", content: "TODO"})
   return (
 
-    <MainPaper title="Tasks">
+    <MainPaper style={{display: "flex", flexDirection: "column", gap: "20px"}}>
+      <div>
+      <Typography variant="h3">Tasks</Typography>
       <Button onClick={addEmptyTask}>Add entry</Button>
-      <CardList>
-        {
-          entries.map( (entry, i) => <Task key={entry.creationDate} {...entry}/>)
-        }
-      </CardList>
+        <Divider/>
+      </div>
+
+      <div>
+        <Typography variant="h5">Todo</Typography>
+        <CardList>
+          {
+            todoTasks.map( (entry, i) => <Task key={entry.creationDate} status="todo" {...entry}/>)
+          }
+        </CardList>
+      </div>
+
+      <div>
+        <Typography variant="h5">Done</Typography>
+        <CardList>
+          {
+            doneTasks.map( (entry, i) => <Task key={entry.creationDate} status="done" {...entry}/>)
+          }
+        </CardList>
+      </div>
+
     </MainPaper>
   )
 }

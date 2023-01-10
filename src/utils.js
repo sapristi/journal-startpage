@@ -20,7 +20,7 @@ export const displayRelativeDate = (timestamp) => {
 }
 
 export const displayDate = (timestamp) => {
-  return dayjs(timestamp).format("LLLL")
+  return dayjs(timestamp).format("dddd, LL")
 }
 export const DateElem = ({timestamp}) => {
   return <time dateTime={dayjs(timestamp).format('YYYY-MM-DDTHH:mm:ss')}>

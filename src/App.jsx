@@ -3,8 +3,8 @@ import {Journal} from './components/journal'
 import {Tasks} from './components/tasks'
 
 import Calendar from 'react-calendar';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import {Container, Box,Paper} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {Container, Paper} from '@mui/material';
 import {VFlex, HFlex} from "./components/base"
 import {deepOrange, blueGrey} from '@mui/material/colors';
 console.log("ORANGE", deepOrange)

@@ -12,9 +12,8 @@ import {MainPaper, CardList, HFlex} from "./base"
 const initData = [{
   creationDate: 1573286497768,
   content: `
-this is a journal entry
-- with some
-- items
+- Double click to edit
+- Only one journal entry per day
 `
 }]
 
@@ -27,7 +26,6 @@ const useEntriesStore = create(
       {return {entries: [{creationDate: getTimestamp(), ...entry}, ...state.entries]}}
     ),
     editEntry: (creationDate, field, newValue) => set((state) => {
-      console.log("EDIT", creationDate, field, newValue)
       const newEntries = state.entries.map((entry) => {
         if (creationDate === entry.creationDate) {
           return {...entry, [field]: newValue}
@@ -77,9 +75,10 @@ export const Journal = () => {
   const entries = useEntriesStore((state) => state.entries)
   const addEntry = useEntriesStore((state) => state.addEntry)
 
-  const addEmptyEntry = () => addEntry({name: "name", content: "content"})
+  const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
   return (
-    <MainPaper title="Journal">
+    <MainPaper>
+      <Typography variant="h3">Journal</Typography>
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {

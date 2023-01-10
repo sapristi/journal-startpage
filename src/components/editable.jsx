@@ -13,15 +13,19 @@ const useEditableState = (initial, onChange) => {
     setActive(false);
     onChange(curValue);
   }
+
   const handleClick = () => {
     setActive(true);
   }
-
-  return [curValue, active, handleChange, commitChange, handleClick]
+  const cancelChange = () => {
+    setCurValue(initial);
+    setActive(false);
+  }
+  return {curValue, active, handleChange, commitChange, cancelChange, handleClick}
 }
 
 export const EditableInput = ({value, onChange}) => {
-  const [curValue, active, handleChange, commitChange, handleClick] = useEditableState(value, onChange)
+  const {curValue, active, handleChange, commitChange, handleClick} = useEditableState(value, onChange)
   if (active) {
     return <input type="text"
              value={curValue}
@@ -37,8 +41,18 @@ export const EditableInput = ({value, onChange}) => {
 
 
 export const EditableMarkdown = ({value, onChange}) => {
-  const [curValue, active, handleChange, commitChange, handleClick] = useEditableState(value, onChange)
+  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange)
 
+  const handleKeyPress = (event) => {
+    if (event.code === "Enter" && event.ctrlKey) {
+      commitChange()
+    }
+  }
+  const handleKeyUp = (event) => {
+    if (event.code === "Escape") {
+      cancelChange()
+    }
+  }
   if (active) {
     return <TextareaAutosize
              style={{width: "100%"}}
@@ -46,6 +60,8 @@ export const EditableMarkdown = ({value, onChange}) => {
                onChange={handleChange}
                onBlur={commitChange}
                autoFocus
+               onKeyPress={handleKeyPress}
+             onKeyUp={handleKeyUp}
              />
   } else {
     return <div
