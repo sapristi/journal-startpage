@@ -16,9 +16,11 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
   - allow to change date ?
   - integrate with calendar
 - double click to delete entry
-- fix done task button icon
 - handle multiple open tabs
 - firefox sync
+- select locale
+- improve calendar display
+- integrate calendar (to show upcoming events)
 
 # Develop
 

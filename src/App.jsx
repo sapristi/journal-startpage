@@ -7,7 +7,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper} from '@mui/material';
 import {VFlex, HFlex} from "./components/base"
 import {deepOrange, blueGrey} from '@mui/material/colors';
-console.log("ORANGE", deepOrange)
+import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+require('dayjs/locale/fr')
+
 const theme = createTheme ({
   palette: {
     mode: "dark",
@@ -23,9 +27,12 @@ function App() {
           <VFlex style={{gap: "20px"}}>
             <div/>
             <HFlex style={{justifyContent: "space-around"}}>
-              <div style={{flexGrow: 1}}/>
+              <div style={{flexGrow: 1}}>
+              </div>
               <div style={{maxWidth: "300px"}}>
-                <Calendar/>
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+                  <CalendarPicker onChange={()=>{}} reduceAnimations={true} readOnly={true}></CalendarPicker>
+                </LocalizationProvider>
               </div>
             </HFlex>
             <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
