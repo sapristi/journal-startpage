@@ -39,7 +39,15 @@ export const EditableInput = ({value, onChange}) => {
 }
 
 
-
+const renderer = {
+  link(href, title, text) {
+    return `
+            <a href="${href}" class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-8ofoxr-MuiTypography-root-MuiLink-root"  target="_blank">
+${text}
+            </a>`;
+  }
+};
+marked.use({ renderer });
 export const EditableMarkdown = ({value, onChange}) => {
   const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange)
 

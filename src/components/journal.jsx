@@ -52,6 +52,7 @@ const useEntriesStore = create(
   }),
     {
       name: "journal-storage",
+      version: 1
     }
   )
 )

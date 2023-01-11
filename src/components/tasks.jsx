@@ -1,14 +1,14 @@
 import React from 'react';
 import create from 'zustand';
 import { persist } from 'zustand/middleware'
+
+import {  Button, Paper, Typography, Divider , Checkbox } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+
 import {getTimestamp} from '../utils'
 import {EditableMarkdown} from "./editable"
-
-
-import ClearIcon from '@mui/icons-material/Clear';
-import CheckIcon from '@mui/icons-material/Check';
-import {  Button, Paper, Typography, Divider , Checkbox } from '@mui/material';
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
+
 const initData = [
   {
     creationDate: 0,
@@ -49,7 +49,10 @@ const useTasksStore = create(
         }})
     })
   ,
-  {name: "tasks-storage"}
+  {
+    name: "tasks-storage",
+    version: 1
+  }
   ))
 
 const Task = ({creationDate, status, content}) => {
