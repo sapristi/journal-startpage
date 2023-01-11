@@ -11,7 +11,10 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 - Reorder tasks
 - Customize colors
 - Search journal
-- limit to one journal entry per day
+- rework journal:
+  - limit to one entry per day ?
+  - allow to change date ?
+  - integrate with calendar
 - double click to delete entry
 - fix done task button icon
 - handle multiple open tabs

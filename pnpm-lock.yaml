@@ -7,6 +7,7 @@ specifiers:
   '@mui/joy': 5.0.0-alpha.62
   '@mui/material': ^5.11.4
   dayjs: ^1.11.7
+  marked: ^4.2.5
   react: ^18.2.0
   react-calendar: ^4.0.0
   react-dom: ^18.2.0
@@ -23,6 +24,7 @@ dependencies:
   '@mui/joy': 5.0.0-alpha.62_5rzy53przelm5jchjmb5vr6dxy
   '@mui/material': 5.11.4_5rzy53przelm5jchjmb5vr6dxy
   dayjs: 1.11.7
+  marked: 4.2.5
   react: 18.2.0
   react-calendar: 4.0.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
@@ -6975,6 +6977,12 @@ packages:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
     dependencies:
       tmpl: 1.0.5
+    dev: false
+
+  /marked/4.2.5:
+    resolution: {integrity: sha512-jPueVhumq7idETHkb203WDD4fMA3yV9emQ5vLwop58lu8bTclMghBWcYAavlDqIEMaisADinV1TooIFCfqOsYQ==}
+    engines: {node: '>= 12'}
+    hasBin: true
     dev: false
 
   /mdast-util-definitions/5.1.1:

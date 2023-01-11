@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ReactMarkdown from 'react-markdown'
+import { marked } from 'marked';
 import {TextareaAutosize} from '@mui/material';
 
 const useEditableState = (initial, onChange) => {
@@ -64,11 +64,13 @@ export const EditableMarkdown = ({value, onChange}) => {
              onKeyUp={handleKeyUp}
              />
   } else {
+    const html = {__html: marked.parse(value)}
     return <div
              onDoubleClick={handleClick}
              style={{flexGrow: 1}}
+             dangerouslySetInnerHTML={html}
            >
-             <ReactMarkdown>{value}</ReactMarkdown>
+             {/* <ReactMarkdown>{value}</ReactMarkdown> */}
            </div>
   }
 }

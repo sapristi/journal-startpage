@@ -9,6 +9,7 @@
     "@mui/joy": "5.0.0-alpha.62",
     "@mui/material": "^5.11.4",
     "dayjs": "^1.11.7",
+    "marked": "^4.2.5",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
