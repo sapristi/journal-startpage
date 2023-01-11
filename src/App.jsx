@@ -2,7 +2,6 @@ import './App.css';
 import {Journal} from './components/journal'
 import {Tasks} from './components/tasks'
 
-import Calendar from 'react-calendar';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper} from '@mui/material';
 import {VFlex, HFlex} from "./components/base"
