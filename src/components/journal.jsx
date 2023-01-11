@@ -12,8 +12,20 @@ import {MainPaper, CardList, HFlex} from "./base"
 const initData = [{
   creationDate: 1573286497768,
   content: `
+# Welcome to Journal Startpage !
+
+## Features
+
+- Task list
+- Journal entries
+
+See [source and more](https://github.com/sapristi/journal-startpage).
+
+## Shortcuts
+
 - Double click to edit
-- Only one journal entry per day
+- Ctrl+Enter to validate (or click outside)
+- Escape to cancel edition
 `
 }]
 

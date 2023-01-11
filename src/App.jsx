@@ -21,7 +21,9 @@ function App() {
       <Paper style={{minHeight: "100vh"}}>
         <Container maxWidth="xl">
           <VFlex style={{gap: "20px"}}>
+            <div/>
             <HFlex style={{justifyContent: "space-around"}}>
+              <div style={{flexGrow: 1}}/>
               <div style={{maxWidth: "300px"}}>
                 <Calendar/>
               </div>

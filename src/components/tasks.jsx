@@ -7,7 +7,7 @@ import {EditableMarkdown} from "./editable"
 
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckIcon from '@mui/icons-material/Check';
-import {  Button, Paper, Typography, Divider } from '@mui/material';
+import {  Button, Paper, Typography, Divider , Checkbox } from '@mui/material';
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
 const initData = [
   {
@@ -68,13 +68,15 @@ const Task = ({creationDate, status, content}) => {
   const textColor = (status == "done")? "text.disabled": "text.primary";
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
-      <HFlex style={{justifyContent: "space-between"}}>
+      <HFlex style={{justifyContent: "space-between", display: "flex"}}>
+        <div>
+          <Checkbox sx={{p: 0, pr:1 }} onChange={switchStatus} checked={status==="done"} />
+        </div>
         <div style={{flex: 1}}>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
         <VFlex>
           <Button onClick={() => removeEntry(status, creationDate)}><ClearIcon/></Button>
-          <Button onClick={switchStatus}><CheckIcon/></Button>
         </VFlex>
       </HFlex>
     </Paper>
