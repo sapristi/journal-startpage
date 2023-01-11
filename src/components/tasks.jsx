@@ -69,7 +69,7 @@ const Task = ({creationDate, status, content}) => {
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
       <HFlex style={{justifyContent: "space-between"}}>
-        <div style={{flexGrow: 1}}>
+        <div style={{flex: 1}}>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
         <VFlex>

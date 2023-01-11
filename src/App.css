@@ -7,10 +7,16 @@ body {
   --primary-color-4: #05284F;
 
 }
-.react-calendar__month-view__days__day--weekend{
+
+.react-calendar__month-view__days__day--weekend {
   color: #2361a8;
   background-color: var(--primary-color-4);
   border-color: var(--primary-color-4)
+}
+
+.react-calendar__tile--now {
+  background-color: #AA7D39;
+  border-color: #7A4A00;
 }
 .body {
   width: 100%;

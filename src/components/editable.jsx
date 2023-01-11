@@ -66,6 +66,7 @@ export const EditableMarkdown = ({value, onChange}) => {
   } else {
     return <div
              onDoubleClick={handleClick}
+             style={{flexGrow: 1}}
            >
              <ReactMarkdown>{value}</ReactMarkdown>
            </div>
