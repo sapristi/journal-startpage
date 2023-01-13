@@ -6,7 +6,7 @@ import {EditableMarkdown} from "./editable"
 import {getTimestamp, DateElem, displayDate} from '../utils'
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider} from '@mui/material';
+import {Paper, Typography, Button, Divider, Link} from '@mui/material';
 import {MainPaper, CardList, HFlex} from "./base"
 
 const initData = [{
@@ -91,6 +91,7 @@ export const Journal = () => {
   const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
   return (
     <MainPaper>
+      <Link/>
       <Typography variant="h3">Journal</Typography>
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>

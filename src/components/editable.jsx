@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { marked } from 'marked';
-import {TextareaAutosize} from '@mui/material';
+import {TextareaAutosize, Link} from '@mui/material';
 
 const useEditableState = (initial, onChange) => {
   const [active, setActive] = useState(false)
@@ -39,6 +39,11 @@ export const EditableInput = ({value, onChange}) => {
 }
 
 
+/*
+Adds MUI Link CSS classes to links.
+A <Link/> needs to be present in the app for
+the CSS classes to be available.
+ */
 const renderer = {
   link(href, title, text) {
     return `
