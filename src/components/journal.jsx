@@ -11,11 +11,12 @@ import {useJournalStore} from '../stores/journal'
 
 const Entry = ({creationDate, content}) => {
   const editEntry = useJournalStore((state) => state.editEntry)
-  const removeEntry = useJournalStore((state) => state.removeEntry)
+  // const removeEntry = useJournalStore((state) => state.removeEntry)
 
   const handleContentChange = (newValue) => {
     editEntry(creationDate, "content", newValue)
   }
+  const removeEntry = () => editEntry(creationDate, "deleted", true)
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
@@ -47,7 +48,7 @@ export const Journal = () => {
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {
-          entries.map( (entry, i) => <Entry key={entry.creationDate} {...entry}/>)
+          entries.filter(entry => !entry.deleted).map( (entry, i) => <Entry key={entry.creationDate} {...entry}/>)
         }
       </CardList>
     </MainPaper>

@@ -9,6 +9,7 @@
     "@mui/material": "^5.11.4",
     "@mui/x-date-pickers": "^5.0.13",
     "dayjs": "^1.11.7",
+    "immer": "^9.0.17",
     "marked": "^4.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

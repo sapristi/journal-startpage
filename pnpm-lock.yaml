@@ -7,6 +7,7 @@ specifiers:
   '@mui/material': ^5.11.4
   '@mui/x-date-pickers': ^5.0.13
   dayjs: ^1.11.7
+  immer: ^9.0.17
   marked: ^4.2.5
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -23,12 +24,13 @@ dependencies:
   '@mui/material': 5.11.4_5rzy53przelm5jchjmb5vr6dxy
   '@mui/x-date-pickers': 5.0.13_m7cc2smtbmdzig2omnko2hxfke
   dayjs: 1.11.7
+  immer: 9.0.17
   marked: 4.2.5
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-scripts: 5.0.1_react@18.2.0+sass@1.57.1
   web-vitals: 2.1.4
-  zustand: 4.2.0_react@18.2.0
+  zustand: 4.2.0_immer@9.0.17+react@18.2.0
 
 devDependencies:
   sass: 1.57.1
@@ -12036,7 +12038,7 @@ packages:
       jszip: 3.10.1
     dev: true
 
-  /zustand/4.2.0_react@18.2.0:
+  /zustand/4.2.0_immer@9.0.17+react@18.2.0:
     resolution: {integrity: sha512-eNwaDoD2FYVnMgtNxiMUhTJO780wonZUzJrPQTLYI0erSIMZF8cniWFW22kGQUECd8rdHRJ/ZJL2XO54c9Ttuw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -12048,6 +12050,7 @@ packages:
       react:
         optional: true
     dependencies:
+      immer: 9.0.17
       react: 18.2.0
       use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
