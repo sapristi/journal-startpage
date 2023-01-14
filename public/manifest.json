@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "1.0",
+  "version": "1.1",
   "short_name": "Journal Startpage",
   "name": "Journal Startpage",
   "author": "Mathias Millet <mathias@mmill.eu>",
@@ -9,8 +9,6 @@
     "192": "icon.svg"
   },
   "permissions": [
-    "tabs",
-    "activeTab",
     "storage"
   ],
   "chrome_url_overrides": {

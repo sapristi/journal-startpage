@@ -8,6 +8,8 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 
 ## Roadmap
 
+### Todo
+
 - Reorder tasks
 - Customize colors
 - Search journal
@@ -16,11 +18,14 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
   - allow to change date ?
   - integrate with calendar
 - double click to delete entry
-- handle multiple open tabs
+- handle multiple open tabs (done for journal entries)
 - firefox sync
 - select locale
-- improve calendar display
 - integrate calendar (to show upcoming events)
+
+### Done
+
+- improve calendar display
 
 # Develop
 
