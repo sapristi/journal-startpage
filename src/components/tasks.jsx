@@ -8,67 +8,48 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {getTimestamp} from '../utils'
 import {EditableMarkdown} from "./editable"
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
-
-const initData = [
-  {
-    creationDate: 0,
+import {makePersistedStore} from '../store'
+const initData = {
+  0: {
+    lastModified: 0,
+    status: "todo",
     content: `
 this is a task
 - with some
 - items
 `
-  },{
-    creationDate: 1,
+  },
+  1:{
+    lastModified: 1,
+    status: "todo",
     content: `
 this is done task
 - with one item
 `
   }
-]
+}
+
+export const useTasksStore = makePersistedStore({
+  name: "tasks",
+  version: 1,
+  initData
+})
 
 
-const useTasksStore = create(
-  persist(
-    (set) => ({
-      todo: initData,
-      done: [],
-      addEntry: (status, entry) => set((state) =>
-        {return {[status]: [{creationDate: getTimestamp(), ...entry}, ...state[status]]}}
-      ),
-      editEntry: (status, creationDate, field, newValue) => set((state) => {
-        const newEntries = state[status].map((entry) => {
-          if (creationDate === entry.creationDate) {
-            return {...entry, [field]: newValue}
-          } else {return entry}
-        });
-        return {[status]: newEntries};
-      }),
-      removeEntry: (status, creationDate) => set( (state) => {
-        return {
-          [status]: state[status].filter(entry => entry.creationDate !== creationDate)
-        }})
-    })
-  ,
-  {
-    name: "tasks-storage",
-    version: 1
-  }
-  ))
+const Task = ({itemKey, status, content}) => {
 
-const Task = ({creationDate, status, content}) => {
-  const addEntry = useTasksStore((state) => state.addEntry)
-  const editEntry = useTasksStore((state) => state.editEntry)
-  const removeEntry = useTasksStore((state) => state.removeEntry)
+  const {editItem, deleteItem} = useTasksStore((state) => state.actions)
+
+  const handleDelete = () => {deleteItem(itemKey)}
 
   const switchStatus = () => {
     const newStatus = (status === "todo")? "done" : "todo";
-    removeEntry(status, creationDate);
-    addEntry(newStatus, {creationDate, content});
+    editItem(itemKey, "status", newStatus)
   }
   const handleContentChange = (newValue) => {
-    editEntry(status, creationDate, "content", newValue)
+    editItem(itemKey, "content", newValue)
   }
-  const textColor = (status == "done")? "text.disabled": "text.primary";
+  const textColor = (status === "done")? "text.disabled": "text.primary";
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
       <HFlex style={{justifyContent: "space-between", display: "flex"}}>
@@ -79,19 +60,31 @@ const Task = ({creationDate, status, content}) => {
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
         <VFlex>
-          <Button onClick={() => removeEntry(status, creationDate)}><ClearIcon/></Button>
+          <Button onClick={handleDelete}><ClearIcon/></Button>
         </VFlex>
       </HFlex>
     </Paper>
   )
 }
 
-export const Tasks = () => {
-  const todoTasks = useTasksStore((state) => state.todo)
-  const doneTasks = useTasksStore((state) => state.done)
-  const addTask = useTasksStore((state) => state.addEntry)
+const extractTasks = (items) => {
+  console.log("extract", items)
+  const todo = []
+  const done = []
+  for (const [key, item] of Object.entries(items)) {
+    if (item.deleted) {continue}
+    if (item.status === "todo") {todo.push([key, item])}
+    else {done.push([key, item])}
+  }
+  return {todo, done}
+}
 
-  const addEmptyTask = () => addTask("todo", {name: "name", content: "TODO"})
+export const Tasks = () => {
+  const items = useTasksStore((state) => state.items)
+  const addItem = useTasksStore((state) => state.actions.addItem)
+
+  const addEmptyTask = () => addItem({status: "todo", content: "TODO"})
+  const {todo, done} = extractTasks(items)
   return (
 
     <MainPaper style={{display: "flex", flexDirection: "column", gap: "20px"}}>
@@ -105,7 +98,7 @@ export const Tasks = () => {
         <Typography variant="h5">Todo</Typography>
         <CardList>
           {
-            todoTasks.map( (entry, i) => <Task key={entry.creationDate} status="todo" {...entry}/>)
+            todo.map( ([key, entry]) => <Task key={key} itemKey={key} {...entry}/>)
           }
         </CardList>
       </div>
@@ -114,7 +107,7 @@ export const Tasks = () => {
         <Typography variant="h5">Done</Typography>
         <CardList>
           {
-            doneTasks.map( (entry, i) => <Task key={entry.creationDate} status="done" {...entry}/>)
+            done.map( ([key, entry]) => <Task key={key} itemKey={key} {...entry}/>)
           }
         </CardList>
       </div>

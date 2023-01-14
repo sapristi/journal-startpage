@@ -9,7 +9,7 @@ const decomposeSets = (set1, set2) => {
      - common: in both sets
      - in set1 but not set2 (i.e. set1 - set2)
      - in set2 but not set1 (i.e. set2 - set1)
-   */
+  */
   const common = new Set()
   const set1distinct = new Set()
   const set2distinct = new Set()
@@ -91,42 +91,61 @@ export const makePersistedStore = ({name, version, initData}) => create(
   persist(
     (set, get) => ({
       items: initData,
-      addItem: (item) => set((state) =>
-        {
-          const date = getTimestamp();
-          return {
-            items: {
-              ...state.items,
-              [date]: {
-                ...item,
-                date,
-                lastModified: date
+      actions: {
+        addItem: (item) => set((state) =>
+          {
+            const date = getTimestamp();
+            return {
+              items: {
+                ...state.items,
+                [date]: {
+                  ...item,
+                  date,
+                  lastModified: date
+                }
               }
             }
           }
-        }
-      ),
-      editItem: (key, field, newValue) => set((state) => {
-        const toEdit = {
-          [field]: newValue,
-          lastModified: getTimestamp()
-        }
-        if (field !== "deleted") {toEdit.deleted = false}
-        return {
-          items: {
-            ...state.items,
-            [key]: {
-              ...state.items[key],
-              ...toEdit
+        ),
+        editItem: (key, field, newValue) => set((state) => {
+          const toEdit = {
+            [field]: newValue,
+            lastModified: getTimestamp()
+          }
+          // useful when modifiying an item that has been concurrently deleted
+          // -> we assume modification means we want to keep it
+          if (field !== "deleted") {toEdit.deleted = false}
+          return {
+            items: {
+              ...state.items,
+              [key]: {
+                ...state.items[key],
+                ...toEdit
+              }
             }
           }
-        }
-      }),
+        }),
+        deleteItem: (key) => set((state) => {
+          return {
+            items: {
+              ...state.items,
+              [key]: {
+                ...state.items[key],
+                deleted: true
+              }
+            }
+          }
+        })
+      },
     }),
     {
       name,
       version,
-      storage: createMergingLocalStorage()
+      storage: createMergingLocalStorage(),
+      partialize: (state) => ({
+        items: state.items,
+        ts: state.ts
+      })
 
     }
   )

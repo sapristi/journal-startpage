@@ -40,13 +40,12 @@ export const useJournalStore = makePersistedStore({
 
 
 const Entry = ({itemKey, date, content}) => {
-  const editItem = useJournalStore((state) => state.editItem)
-  // const removeEntry = useJournalStore((state) => state.removeEntry)
+  const {editItem, deleteItem} = useJournalStore((state) => state.actions)
 
   const handleContentChange = (newValue) => {
     editItem(itemKey, "content", newValue)
   }
-  const removeItem = () => editItem(itemKey, "deleted", true)
+  const handleDelete = () => {deleteItem(itemKey)}
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
@@ -56,7 +55,7 @@ const Entry = ({itemKey, date, content}) => {
           <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
         </div>
         <div>
-          <Button onClick={removeItem}><ClearIcon/></Button>
+          <Button onClick={handleDelete}><ClearIcon/></Button>
         </div>
       </HFlex>
       <Divider/>
@@ -74,7 +73,7 @@ const extractItems = (items) => {
 
 export const Journal = () => {
   const items = useJournalStore((state) => state.items)
-  const addItem = useJournalStore((state) => state.addItem)
+  const addItem = useJournalStore((state) => state.actions.addItem)
 
   const extractedItems = extractItems(items)
 
