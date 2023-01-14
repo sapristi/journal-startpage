@@ -1,66 +1,17 @@
 import React from 'react';
-import create from 'zustand';
-import { persist } from 'zustand/middleware'
 
 import {EditableMarkdown} from "./editable"
-import {getTimestamp, DateElem, displayDate} from '../utils'
+import { DateElem, displayDate} from '../utils'
 
 import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Link} from '@mui/material';
 import {MainPaper, CardList, HFlex} from "./base"
-
-const initData = [{
-  creationDate: 1573286497768,
-  content: `
-# Welcome to Journal Startpage !
-
-## Features
-
-- Task list
-- Journal entries
-
-See [source and more](https://github.com/sapristi/journal-startpage).
-
-## Shortcuts
-
-- Double click to edit
-- Ctrl+Enter to validate (or click outside)
-- Escape to cancel edition
-`
-}]
-
-
-const useEntriesStore = create(
-  persist(
-  (set) => ({
-    entries: initData,
-    addEntry: (entry) => set((state) =>
-      {return {entries: [{creationDate: getTimestamp(), ...entry}, ...state.entries]}}
-    ),
-    editEntry: (creationDate, field, newValue) => set((state) => {
-      const newEntries = state.entries.map((entry) => {
-        if (creationDate === entry.creationDate) {
-          return {...entry, [field]: newValue}
-        } else {return entry}
-      });
-      return {entries: newEntries};
-    }),
-    removeEntry: (creationDate) => set( (state) => {
-      return {
-        entries: state.entries.filter(entry => entry.creationDate !== creationDate)
-      }})
-  }),
-    {
-      name: "journal-storage",
-      version: 1
-    }
-  )
-)
+import {useJournalStore} from '../stores/journal'
 
 
 const Entry = ({creationDate, content}) => {
-  const editEntry = useEntriesStore((state) => state.editEntry)
-  const removeEntry = useEntriesStore((state) => state.removeEntry)
+  const editEntry = useJournalStore((state) => state.editEntry)
+  const removeEntry = useJournalStore((state) => state.removeEntry)
 
   const handleContentChange = (newValue) => {
     editEntry(creationDate, "content", newValue)
@@ -85,8 +36,8 @@ const Entry = ({creationDate, content}) => {
 }
 
 export const Journal = () => {
-  const entries = useEntriesStore((state) => state.entries)
-  const addEntry = useEntriesStore((state) => state.addEntry)
+  const entries = useJournalStore((state) => state.entries)
+  const addEntry = useJournalStore((state) => state.addEntry)
 
   const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
   return (
