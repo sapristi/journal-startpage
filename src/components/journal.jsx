@@ -6,27 +6,57 @@ import { DateElem, displayDate} from '../utils'
 import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Link} from '@mui/material';
 import {MainPaper, CardList, HFlex} from "./base"
-import {useJournalStore} from '../stores/journal'
+import {makePersistedStore} from '../store'
+
+const initData = {
+  0: {
+    date: 0,
+    lastModified: 0,
+    content: `
+# Welcome to Journal Startpage !
+
+## Features
+
+- Task list
+- Journal entries
+
+See [source and more](https://github.com/sapristi/journal-startpage).
+
+## Shortcuts
+
+- Double click to edit
+- Ctrl+Enter to validate (or click outside)
+- Escape to cancel edition
+`
+  }
+}
+
+export const useJournalStore = makePersistedStore({
+  name: "journal",
+  version: 1,
+  initData
+})
 
 
-const Entry = ({creationDate, content}) => {
-  const editEntry = useJournalStore((state) => state.editEntry)
+
+const Entry = ({itemKey, date, content}) => {
+  const editItem = useJournalStore((state) => state.editItem)
   // const removeEntry = useJournalStore((state) => state.removeEntry)
 
   const handleContentChange = (newValue) => {
-    editEntry(creationDate, "content", newValue)
+    editItem(itemKey, "content", newValue)
   }
-  const removeEntry = () => editEntry(creationDate, "deleted", true)
+  const removeItem = () => editItem(itemKey, "deleted", true)
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
       <HFlex style={{justifyContent: "space-between"}}>
         <div>
-          <Typography variant="h5">{displayDate(creationDate)}</Typography>
-          <Typography color="text.secondary"><DateElem timestamp={creationDate}/></Typography>
+          <Typography variant="h5">{displayDate(date)}</Typography>
+          <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
         </div>
         <div>
-          <Button onClick={() => removeEntry(creationDate)}><ClearIcon/></Button>
+          <Button onClick={removeItem}><ClearIcon/></Button>
         </div>
       </HFlex>
       <Divider/>
@@ -36,11 +66,19 @@ const Entry = ({creationDate, content}) => {
   )
 }
 
-export const Journal = () => {
-  const entries = useJournalStore((state) => state.entries)
-  const addEntry = useJournalStore((state) => state.addEntry)
+const extractItems = (items) => {
+  const nonDeleted = Object.entries(items).filter(([key, value]) => (!value.deleted))
+  nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.date - value1.date})
+  return nonDeleted
+}
 
-  const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
+export const Journal = () => {
+  const items = useJournalStore((state) => state.items)
+  const addItem = useJournalStore((state) => state.addItem)
+
+  const extractedItems = extractItems(items)
+
+  const addEmptyEntry = () => addItem({content: "Dear diary, today I ..."})
   return (
     <MainPaper>
       <Link/>
@@ -48,7 +86,7 @@ export const Journal = () => {
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {
-          entries.filter(entry => !entry.deleted).map( (entry, i) => <Entry key={entry.creationDate} {...entry}/>)
+          extractedItems.map( ([itemKey, item]) => <Entry key={itemKey} itemKey={itemKey} {...item}/>)
         }
       </CardList>
     </MainPaper>
