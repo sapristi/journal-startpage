@@ -28,10 +28,10 @@ export const EditableInput = ({value, onChange}) => {
   const {curValue, active, handleChange, commitChange, handleClick} = useEditableState(value, onChange)
   if (active) {
     return <input type="text"
-             value={curValue}
-             onChange={handleChange}
-             onBlur={commitChange}
-             autoFocus
+                  value={curValue}
+                  onChange={handleChange}
+                  onBlur={commitChange}
+                  autoFocus
            />
   } else {
     return <div onClick={handleClick}><span>{value}</span></div>
@@ -40,10 +40,10 @@ export const EditableInput = ({value, onChange}) => {
 
 
 /*
-Adds MUI Link CSS classes to links.
-A <Link/> needs to be present in the app for
-the CSS classes to be available.
- */
+  Adds MUI Link CSS classes to links.
+  A <Link/> needs to be present in the app for
+  the CSS classes to be available.
+*/
 const renderer = {
   link(href, title, text) {
     return `
@@ -68,23 +68,23 @@ export const EditableMarkdown = ({value, onChange}) => {
   }
   if (active) {
     return <TextareaAutosize
-             style={{width: "100%"}}
-               value={curValue}
-               onChange={handleChange}
-               onBlur={commitChange}
-               autoFocus
-               onKeyPress={handleKeyPress}
-             onKeyUp={handleKeyUp}
-             />
+             style={{width: "100%", margin: "20px 0"}}
+    value={curValue}
+    onChange={handleChange}
+    onBlur={commitChange}
+    autoFocus
+    onKeyPress={handleKeyPress}
+    onKeyUp={handleKeyUp}
+  />
   } else {
     const html = {__html: marked.parse(value)}
     return <div
              onDoubleClick={handleClick}
              style={{flexGrow: 1}}
              dangerouslySetInnerHTML={html}
-           >
-             {/* <ReactMarkdown>{value}</ReactMarkdown> */}
-           </div>
+         >
+           {/* <ReactMarkdown>{value}</ReactMarkdown> */}
+         </div>
   }
 }
 
