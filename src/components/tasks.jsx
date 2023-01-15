@@ -56,7 +56,7 @@ const Task = ({itemKey, status, content}) => {
         <div>
           <Checkbox sx={{p: 0, pr:1 }} onChange={switchStatus} checked={status==="done"} />
         </div>
-        <div style={{flex: 1}}>
+        <div style={{flex: 1, display: "flex"}}>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
         <VFlex>

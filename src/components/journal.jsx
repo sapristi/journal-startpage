@@ -5,7 +5,7 @@ import { DateElem, displayDate} from '../utils'
 
 import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Link} from '@mui/material';
-import {MainPaper, CardList, HFlex} from "./base"
+import {MainPaper, CardList, HFlex, VFlex} from "./base"
 import {makePersistedStore} from '../store'
 
 const initData = {
@@ -49,6 +49,7 @@ const Entry = ({itemKey, date, content}) => {
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
+      <VFlex>
       <HFlex style={{justifyContent: "space-between"}}>
         <div>
           <Typography variant="h5">{displayDate(date)}</Typography>
@@ -60,7 +61,7 @@ const Entry = ({itemKey, date, content}) => {
       </HFlex>
       <Divider/>
       <EditableMarkdown value={content} onChange={handleContentChange}/>
-
+      </VFlex>
     </Paper>
   )
 }
