@@ -4,7 +4,7 @@
   "short_name": "Journal Startpage",
   "name": "Journal Startpage",
   "author": "Mathias Millet <mathias@mmill.eu>",
-  "homepage_url": "https://github.com/abstractalgo/react-browser-extension",
+  "homepage_url": "https://github.com/sapristi/journal-startpage",
   "icons": {
     "192": "icon.svg"
   },
