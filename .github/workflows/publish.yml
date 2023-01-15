@@ -15,11 +15,11 @@ jobs:
 
       - name: Extract tag name
         id: tag
-        run: echo ::set-output name=TAG_NAME::$(echo $GITHUB_REF | cut -d / -f 3)
+        run: echo "TAG_NAME=$(echo $GITHUB_REF | cut -d / -f 3)" >> $GITHUB_OUTPUT
 
       - name: Update version in manifest.json
         run: >-
-          sed -i "s/\"version\":.*/\"version\": \"${{ steps.tag.outputs.TAG_NAME }}\"/g" public/manifest.json
+          sed -i "s/\"version\":.*/\"version\": \"${{ steps.tag.outputs.TAG_NAME }}\",/g" public/manifest.json
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -36,7 +36,6 @@ jobs:
       - name: "build"
         id: build
         run: |
-          pnpm build
           pnpm package_ext
 
       - name: "web-ext sign"
