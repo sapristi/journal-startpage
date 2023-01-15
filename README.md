@@ -14,11 +14,10 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 - Customize colors
 - Search journal
 - rework journal:
-  - limit to one entry per day ?
-  - allow to change date ?
+  - ~~limit to one entry per day ?~~ -> rather display time as well as date
+  - allow to change date 
   - integrate with calendar
 - double click to delete entry
-- handle multiple open tabs (done for journal entries)
 - firefox sync
 - select locale
 - integrate calendar (to show upcoming events)
@@ -26,6 +25,7 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 ### Done
 
 - improve calendar display
+- handle multiple open tabs: data is not overriden
 
 # Develop
 
