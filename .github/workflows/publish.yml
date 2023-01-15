@@ -36,7 +36,7 @@ jobs:
       - name: "build"
         id: build
         run: |
-          pnpm package_ext
+          pnpm package-ext
 
       - name: "web-ext sign"
         id: web-ext-sign
