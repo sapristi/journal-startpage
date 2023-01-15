@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ReactMarkdown from 'react-markdown';
-import {TextareaAutosize, Link} from '@mui/material';
+import {Link,  TextField} from '@mui/material';
 
 const useEditableState = (initial, onChange) => {
   const [active, setActive] = useState(false)
@@ -60,14 +60,15 @@ export const EditableMarkdown = ({value, onChange}) => {
     }
   }
   if (active) {
-    return <TextareaAutosize
-             style={{width: "100%", padding: "20px 0"}}
+    return <TextField
+             sx={{width: "100%"}}
              value={curValue}
              onChange={handleChange}
              onBlur={commitChange}
              autoFocus
              onKeyPress={handleKeyPress}
              onKeyUp={handleKeyUp}
+             multiline
            />
   } else {
     return (

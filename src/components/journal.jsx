@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {EditableMarkdown} from "./editable"
 import { DateElem, displayDate} from '../utils'
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider, Link} from '@mui/material';
+import {Paper, Typography, Button, Divider, Link, TextField} from '@mui/material';
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
 import {makePersistedStore} from '../store'
 
@@ -66,8 +66,12 @@ const Entry = ({itemKey, date, content}) => {
   )
 }
 
-const extractItems = (items) => {
-  const nonDeleted = Object.entries(items).filter(([key, value]) => (!value.deleted))
+const extractItems = (items, search) => {
+  const nonDeleted = Object.entries(items).filter(
+    ([key, value]) => (
+      !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
+    )
+  )
   nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.date - value1.date})
   return nonDeleted
 }
@@ -75,14 +79,20 @@ const extractItems = (items) => {
 export const Journal = () => {
   const items = useJournalStore((state) => state.items)
   const addItem = useJournalStore((state) => state.actions.addItem)
+  const [search, setSearch] = useState(() => "")
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value)
+  }
 
-  const extractedItems = extractItems(items)
+  const extractedItems = extractItems(items, search)
 
   const addEmptyEntry = () => addItem({content: "Dear diary, today I ..."})
   return (
     <MainPaper>
-      <Link/>
-      <Typography variant="h3">Journal</Typography>
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+        <Typography variant="h3">Journal</Typography>
+        <TextField label="search" value={search} onChange={handleSearchChange} />
+      </div>
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {

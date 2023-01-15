@@ -43,7 +43,7 @@ jobs:
         uses: kewisch/action-web-ext@v1
         with:
           cmd: sign
-          source: extension_build/extension.zip
+          source: build
           channel: unlisted
           apiKey: ${{ secrets.API_KEY }}
           apiSecret: ${{ secrets.API_SECRET }}
