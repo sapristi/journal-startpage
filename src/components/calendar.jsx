@@ -1,9 +1,9 @@
 
 import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
+import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { styled } from '@mui/material/styles';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs  from 'dayjs';
 var weekday = require('dayjs/plugin/weekday')
 dayjs.extend(weekday)
 require('dayjs/locale/fr')
@@ -32,7 +32,6 @@ const CustomPickersDay = styled(PickersDay, {
             backgroundColor: theme.palette.secondary.dark,
         },
     }),
-    
 }))
 
 const renderCustomDay = (
@@ -40,7 +39,7 @@ const renderCustomDay = (
     selectedDates,
     pickersDayProps,
 ) => {
-    const isWeekEnd = date.weekday() == 5 || date.weekday() == 6;
+    const isWeekEnd = date.weekday() === 5 || date.weekday() === 6;
     const isToday = date.isSame(dayjs(), "day");
     return <CustomPickersDay
              sx={{height: "24px", borderRadius: "25%"}}

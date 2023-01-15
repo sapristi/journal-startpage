@@ -5,7 +5,7 @@ import {Tasks} from './components/tasks'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper} from '@mui/material';
 import {VFlex, HFlex} from "./components/base"
-import {deepOrange, blueGrey} from '@mui/material/colors';
+import { blueGrey} from '@mui/material/colors';
 import {Calendar} from "./components/calendar"
 
 const theme = createTheme ({
