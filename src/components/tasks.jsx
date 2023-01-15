@@ -1,11 +1,8 @@
 import React from 'react';
-import create from 'zustand';
-import { persist } from 'zustand/middleware'
 
 import {  Button, Paper, Typography, Divider , Checkbox } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import {getTimestamp} from '../utils'
 import {EditableMarkdown} from "./editable"
 import {MainPaper, CardList, HFlex, VFlex} from "./base"
 import {makePersistedStore} from '../store'
@@ -21,7 +18,7 @@ this is a task
   },
   1:{
     lastModified: 1,
-    status: "todo",
+    status: "done",
     content: `
 this is done task
 - with one item
