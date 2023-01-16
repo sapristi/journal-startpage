@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "1.3",
+  "version": "1.4",
   "short_name": "Journal Startpage",
   "name": "Journal Startpage",
   "author": "Mathias Millet <mathias@mmill.eu>",
