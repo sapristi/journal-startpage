@@ -36,5 +36,8 @@ body {
 
 
 .MuiDayPicker-slideTransition {
-    min-height: 160px !important;
+    min-height: 100px !important;
+}
+.MuiDayPicker-header {
+  height: 20px !important;
 }

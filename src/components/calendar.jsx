@@ -42,7 +42,7 @@ const renderCustomDay = (
     const isWeekEnd = date.weekday() === 5 || date.weekday() === 6;
     const isToday = date.isSame(dayjs(), "day");
     return <CustomPickersDay
-             sx={{height: "24px", borderRadius: "25%"}}
+             sx={{height: "22px", borderRadius: "25%"}}
              isToday={isToday} isWeekEnd={isWeekEnd} {...pickersDayProps}
            />
 }
