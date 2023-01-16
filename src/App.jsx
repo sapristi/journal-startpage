@@ -1,3 +1,4 @@
+import {useState, useEffect } from 'react'
 import './App.css';
 import {Journal} from './components/journal'
 import {Tasks} from './components/tasks'
@@ -10,24 +11,32 @@ import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
 
+const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>createTheme({
+  palette: {
+    mode ,
+    primary: {main: primaryColor},
+    secondary: {main: secondaryColor},
+    background: {
+      paper: background,
+      default: background
+    }
+  }
+})
+
 function App() {
   const {settingsActive} = useTransientSettings()
   const {mode, primaryColor, secondaryColor, background} = useSettingsStore(state => state)
-  const theme = createTheme({
-    palette: {
-      mode ,
-      primary: {main: primaryColor},
-      secondary: {main: secondaryColor},
-      background: {
-        paper: background,
-        default: background
-      }
-    }
-  })
-  console.log("THEME", theme.palette
-             )
+  const [currentTheme, setCurrentTheme] = useState(
+    createCustomTheme({mode, primaryColor, secondaryColor, background})
+  )
+  useEffect(
+    () => {
+      setCurrentTheme(createCustomTheme({mode, primaryColor, secondaryColor, background} ))
+    },
+    [mode, primaryColor, secondaryColor, background]
+  )
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={currentTheme}>
       <Paper style={{minHeight: "100vh"}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>

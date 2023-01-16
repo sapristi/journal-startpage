@@ -39,7 +39,7 @@ export const SettingsPanel = () => {
       <Stack spacing={3}>
         <ModeSlider/>
         <ControlledColorPicker propName="primaryColor"/>
-        <ControlledColorPicker propName="secondaryColor"/>
+        {/* <ControlledColorPicker propName="secondaryColor"/> */}
         <ControlledColorPicker propName="background"/>
       </Stack>
     </Paper>
