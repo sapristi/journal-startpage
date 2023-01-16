@@ -16,21 +16,14 @@ const CustomPickersDay = styled(PickersDay, {
 }) (({ theme, isToday, isWeekEnd }) => (
     {
     ...(!isWeekEnd && {
-        backgroundColor: theme.palette.common.black,
-        '&:hover, &:focus': {
-            backgroundColor: theme.palette.common.grey,
-        },
+      backgroundColor: theme.palette.background.default,
     }),
 
     ...(isWeekEnd && {
-        backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.action.disabledBackground,
     }),
     ...(isToday && {
-        backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.common.white,
-        '&:hover, &:focus': {
-            backgroundColor: theme.palette.secondary.dark,
-        },
+      backgroundColor: theme.palette.primary.light,
     }),
 }))
 
@@ -50,12 +43,13 @@ const renderCustomDay = (
 
 export const Calendar = () => {
     return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
         <CalendarPicker
           onChange={() => {}}
           reduceAnimations={true}
           readOnly={true}
           renderDay={renderCustomDay}
+          style={{margin: "0 0"}}
         />
     </LocalizationProvider>
     )

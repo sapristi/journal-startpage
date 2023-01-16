@@ -3,41 +3,49 @@ import {Journal} from './components/journal'
 import {Tasks} from './components/tasks'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Container, Paper} from '@mui/material';
-import {VFlex, HFlex} from "./components/base"
-import { blueGrey} from '@mui/material/colors';
-import {Calendar} from "./components/calendar"
+import {Container, Paper, Stack} from '@mui/material';
 
-const theme = createTheme ({
-  palette: {
-    mode: "dark",
-    primary: blueGrey
-  }
-})
+import {TopPanel} from "./components/top_panel"
+import {SettingsPanel} from "./components/settings"
+import {useTransientSettings} from "stores/transient"
+import {useSettingsStore} from 'stores/settings'
 
 function App() {
+  const {settingsActive} = useTransientSettings()
+  const {mode, primaryColor, secondaryColor, background} = useSettingsStore(state => state)
+  const theme = createTheme({
+    palette: {
+      mode ,
+      primary: {main: primaryColor},
+      secondary: {main: secondaryColor},
+      background: {
+        paper: background,
+        default: background
+      }
+    }
+  })
+  console.log("THEME", theme.palette
+             )
   return (
     <ThemeProvider theme={theme}>
       <Paper style={{minHeight: "100vh"}}>
         <Container maxWidth="xl">
-          <VFlex style={{gap: "20px"}}>
-            <div/>
-            <HFlex style={{justifyContent: "space-around"}}>
-              <div style={{flexGrow: 1}}>
-              </div>
-              <div>
-                <Calendar/>
-              </div>
-            </HFlex>
-            <div style={{display: "grid", gridTemplateColumns: "1fr 2fr", gap: "50px"}}>
-              <div>
-                <Tasks/>
-              </div>
-              <div>
-                <Journal/>
-              </div>
-            </div>
-          </VFlex>
+          <Stack spacing={3}>
+            <TopPanel/>
+            {
+            settingsActive ?
+                <SettingsPanel/>
+              :
+              <Stack direction="row" spacing={3}>
+                <div style={{flexGrow: 0.5}}>
+                  <Tasks/>
+                </div>
+                <div style={{flexGrow: 1}}>
+                  <Journal/>
+                </div>
+              </Stack>
+            }
+          </Stack>
         </Container>
       </Paper>
     </ThemeProvider>

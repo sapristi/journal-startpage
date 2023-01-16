@@ -38,6 +38,10 @@ body {
 .MuiDayPicker-slideTransition {
     min-height: 100px !important;
 }
-.MuiDayPicker-header {
+.MuiDayPicker-header .MuiTypography-root{
   height: 20px !important;
+}
+
+.MuiCalendarPicker-root {
+  margin: 0 !important;
 }

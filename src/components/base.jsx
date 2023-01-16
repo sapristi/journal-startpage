@@ -1,19 +1,6 @@
 import React from 'react';
 
-import {Paper} from '@mui/material';
-
-export const HFlex = ({children, style}) => (
-  <div style={{display: "flex", flexDirection: "row",
-               alignItems: "center", ...style}}>
-    {children}
-  </div>
-)
-
-export const VFlex = ({children, style}) => (
-  <div style={{...style, display: "flex", flexDirection: "column"}}>
-    {children}
-  </div>
-)
+import {Paper, Stack} from '@mui/material';
 
 export const MainPaper = ({title, children, style, ...props}) => (
   <Paper style={{padding: "20px", ...style}} elevation={5} {...props}>
@@ -22,7 +9,7 @@ export const MainPaper = ({title, children, style, ...props}) => (
 )
 
 export const CardList = ({children}) => (
-  <VFlex style={{gap: "10px"}}>
+  <Stack spacing={1}>
     {children}
-  </VFlex>
+  </Stack>
 )

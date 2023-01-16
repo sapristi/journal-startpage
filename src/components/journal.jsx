@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 
-import {EditableMarkdown} from "./editable"
-import { DateElem, displayDate} from '../utils'
-
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider, Link, TextField} from '@mui/material';
-import {MainPaper, CardList, HFlex, VFlex} from "./base"
-import {makePersistedStore} from '../store'
+import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
+
+import {MainPaper, CardList} from "./base"
+import {makeMergingStore} from 'stores/merging_store'
+import {EditableMarkdown} from "./editable"
+import { DateElem, displayDate} from 'utils'
 
 const initData = {
   0: {
@@ -31,7 +31,7 @@ See [source and more](https://github.com/sapristi/journal-startpage).
   }
 }
 
-export const useJournalStore = makePersistedStore({
+export const useJournalStore = makeMergingStore({
   name: "journal",
   version: 1,
   initData
@@ -49,19 +49,19 @@ const Entry = ({itemKey, date, content}) => {
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
-      <VFlex>
-      <HFlex style={{justifyContent: "space-between"}}>
-        <div>
-          <Typography variant="h5">{displayDate(date)}</Typography>
-          <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
-        </div>
-        <div>
-          <Button onClick={handleDelete}><ClearIcon/></Button>
-        </div>
-      </HFlex>
-      <Divider/>
-      <EditableMarkdown value={content} onChange={handleContentChange}/>
-      </VFlex>
+      <Stack>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <div>
+            <Typography variant="h5">{displayDate(date)}</Typography>
+            <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
+          </div>
+          <div>
+            <Button onClick={handleDelete}><ClearIcon/></Button>
+          </div>
+        </Stack>
+        <Divider/>
+        <EditableMarkdown value={content} onChange={handleContentChange}/>
+      </Stack>
     </Paper>
   )
 }

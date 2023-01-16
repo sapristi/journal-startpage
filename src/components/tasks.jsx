@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {  Button, Paper, Typography, Divider , Checkbox } from '@mui/material';
+import {  Button, Paper, Typography, Divider , Checkbox, Stack } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 
 import {EditableMarkdown} from "./editable"
-import {MainPaper, CardList, HFlex, VFlex} from "./base"
-import {makePersistedStore} from '../store'
+import {MainPaper, CardList} from "./base"
+import {makeMergingStore} from 'stores/merging_store'
 const initData = {
   0: {
     lastModified: 0,
@@ -26,7 +26,7 @@ this is done task
   }
 }
 
-export const useTasksStore = makePersistedStore({
+export const useTasksStore = makeMergingStore({
   name: "tasks",
   version: 1,
   initData
@@ -49,23 +49,20 @@ const Task = ({itemKey, status, content}) => {
   const textColor = (status === "done")? "text.disabled": "text.primary";
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
-      <HFlex style={{justifyContent: "space-between", display: "flex"}}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
         <div>
           <Checkbox sx={{p: 0, pr:1 }} onChange={switchStatus} checked={status==="done"} />
         </div>
         <div style={{flex: 1, display: "flex"}}>
           <EditableMarkdown value={content} onChange={handleContentChange}/>
         </div>
-        <VFlex>
-          <Button onClick={handleDelete}><ClearIcon/></Button>
-        </VFlex>
-      </HFlex>
+        <Button onClick={handleDelete}><ClearIcon/></Button>
+      </Stack>
     </Paper>
   )
 }
 
 const extractTasks = (items) => {
-  console.log("extract", items)
   const todo = []
   const done = []
   for (const [key, item] of Object.entries(items)) {

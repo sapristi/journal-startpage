@@ -8,7 +8,9 @@ specifiers:
   '@mui/x-date-pickers': ^5.0.13
   dayjs: ^1.11.7
   immer: ^9.0.17
+  lodash: ^4.17.21
   marked: ^4.2.5
+  mui-color-input: ^1.0.4
   react: ^18.2.0
   react-dom: ^18.2.0
   react-markdown: ^8.0.4
@@ -26,7 +28,9 @@ dependencies:
   '@mui/x-date-pickers': 5.0.13_m7cc2smtbmdzig2omnko2hxfke
   dayjs: 1.11.7
   immer: 9.0.17
+  lodash: 4.17.21
   marked: 4.2.5
+  mui-color-input: 1.0.4_22lfntuixnwi3ifma47z2sdegi
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-markdown: 8.0.4_react@18.2.0
@@ -1597,6 +1601,11 @@ packages:
     dependencies:
       postcss: 8.4.20
       postcss-selector-parser: 6.0.11
+    dev: false
+
+  /@ctrl/tinycolor/3.5.0:
+    resolution: {integrity: sha512-tlJpwF40DEQcfR/QF+wNMVyGMaO9FQp6Z1Wahj4Gk3CJQYHwA2xVG7iKDFdW6zuxZY9XWOpGcfNCTsX4McOsOg==}
+    engines: {node: '>=10'}
     dev: false
 
   /@date-io/core/2.16.0:
@@ -8427,6 +8436,27 @@ packages:
 
   /ms/2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  /mui-color-input/1.0.4_22lfntuixnwi3ifma47z2sdegi:
+    resolution: {integrity: sha512-7EcE7UrNspjC+h8L1z8jh3bWv8o6NbRwio8Th8q77X8cMhWlHrtem3//BO3Vtpu5sQzSwvVhHFWL8afzP0QzHg==}
+    peerDependencies:
+      '@emotion/react': ^11.5.0
+      '@emotion/styled': ^11.3.0
+      '@mui/material': ^5.0.0
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@ctrl/tinycolor': 3.5.0
+      '@emotion/react': 11.10.5_react@18.2.0
+      '@emotion/styled': 11.10.5_hp5f5nkljdiwilp4rgxyefcplu
+      '@mui/material': 5.11.4_5rzy53przelm5jchjmb5vr6dxy
+      '@types/react': 18.0.26
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /multicast-dns/7.2.5:
     resolution: {integrity: sha512-2eznPJP8z2BFLX50tf0LuODrpINqP1RVIm/CObbTcBRITQgmC/TjcREF1NeTBzIcR5XO/ukWo+YHOjBbFwIupg==}

@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware'
 import produce from "immer"
-import { getTimestamp } from './utils'
+import { getTimestamp } from '../utils'
 
 
 const decomposeSets = (set1, set2) => {
@@ -90,7 +90,7 @@ const createMergingLocalStorage = () => {
 
 
 
-export const makePersistedStore = ({name, version, initData}) => {
+export const makeMergingStore = ({name, version, initData}) => {
   const editStateItem = (state, key, changes) => {
     return {
       items: {
