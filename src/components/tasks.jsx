@@ -41,10 +41,10 @@ const Task = ({itemKey, status, content}) => {
 
   const switchStatus = () => {
     const newStatus = (status === "todo")? "done" : "todo";
-    editItem(itemKey, "status", newStatus)
+    editItem(itemKey, {status: newStatus})
   }
   const handleContentChange = (newValue) => {
-    editItem(itemKey, "content", newValue)
+    editItem(itemKey, {content: newValue})
   }
   const textColor = (status === "done")? "text.disabled": "text.primary";
   return (

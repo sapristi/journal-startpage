@@ -43,7 +43,7 @@ const Entry = ({itemKey, date, content}) => {
   const {editItem, deleteItem} = useJournalStore((state) => state.actions)
 
   const handleContentChange = (newValue) => {
-    editItem(itemKey, "content", newValue)
+    editItem(itemKey, {content: newValue})
   }
   const handleDelete = () => {deleteItem(itemKey)}
 

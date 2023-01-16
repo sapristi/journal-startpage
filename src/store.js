@@ -87,66 +87,72 @@ const createMergingLocalStorage = () => {
   return persistStorage
 }
 
-export const makePersistedStore = ({name, version, initData}) => create(
-  persist(
-    (set, get) => ({
-      items: initData,
-      actions: {
-        addItem: (item) => set((state) =>
-          {
-            const date = getTimestamp();
-            return {
-              items: {
-                ...state.items,
-                [date]: {
-                  ...item,
-                  date,
-                  lastModified: date
+
+
+
+export const makePersistedStore = ({name, version, initData}) => {
+  const editStateItem = (state, key, changes) => {
+    return {
+      items: {
+        ...state.items,
+        [key]: {
+          ...state.items[key],
+          ...{
+            ...changes,
+            lastModified: getTimestamp()
+          }
+        }
+      }
+    }
+  }
+  return create(
+    persist(
+      (set, get) => ({
+        items: initData,
+        actions: {
+          addItem: (item) => set((state) =>
+            {
+              const date = getTimestamp();
+              return {
+                items: {
+                  ...state.items,
+                  [date]: {
+                    ...item,
+                    date,
+                    lastModified: date
+                  }
                 }
               }
             }
-          }
-        ),
-        editItem: (key, field, newValue) => set((state) => {
-          const toEdit = {
-            [field]: newValue,
-            lastModified: getTimestamp()
-          }
-          // useful when modifiying an item that has been concurrently deleted
-          // -> we assume modification means we want to keep it
-          if (field !== "deleted") {toEdit.deleted = false}
-          return {
-            items: {
-              ...state.items,
-              [key]: {
-                ...state.items[key],
-                ...toEdit
-              }
+          ),
+          editItem: (key, changes) => set((state) => {
+            // useful when modifiying an item that has been concurrently deleted
+            // -> we assume modification means we want to keep it
+            const changesWDeleted = {
+              ...changes,
+              deleted: Boolean(changes.deleted)
             }
-          }
-        }),
-        deleteItem: (key) => set((state) => {
-          return {
-            items: {
-              ...state.items,
-              [key]: {
-                ...state.items[key],
-                deleted: true
-              }
-            }
-          }
+            return editStateItem(
+              state, key, changesWDeleted
+            )
+          }),
+          deleteItem: (key) => set((state) => {
+            return editStateItem(
+              state, key, {deleted: true}
+            )
+          })
+        },
+      }),
+      {
+        name,
+        version,
+        storage: createMergingLocalStorage(),
+        partialize: (state) => ({
+          items: state.items,
+          ts: state.ts
         })
-      },
-    }),
-    {
-      name,
-      version,
-      storage: createMergingLocalStorage(),
-      partialize: (state) => ({
-        items: state.items,
-        ts: state.ts
-      })
 
-    }
+      }
+    )
   )
-)
+}
