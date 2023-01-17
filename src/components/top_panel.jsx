@@ -10,12 +10,17 @@ export const TopPanel = () => {
   return (
     <Paper elevation={3}>
       <Toolbar sx={{justifyContent: "space-between"}}>
-        <div>
+        <div style={{flexGrow: 1, display: "flex", flexDirection: "column"}}>
+          <div style={{flexGrow: 1}}>
           <Typography variant="h3">{dayjs().format("LT")}</Typography>
           <Typography variant="h4">{dayjs().format("dddd LL")}</Typography>
-          <div>
-            Settings
-            <Switch checked={settingsActive} onChange={switchSettings} label="Settings"/>
+          </div>
+          <div style={{display: "flex", justyfyContent: "space-between"}}>
+            <div style={{flexGrow: 1}}/>
+            <div>
+              Settings
+              <Switch checked={settingsActive} onChange={switchSettings} label="Settings"/>
+            </div>
           </div>
         </div>
         <Calendar/>

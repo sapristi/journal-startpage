@@ -90,7 +90,7 @@ export const Journal = () => {
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>
-        <Typography variant="h3">Journal</Typography>
+        <Typography component="h1" variant="h3">Journal</Typography>
         <TextField label="search" value={search} onChange={handleSearchChange} />
       </div>
       <Button onClick={addEmptyEntry}>Add entry</Button>

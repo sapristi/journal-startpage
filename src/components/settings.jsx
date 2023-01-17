@@ -1,4 +1,4 @@
-import {Paper, Typography, Button, Stack, Switch, Select, MenuItem} from '@mui/material';
+import {Paper, Typography, Stack, Switch, Select, MenuItem} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
@@ -14,7 +14,7 @@ const LocaleSelector = () => {
     setValue("locale", newLocale)
   }
   return (
-    <Select value={locale} onChange={handleChange}>
+    <Select value={locale} onChange={handleChange} label="locale">
       {
         locales.map(locale =><MenuItem key={locale.key} value={locale.key}>{locale.name}</MenuItem>)
       }
@@ -49,6 +49,7 @@ const ControlledColorPicker = ({propName}) => {
 export const SettingsPanel = () => {
   return (
     <Paper elevation={3} sx={{padding: "20px"}}>
+      <Typography component="h1" variant="h3">Settings</Typography>
       <Stack spacing={3}>
         <ModeSlider/>
         <ControlledColorPicker propName="primaryColor"/>

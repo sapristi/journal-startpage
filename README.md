@@ -11,21 +11,21 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 ### Todo
 
 - Reorder tasks
-- Customize colors
-- Search journal
 - rework journal:
   - ~~limit to one entry per day ?~~ -> rather display time as well as date
   - allow to change date 
   - integrate with calendar
 - double click to delete entry
 - firefox sync
-- select locale
 - integrate calendar (to show upcoming events)
 
 ### Done
 
+- Customize colors
 - improve calendar display
 - handle multiple open tabs: data is not overriden
+- select locale
+- Search journal
 
 # Develop
 
