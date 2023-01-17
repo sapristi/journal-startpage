@@ -16,11 +16,10 @@ const CustomPickersDay = styled(PickersDay, {
 }) (({ theme, isToday, isWeekEnd }) => (
     {
     ...(!isWeekEnd && {
-      backgroundColor: theme.palette.background.default,
-    }),
-
-    ...(isWeekEnd && {
       backgroundColor: theme.palette.action.disabledBackground,
+    }),
+    ...(isWeekEnd && {
+      backgroundColor: theme.palette.background.default,
     }),
     ...(isToday && {
       backgroundColor: theme.palette.primary.light,
