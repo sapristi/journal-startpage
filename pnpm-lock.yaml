@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ctrl/tinycolor': ^3.5.0
   '@emotion/react': ^11.10.5
   '@emotion/styled': ^11.10.5
   '@mui/icons-material': ^5.11.0
@@ -21,6 +22,7 @@ specifiers:
   zustand: ^4.2.0
 
 dependencies:
+  '@ctrl/tinycolor': 3.5.0
   '@emotion/react': 11.10.5_react@18.2.0
   '@emotion/styled': 11.10.5_hp5f5nkljdiwilp4rgxyefcplu
   '@mui/icons-material': 5.11.0_f3iq2byl5bu7ge3km7yifn3f6u

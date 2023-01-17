@@ -1,19 +1,18 @@
-import {  useMemo } from 'react';
 import {Paper, Typography, Button, Stack, Switch} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 
 const ModeSlider = () => {
-  const { mode, setValue} = useSettingsStore()
-  const switchMode = () => {
-    const newValue = mode === "dark" ? "light" : "dark"
-    setValue("mode", newValue)
-  }
+  const { mode, switchMode } = useSettingsStore()
+  // const switchMode = () => {
+  //   const newValue = mode === "dark" ? "light" : "dark"
+  //   setValue("mode", newValue)
+  // }
   return (
     <Stack direction="row" alignItems="center">
       <Typography>Light</Typography>
-      <Switch checked={mode === "dark"} onChange={switchMode}/>
+      <Switch checked={(mode==="dark")} onChange={switchMode}/>
       <Typography>Dark</Typography>
     </Stack>
   )
