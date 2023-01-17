@@ -3,8 +3,8 @@ import { persist } from 'zustand/middleware'
 import { TinyColor } from '@ctrl/tinycolor';
 
 const initValue = {
-  background: "black",
-  primaryColor: "#AAAAAA",
+  background: "rgb(18, 18, 18)",
+  primaryColor: "rgb(96, 125, 139)",
   secondaryColor: "#DD0033",
   mode: "dark",
   locale: "en",
