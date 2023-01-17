@@ -3,10 +3,9 @@ import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { styled } from '@mui/material/styles';
+import {useSettingsStore} from 'stores/settings'
 import dayjs  from 'dayjs';
-var weekday = require('dayjs/plugin/weekday')
-dayjs.extend(weekday)
-require('dayjs/locale/fr')
+
 
 
 
@@ -41,8 +40,10 @@ const renderCustomDay = (
 
 
 export const Calendar = () => {
+
+  const {locale} = useSettingsStore()
     return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
         <CalendarPicker
           onChange={() => {}}
           reduceAnimations={true}

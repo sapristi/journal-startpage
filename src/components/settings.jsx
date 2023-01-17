@@ -1,14 +1,28 @@
-import {Paper, Typography, Button, Stack, Switch} from '@mui/material';
+import {Paper, Typography, Button, Stack, Switch, Select, MenuItem} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
+import {locales} from 'utils'
 
+const dayjs = require('dayjs')
+
+const LocaleSelector = () => {
+  const {locale, setValue} = useSettingsStore()
+  const handleChange = (event) => {
+    const newLocale = event.target.value
+    dayjs.locale(newLocale)
+    setValue("locale", newLocale)
+  }
+  return (
+    <Select value={locale} onChange={handleChange}>
+      {
+        locales.map(locale =><MenuItem key={locale.key} value={locale.key}>{locale.name}</MenuItem>)
+      }
+    </Select>
+  )
+}
 const ModeSlider = () => {
   const { mode, switchMode } = useSettingsStore()
-  // const switchMode = () => {
-  //   const newValue = mode === "dark" ? "light" : "dark"
-  //   setValue("mode", newValue)
-  // }
   return (
     <Stack direction="row" alignItems="center">
       <Typography>Light</Typography>
@@ -40,6 +54,7 @@ export const SettingsPanel = () => {
         <ControlledColorPicker propName="primaryColor"/>
         {/* <ControlledColorPicker propName="secondaryColor"/> */}
         <ControlledColorPicker propName="background"/>
+        <LocaleSelector/>
       </Stack>
     </Paper>
   )

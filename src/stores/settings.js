@@ -7,6 +7,7 @@ const initValue = {
   primaryColor: "#AAAAAA",
   secondaryColor: "#DD0033",
   mode: "dark",
+  locale: "",
 }
 
 export const useSettingsStore = create(
