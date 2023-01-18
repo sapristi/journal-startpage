@@ -10,6 +10,7 @@ import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
+import {getBrowserLocale} from 'utils'
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>createTheme({
   palette: {
@@ -25,7 +26,7 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>c
 
 function App() {
   const {settingsActive} = useTransientSettings()
-  const {mode, primaryColor, secondaryColor, background} = useSettingsStore(state => state)
+  const {mode, primaryColor, secondaryColor, background, locale, setLocale} = useSettingsStore(state => state)
   const [currentTheme, setCurrentTheme] = useState(
     createCustomTheme({mode, primaryColor, secondaryColor, background})
   )
@@ -34,6 +35,15 @@ function App() {
       setCurrentTheme(createCustomTheme({mode, primaryColor, secondaryColor, background} ))
     },
     [mode, primaryColor, secondaryColor, background]
+  )
+  useEffect (
+    () => {
+      if (locale === null) {
+        console.log("Setting default locale")
+        setLocale(getBrowserLocale())
+      }
+    },
+    []
   )
   return (
     <ThemeProvider theme={currentTheme}>

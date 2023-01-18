@@ -19,7 +19,7 @@ export const displayRelativeDate = (timestamp) => {
 }
 
 export const displayDate = (timestamp) => {
-  return dayjs(timestamp).format("dddd, LL")
+  return dayjs(timestamp).format("dddd LL")
 }
 export const DateElem = ({timestamp}) => {
   return <time dateTime={dayjs(timestamp).format('YYYY-MM-DDTHH:mm:ss')}>
@@ -27,6 +27,15 @@ export const DateElem = ({timestamp}) => {
   </time>
 }
 
+export const getBrowserLocale = () => {
+  const availableLocales = locales.map(locale => locale.key)
+  for (const language of navigator.languages) {
+    if (availableLocales.includes(language)) {
+      return language
+    }
+  }
+  return "en"
+}
 
 dayjs.locale(require('dayjs/locale/af'), null, true);
 dayjs.locale(require('dayjs/locale/ar-dz'), null, true);

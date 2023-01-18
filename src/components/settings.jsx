@@ -4,14 +4,12 @@ import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils'
 
-const dayjs = require('dayjs')
 
 const LocaleSelector = () => {
-  const {locale, setValue} = useSettingsStore()
+  const {locale, setLocale} = useSettingsStore()
   const handleChange = (event) => {
     const newLocale = event.target.value
-    dayjs.locale(newLocale)
-    setValue("locale", newLocale)
+    setLocale(newLocale)
   }
   return (
     <Select value={locale} onChange={handleChange} label="locale">
