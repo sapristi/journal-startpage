@@ -29,7 +29,7 @@ jobs:
           fi
 
       - uses: rickstaa/action-create-tag@v1
-        if: ${{ steps.check_version.outputs.new_version }} == 'success'
+        if: steps.check_version.outputs.status == 'success'
         with:
           tag: ${{ steps.check_version.outputs.new_version }}
           message: "Latest release"
