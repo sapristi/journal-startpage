@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - '**'
     tags-ignore:
-      - '*dev*'
+      - '**dev**'
 
 jobs:
   build-n-publish:
