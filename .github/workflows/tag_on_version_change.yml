@@ -16,9 +16,7 @@ jobs:
           fetch-depth: 0
       - id: check_version
         run: |
-          set -e
-          git diff-tree --patch --raw  HEAD HEAD~1 public/manifest.json | grep "\-  \"version\""
-          if [ $? = 0 ]
+          if git diff-tree --patch --raw  HEAD HEAD~1 public/manifest.json | grep "\-  \"version\""
           then
             echo Version changed
             new_version=$(cat public/manifest.json | grep -Po '"version\": \"\K[^"]*')
@@ -26,6 +24,7 @@ jobs:
             echo "new_version=${new_version}" >> $GITHUB_OUTPUT
             echo "status=success" >> $GITHUB_OUTPUT
           else
+            echo Version did not change
             echo "status=failure" >> $GITHUB_OUTPUT
           fi
 
