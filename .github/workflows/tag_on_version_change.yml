@@ -11,9 +11,20 @@ jobs:
     name: create tag
     runs-on: ubuntu-latest
     steps:
-      # - name: "Checkout"
-      #   uses: actions/checkout@v3
-      - name: Logging
-        run: |
-          echo "${{toJSON(github.event)}}"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: |
+          git diff-tree --patch --raw  HEAD HEAD~1 public/manifest.json | grep "\-  \"version\""
+          if [ $? = 0 ]
+          then
+          echo Version changed
+          new_version=$(cat public/manifest.json | grep -Po '"version\": \"\K[^"]*')
+          echo new_version $new_version
+          fi
+
+      # - uses: rickstaa/action-create-tag@v1
+      #   with:
+      #     tag: "latest"
+      #     message: "Latest release"
 
