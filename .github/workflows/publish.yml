@@ -3,7 +3,9 @@ name: Publish package on mozilla
 on:
   push:
     tags:
-     - '*'
+      - '*'
+    tags-ignore:
+      - '*dev*'
 
 jobs:
   build-n-publish:
