@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 0
       - id: check_version
         run: |
+          set -e
           git diff-tree --patch --raw  HEAD HEAD~1 public/manifest.json | grep "\-  \"version\""
           if [ $? = 0 ]
           then
