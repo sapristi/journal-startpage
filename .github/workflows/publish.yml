@@ -2,8 +2,8 @@ name: Publish package on mozilla
 
 on:
   push:
-    tags:
-      - '*'
+    branches-ignore:
+      - '**'
     tags-ignore:
       - '*dev*'
 
