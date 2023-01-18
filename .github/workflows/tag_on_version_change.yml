@@ -21,17 +21,13 @@ jobs:
             echo Version changed
             new_version=$(cat public/manifest.json | grep -Po '"version\": \"\K[^"]*')
             echo new_version $new_version
-            echo "new_version=${new_version}" >> $GITHUB_OUTPUT
-            echo "status=success" >> $GITHUB_OUTPUT
+            curl --request POST \
+              --url https://api.github.com/repos/${{ github.repository }}/git/tags \
+              --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+              --header 'content-type: application/json' \
+              --data "{\"tag\": \"${new_version}\"}" \
+              --fail
+
           else
             echo Version did not change
-            echo "status=failure" >> $GITHUB_OUTPUT
           fi
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          custom_tag: ${{ steps.check_version.outputs.new_version }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-
