@@ -1,4 +1,4 @@
-name: Publish package on mozilla
+name: Push tag on version change
 
 on:
   push:
