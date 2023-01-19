@@ -100,6 +100,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("version")
     parser.add_argument("--channel", default="listed", choices=["listed", "unlisted"])
+    parser.add_argument("--blog-only", action=argparse.BooleanOptionalAction)
 
     args = parser.parse_args()
-    main(args.version)
+    if args.blog_only:
+        pnpm(["install"])
+        pnpm(["build"])
+        update_blog(args.version)
+        exit(0)
+
+    main(
+        args.version,
+    )
