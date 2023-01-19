@@ -38,17 +38,22 @@ jobs:
             echo Version did not change
             echo "status=failure" >> $GITHUB_OUTPUT
           fi
-      - uses: actions/setup-python@v4
-      - uses: jannekem/run-python-script-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.CI_GH_TOKEN }}
+      - uses: rickstaa/action-create-tag@v1
         with:
-          script: |
-            import os
-            token = os.environ["GITHUB_TOKEN"]
-            print(len(token))
-            l = len(token)
-            print(l)
+          tag: ${{ steps.check_version.outputs.new_version }}
+          message: "Latest release"
+          github_token: ${{ secrets.CI_GH_TOKEN }}
+      # - uses: actions/setup-python@v4
+      # - uses: jannekem/run-python-script-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.CI_GH_TOKEN }}
+      #   with:
+      #     script: |
+      #       import os
+      #       token = os.environ["GITHUB_TOKEN"]
+      #       print(len(token))
+      #       l = len(token)
+      #       print(l)
 
 
 
