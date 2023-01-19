@@ -2,7 +2,10 @@
 
 ![screenshot](./assets/screenshot.png)
 
-This browser extension provides a journal and todo apps in the startpage of your browser.
+
+This browser extension provides a journal and todo apps in the startpage of your browser. [Try it !](https://sapristi.github.io/journal-startpage/index.html)
+
+- [Mozilla add-on](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)
 
 Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/elegant-startage-new-tab/)
 
