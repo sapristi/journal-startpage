@@ -4,8 +4,8 @@ on:
   push:
     branches-ignore:
       - '**'
-    tags-ignore:
-      - '**dev**'
+    # tags-ignore:
+    #   - '**dev**'
 
 jobs:
   build-n-publish:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Extract tag name
         id: tag
@@ -33,21 +33,49 @@ jobs:
         id: pnpm-install
         with:
           version: 7
-          run_install: true
+          run_install: false
 
-      - name: "build"
-        id: build
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
         run: |
-          pnpm package-ext
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: "web-ext sign"
-        id: web-ext-sign
-        uses: kewisch/action-web-ext@v1
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
         with:
-          cmd: sign
-          source: build
-          channel: unlisted
-          apiKey: ${{ secrets.API_KEY }}
-          apiSecret: ${{ secrets.API_SECRET }}
-          timeout: 900000
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm package-ext
+          pwd
+          ls
+
+
+      - name: checkout blog
+        uses: actions/checkout@v3
+        with:
+          sapristi/sapristi.github.io
+          token: ${{ secrets.CI_GH_TOKEN }}
+
+
+      - name: update blog
+        run: |
+          pwd
+          ls
+      # - name: "web-ext sign"
+      #   id: web-ext-sign
+      #   uses: kewisch/action-web-ext@v1
+      #   with:
+      #     cmd: sign
+      #     source: build
+      #     channel: unlisted
+      #     apiKey: ${{ secrets.API_KEY }}
+      #     apiSecret: ${{ secrets.API_SECRET }}
+      #     timeout: 900000
 
