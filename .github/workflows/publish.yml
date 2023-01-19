@@ -2,10 +2,12 @@ name: Publish package on mozilla
 
 on:
   push:
-    branches-ignore:
-      - '**'
-    # tags-ignore:
-    #   - '**dev**'
+    tags:
+      - '*'
+    # branches-ignore:
+    #   - '**'
+    # # tags-ignore:
+    # #   - '**dev**'
 
 jobs:
   build-n-publish:
