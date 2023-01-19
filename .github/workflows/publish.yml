@@ -60,7 +60,7 @@ jobs:
       - name: checkout blog
         uses: actions/checkout@v3
         with:
-          sapristi/sapristi.github.io
+          repository: sapristi/sapristi.github.io
           token: ${{ secrets.CI_GH_TOKEN }}
 
 
