@@ -3,7 +3,7 @@ import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils'
-
+const { version } = require('../../package.json');
 
 const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -54,6 +54,7 @@ export const SettingsPanel = () => {
         {/* <ControlledColorPicker propName="secondaryColor"/> */}
         <ControlledColorPicker propName="background"/>
         <LocaleSelector/>
+        <Typography>Version: {version}</Typography>
       </Stack>
     </Paper>
   )
