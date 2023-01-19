@@ -57,7 +57,10 @@ def publish_AMO():
             "pnpm", "web-ext", "sign", "-s=build", "--channel=listed",
             "--use-submission-api", "--amo-base-url=https://addons.mozilla.org/api/v5/"
         ],
-        env=load_env()
+        env={
+            **os.environ,
+            **load_env()
+        }
     )
 
 def print_header(*args):
@@ -79,9 +82,6 @@ def main(
     pnpm(["install"])
     pnpm(["build"])
 
-    print_header("Publish")
-    publish_AMO()
-
     print_header("Commit, tag, push")
     git(["add", "-u"])
     git(["commit", "-m", f"bump to version {version}"])
@@ -92,6 +92,9 @@ def main(
     print_header("Updating blog")
     update_blog(version)
 
+    # Very long when using the API, so put it at the end
+    print_header("Publish")
+    publish_AMO()
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("version")
