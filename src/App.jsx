@@ -41,6 +41,8 @@ function App() {
       if (locale === null) {
         console.log("Setting default locale")
         setLocale(getBrowserLocale())
+      } else {
+        setLocale(locale)
       }
     },
     []
