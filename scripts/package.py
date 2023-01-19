@@ -95,6 +95,7 @@ def main(
     # Very long when using the API, so put it at the end
     print_header("Publish")
     publish_AMO()
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("version")
