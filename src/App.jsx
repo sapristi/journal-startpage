@@ -1,39 +1,36 @@
-import {useState, useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import './App.css';
-import {Journal} from './components/journal'
-import {Tasks} from './components/tasks'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper, Stack} from '@mui/material';
 
+import {Journal} from './components/journal'
+import {Tasks} from './components/tasks'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
 import {getBrowserLocale} from 'utils'
 
-const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>createTheme({
-  palette: {
-    mode ,
-    primary: {main: primaryColor},
-    secondary: {main: secondaryColor},
-    background: {
-      paper: background,
-      default: background
+const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
+  return createTheme({
+    palette: {
+      mode ,
+      primary: {main: primaryColor},
+      secondary: {main: secondaryColor},
+      background: {
+        paper: background,
+        default: background
+      }
     }
-  }
-})
+  })
+}
 
 function App() {
   const {settingsActive} = useTransientSettings()
   const {mode, primaryColor, secondaryColor, background, locale, setLocale} = useSettingsStore(state => state)
-  const [currentTheme, setCurrentTheme] = useState(
-    createCustomTheme({mode, primaryColor, secondaryColor, background})
-  )
-  useEffect(
-    () => {
-      setCurrentTheme(createCustomTheme({mode, primaryColor, secondaryColor, background} ))
-    },
+  const currentTheme = useMemo(
+    () => createCustomTheme({mode, primaryColor, secondaryColor, background}),
     [mode, primaryColor, secondaryColor, background]
   )
   useEffect (
