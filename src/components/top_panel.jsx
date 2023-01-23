@@ -1,11 +1,14 @@
-import {Paper, Toolbar, Typography, Button, Stack, Switch} from '@mui/material';
+import {  memo } from 'react'
+import {Paper, Toolbar, Typography,  Switch} from '@mui/material';
 import {Calendar} from "./calendar"
 import {useTransientSettings} from "stores/transient"
+import {useSettingsStore} from 'stores/settings'
 
 const dayjs = require('dayjs')
 
-export const TopPanel = () => {
+export const TopPanel = memo(() => {
 
+  const {locale} = useSettingsStore()
   const {settingsActive, switchSettings} = useTransientSettings()
   return (
     <Paper elevation={3}>
@@ -23,8 +26,8 @@ export const TopPanel = () => {
             </div>
           </div>
         </div>
-        <Calendar/>
+        <Calendar locale={locale}/>
       </Toolbar>
     </Paper>
   )
-}
+})

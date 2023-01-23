@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, memo } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -26,8 +26,23 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   })
 }
 
-function App() {
+const BottomPanel = memo(() =>{
   const {settingsActive} = useTransientSettings()
+  return (
+    settingsActive ?
+      <SettingsPanel/>
+      :
+      <Stack direction="row" spacing={3}>
+        <div style={{flexGrow: 0.5}}>
+          <Tasks/>
+        </div>
+        <div style={{flexGrow: 1}}>
+          <Journal/>
+        </div>
+      </Stack>
+  )
+})
+function App() {
   const {mode, primaryColor, secondaryColor, background, locale, setLocale} = useSettingsStore(state => state)
   const currentTheme = useMemo(
     () => createCustomTheme({mode, primaryColor, secondaryColor, background}),
@@ -46,23 +61,11 @@ function App() {
   )
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper style={{minHeight: "100vh"}}>
+      <Paper sx={{minHeight: "100vh"}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <TopPanel/>
-            {
-            settingsActive ?
-                <SettingsPanel/>
-              :
-              <Stack direction="row" spacing={3}>
-                <div style={{flexGrow: 0.5}}>
-                  <Tasks/>
-                </div>
-                <div style={{flexGrow: 1}}>
-                  <Journal/>
-                </div>
-              </Stack>
-            }
+            <BottomPanel/>
           </Stack>
         </Container>
       </Paper>

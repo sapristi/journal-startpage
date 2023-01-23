@@ -1,9 +1,8 @@
-
+import {memo} from 'react'
 import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { styled } from '@mui/material/styles';
-import {useSettingsStore} from 'stores/settings'
 import dayjs  from 'dayjs';
 
 
@@ -23,7 +22,7 @@ const CustomPickersDay = styled(PickersDay, {
     ...(isToday && {
       backgroundColor: theme.palette.primary.light,
     }),
-}))
+    }))
 
 const renderCustomDay = (
     date,
@@ -39,18 +38,16 @@ const renderCustomDay = (
 }
 
 
-export const Calendar = () => {
-
-  const {locale} = useSettingsStore()
-    return (
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
-        <CalendarPicker
-          onChange={() => {}}
-          reduceAnimations={true}
-          readOnly={true}
-          renderDay={renderCustomDay}
-          style={{margin: "0 0"}}
-        />
+export const Calendar = memo(({locale}) => {
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+      <CalendarPicker
+        onChange={() => {}}
+        reduceAnimations={true}
+        readOnly={true}
+        renderDay={renderCustomDay}
+        style={{margin: "0 0"}}
+      />
     </LocalizationProvider>
-    )
-}
+  )
+})
