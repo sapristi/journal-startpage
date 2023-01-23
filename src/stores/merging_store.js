@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware'
 import produce from "immer"
-import { getTimestamp } from '../utils'
+import { getTimestamp, getRandomId } from '../utils'
 
 
 const decomposeSets = (set1, set2) => {
@@ -113,10 +113,11 @@ export const makeMergingStore = ({name, version, initData}) => {
           addItem: (item) => set((state) =>
             {
               const date = getTimestamp();
+              const id = `${date}-${getRandomId()}`
               return {
                 items: {
                   ...state.items,
-                  [date]: {
+                  [id]: {
                     ...item,
                     date,
                     lastModified: date

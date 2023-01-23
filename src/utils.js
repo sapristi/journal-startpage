@@ -14,6 +14,10 @@ export const getTimestamp = () => {
   return Date.now()
 }
 
+export const getRandomId = () => {
+  return Math.random().toString(36).slice(2, 7);
+}
+
 export const displayRelativeDate = (timestamp) => {
   return dayjs(timestamp).fromNow()
 }
