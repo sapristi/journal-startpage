@@ -109,23 +109,22 @@ export const makeMergingStore = ({name, version, initData}) => {
     persist(
       (set, get) => ({
         items: initData,
+        ts: 0,
         actions: {
-          addItem: (item) => set((state) =>
-            {
-              const date = getTimestamp();
-              const id = `${date}-${getRandomId()}`
-              return {
-                items: {
-                  ...state.items,
-                  [id]: {
-                    ...item,
-                    date,
-                    lastModified: date
-                  }
+          addItem: (item) => set((state) => {
+            const date = getTimestamp();
+            const id = `${date}-${getRandomId()}`
+            return {
+              items: {
+                ...state.items,
+                [id]: {
+                  ...item,
+                  date,
+                  lastModified: date
                 }
               }
             }
-          ),
+          }),
           editItem: (key, changes) => set((state) => {
             // useful when modifiying an item that has been concurrently deleted
             // -> we assume modification means we want to keep it
@@ -141,7 +140,8 @@ export const makeMergingStore = ({name, version, initData}) => {
             return editStateItem(
               state, key, {deleted: true}
             )
-          })
+          }),
+          importState: ({items, ts}) => set((state) => ({items, ts}))
         },
       }),
       {

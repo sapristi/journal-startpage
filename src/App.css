@@ -1,26 +1,4 @@
 /* see https://paletton.com/#uid=53B0G0kllll8+rqc5pQuAgQA2fg */
-body {
-  --primary-color-1: #6A7B8F;
-  --primary-color-2: #586E86;
-  --primary-color-0: #2B4B6F;
-  --primary-color-3: #0A2F58;
-  --primary-color-4: #05284F;
-
-}
-/* .css-2tmlvw-MuiPickersDay-root { */
-/*     height: 24px !important; */
-/* } */
-/* .css-l74yap-MuiButtonBase-root-MuiPickersDay-root { */
-/*     height: 24px !important; */
-/*     border-radius: 25% !important; */
-/* } */
-/* .css-1mort1i-MuiButtonBase-root-MuiPickersDay-root { */
-/*     height: 24px !important; */
-/*     border-radius: 25% !important; */
-/* } */
-/* .css-1yt7806-MuiDayPicker-slideTransition { */
-/*     min-height: 170px !important ; */
-/* } */
 
 .body {
   width: 100%;
@@ -30,11 +8,9 @@ body {
 #root {
   width: 100%;
   height: 100%;
-  /* background-color: var(--primary-color-1); */
 }
 
-
-
+/* tighter calendar */
 .MuiDayPicker-slideTransition {
     min-height: 100px !important;
 }
