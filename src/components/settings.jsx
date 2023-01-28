@@ -3,7 +3,7 @@ import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils'
-import {ActionsPanel} from "./actions"
+// import {ActionsPanel} from "./actions"
 
 const { version } = require('../../package.json');
 
@@ -65,7 +65,7 @@ export const SettingsPanel = () => {
               <LocaleSelector/>
             </Stack>
           </Paper>
-          <ActionsPanel/>
+          {/* <ActionsPanel/> */}
 
         </Stack>
       </Stack>

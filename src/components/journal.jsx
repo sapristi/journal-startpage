@@ -7,6 +7,7 @@ import {MainPaper, CardList} from "./base"
 import {makeMergingStore} from 'stores/merging_store'
 import {EditableMarkdown} from "./editable"
 import { DateElem, displayDate} from 'utils'
+import {useSyncStore} from 'stores/sync'
 
 const initData = {
   0: {
@@ -31,21 +32,22 @@ See [source and more](https://github.com/sapristi/journal-startpage).
   }
 }
 
-export const useJournalStore = makeMergingStore({
-  name: "journal",
-  version: 1,
-  initData
-})
+// export const useJournalStore = makeMergingStore({
+//   name: "journal",
+//   version: 1,
+//   initData
+// })
 
 
 
-const Entry = ({itemKey, date, content}) => {
-  const {editItem, deleteItem} = useJournalStore((state) => state.actions)
+
+const Entry = ({itemKey, date, content, setItem, removeItem}) => {
+  // const {editItem, deleteItem} = useJournalStore((state) => state.actions)
 
   const handleContentChange = (newValue) => {
-    editItem(itemKey, {content: newValue})
+    setItem(itemKey, {content: newValue})
   }
-  const handleDelete = () => {deleteItem(itemKey)}
+  const handleDelete = () => {removeItem(itemKey)}
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
@@ -69,6 +71,7 @@ const Entry = ({itemKey, date, content}) => {
 const extractItems = (items, search) => {
   const nonDeleted = Object.entries(items).filter(
     ([key, value]) => (
+      value !== null &&
       !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
     )
   )
@@ -77,8 +80,9 @@ const extractItems = (items, search) => {
 }
 
 export const Journal = () => {
-  const items = useJournalStore((state) => state.items)
-  const addItem = useJournalStore((state) => state.actions.addItem)
+  // const items = useJournalStore((state) => state.items)
+  // const addItem = useJournalStore((state) => state.actions.addItem)
+  const [items, setItem, addItem, removeItem] = useSyncStore("journal")
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -96,7 +100,15 @@ export const Journal = () => {
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {
-          extractedItems.map( ([itemKey, item]) => <Entry key={itemKey} itemKey={itemKey} {...item}/>)
+          extractedItems.map( ([itemKey, item]) =>
+            <Entry
+              key={itemKey}
+              itemKey={itemKey}
+              setItem={setItem}
+              removeItem={removeItem}
+              {...item}
+            />
+          )
         }
       </CardList>
     </MainPaper>
