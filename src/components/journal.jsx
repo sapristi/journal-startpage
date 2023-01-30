@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
@@ -7,7 +7,7 @@ import {MainPaper, CardList} from "./base"
 import {makeMergingStore} from 'stores/merging_store'
 import {EditableMarkdown} from "./editable"
 import { DateElem, displayDate} from 'utils'
-import {useSyncStore} from 'stores/sync'
+import {useSyncItemsStore} from 'stores/sync'
 
 const initData = {
   0: {
@@ -41,7 +41,7 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 
 
 
-const Entry = ({itemKey, date, content, setItem, removeItem}) => {
+const Entry = memo(({itemKey, date, content, setItem, removeItem}) => {
   // const {editItem, deleteItem} = useJournalStore((state) => state.actions)
 
   const handleContentChange = (newValue) => {
@@ -66,7 +66,7 @@ const Entry = ({itemKey, date, content, setItem, removeItem}) => {
       </Stack>
     </Paper>
   )
-}
+})
 
 const extractItems = (items, search) => {
   const nonDeleted = Object.entries(items).filter(
@@ -82,7 +82,7 @@ const extractItems = (items, search) => {
 export const Journal = () => {
   // const items = useJournalStore((state) => state.items)
   // const addItem = useJournalStore((state) => state.actions.addItem)
-  const [items, setItem, addItem, removeItem] = useSyncStore("journal")
+  const [items, setItem, addItem, removeItem] = useSyncItemsStore("journal")
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
