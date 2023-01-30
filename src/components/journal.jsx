@@ -32,20 +32,17 @@ See [source and more](https://github.com/sapristi/journal-startpage).
   }
 }
 
-// export const useJournalStore = makeMergingStore({
-//   name: "journal",
-//   version: 1,
-//   initData
-// })
 
 
 
+const Entry = memo(({itemKey, state, setItem, removeItem}) => {
 
-const Entry = memo(({itemKey, date, content, setItem, removeItem}) => {
-  // const {editItem, deleteItem} = useJournalStore((state) => state.actions)
-
+  const {date, content} = state
   const handleContentChange = (newValue) => {
-    setItem(itemKey, {content: newValue})
+    setItem(itemKey, {
+      ...state,
+      content: newValue
+    })
   }
   const handleDelete = () => {removeItem(itemKey)}
 
@@ -80,8 +77,6 @@ const extractItems = (items, search) => {
 }
 
 export const Journal = () => {
-  // const items = useJournalStore((state) => state.items)
-  // const addItem = useJournalStore((state) => state.actions.addItem)
   const [items, setItem, addItem, removeItem] = useSyncItemsStore("journal")
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
@@ -106,7 +101,7 @@ export const Journal = () => {
               itemKey={itemKey}
               setItem={setItem}
               removeItem={removeItem}
-              {...item}
+              state={item}
             />
           )
         }

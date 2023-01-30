@@ -19,11 +19,11 @@ const logCall = (name, callable) => {
 
 
 const getStorage = () => {
-
   /* eslint-disable */
   if (navigator.userAgent.match(/chrome|chromium|crios/i)){
     return chrome.storage.sync
   } else if (navigator.userAgent.match(/firefox|fxios/i)){
+    /* same interface for firefox than chrome */
     const get = (arg, callback) => {
       browser.storage.sync.get(arg).then(callback)
     }
@@ -34,6 +34,7 @@ const getStorage = () => {
   }
   /* eslint-enable */
 }
+
 const storage = getStorage()
 
 const makeOperators = (name, callerId, setState) => {
@@ -41,8 +42,14 @@ const makeOperators = (name, callerId, setState) => {
   const prefix = `${name}-`
   const setEntry = (key, value) => {
     if (! key.startsWith(prefix)) {throw new Error(`Key should start with ${prefix}`)}
-    console.log("SET", value)
-    storage.set({[key]: value, callerId})
+    console.log("SET", key, value)
+    storage.set(
+      {
+        [key]: value,
+        // add salt to caller id, otherwise chrome doesnt show the change
+        callerId: `${callerId}-${getTimestamp()}`
+      }
+    )
     setState(state => (
       {
         ...state,
@@ -75,35 +82,44 @@ export const useSyncItemsStore = (name) => {
   const [callerId] = useState(getRandomId())
 
   const [{setEntry, addEntry, removeEntry}, setOperators] = useState({setEntry: null, addEntry: null, removeEntry: null})
-  useEffect(() => {
-    setOperators(makeOperators(name, callerId, setState))
-  }, [callerId, setState]
-           )
+  useEffect(
+    () => {
+      setOperators(makeOperators(name, callerId, setState))
+    }, [name, callerId, setState]
+  )
+
   const prefix = `${name}-`
   console.log(`Setting storage for ${name} with ${callerId}`)
 
   function updateOnChange(changes) {
 
     console.log("CHANGES", changes)
-    if (changes.callerId === undefined) {console.log("No caller id"); return}
-    if (changes.callerId.newValue === callerId) {console.log("SAME caller id"); return}
+    if (
+      changes.callerId === undefined
+        || !changes.callerId.newValue
+    ) {console.log("No caller id"); return}
+
     const changedItems = []
     const removedItems = []
     for (const [key,value] of Object.entries(changes)) {
       if (! key.startsWith(prefix)) {continue}
-      if (value.newValue) {
-        if (value.newValue === null) {
-          removedItems.push(key)
-        } else {
-          changedItems.push([key, value.newValue])
-        }
+      if (value.newValue === null) {
+        removedItems.push(key)
+      } else if (value.newValue === undefined) {
       } else {
-        // removedItems.append(key)
-        // Do nothing here
+        changedItems.push([key, value.newValue])
       }
     }
-    if (changedItems.length === 0 && removedItems.length === 0) {console.log("no related change"); return}
 
+    /* remove deleted items from storage */
+    if (removedItems.length > 0) {
+      console.log("REMOVING from storage", removedItems)
+      storage.remove(removedItems)
+    }
+    if (changedItems.length === 0) {console.log("no related change"); return}
+
+    const [changesCallerId] = changes.callerId.newValue.split("-")
+    if (changesCallerId === callerId) {console.log("SAME caller id"); return}
     setState(logCall("onChange", state => ({
       ...filterObject(state, (key, value) => (!removedItems.includes(key))),
       ...Object.fromEntries(changedItems)
@@ -115,7 +131,7 @@ export const useSyncItemsStore = (name) => {
 
     storage.onChanged.addListener(updateOnChange)
 
-    const storageState = storage.get(null,
+    storage.get(null,
       fullState => {
         setState(filterObject(fullState, (key, value) => key.startsWith(prefix)))
       }
