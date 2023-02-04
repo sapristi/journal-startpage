@@ -21,9 +21,9 @@ function onRenderCallback(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Profiler id="APP" onRender={onRenderCallback}>
+    {/* <Profiler id="APP" onRender={onRenderCallback}> */}
       <App />
-    </Profiler>
+    {/* </Profiler> */}
   </React.StrictMode>
 );
 

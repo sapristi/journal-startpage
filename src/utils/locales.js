@@ -2,7 +2,9 @@ const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 const weekday = require('dayjs/plugin/weekday')
+
 export const locales = require('dayjs/locale.json')
+locales.sort((value1, value2) => value1.name.localeCompare(value2.name))
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)

@@ -2,7 +2,7 @@ import { useState, useEffect, memo } from 'react'
 import {Paper, Toolbar, Typography,  Switch} from '@mui/material';
 import {Calendar} from "./calendar"
 import {useTransientSettings} from "stores/transient"
-import {useSettingsStore} from 'stores/settings'
+import {useSyncValue} from 'stores/sync'
 
 const dayjs = require('dayjs')
 
@@ -27,7 +27,7 @@ const AutoUpdatingTimePanel = () => {
 
 export const TopPanel = memo(() => {
 
-  const {locale} = useSettingsStore()
+  const {locale} = useSyncValue("settings")
   const {settingsActive, switchSettings} = useTransientSettings()
   return (
     <Paper elevation={3}>

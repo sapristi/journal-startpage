@@ -10,7 +10,8 @@ import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSyncValue} from 'stores/sync'
-import {nonEmpty} from 'utils'
+import {isEmpty} from 'utils'
+const dayjs = require('dayjs')
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   return createTheme({
@@ -43,13 +44,17 @@ const BottomPanel = memo(() =>{
   )
 })
 const InitializedApp = ({settings}) => {
-  const {mode, primaryColor, secondaryColor, background} = settings
+  const {mode, primaryColor, secondaryColor, background, locale} = settings
   console.log("APP", settings)
   const currentTheme = useMemo(
     () => {
       return createCustomTheme({mode, primaryColor, secondaryColor, background})
     },
     [mode, primaryColor, secondaryColor, background]
+  )
+  useEffect(() => {
+    dayjs.locale(locale)
+  }
   )
 
   return (
@@ -68,10 +73,10 @@ const InitializedApp = ({settings}) => {
 }
 export const App = () => {
   const settings = useSyncValue("settings")
-  if (nonEmpty(settings)) {
-    return <InitializedApp settings={settings}/>
-  } else {
+  if (isEmpty(settings)) {
     return <div/>
+  } else {
+    return <InitializedApp settings={settings}/>
   }
 }
 

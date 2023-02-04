@@ -2,7 +2,7 @@ import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button} fro
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
-import {makeLogger} from 'utils'
+import {makeLogger, isEmpty} from 'utils'
 import {locales} from 'utils/locales'
 // import {ActionsPanel} from "./actions"
 
@@ -17,7 +17,9 @@ const LocaleSelector = ({locale, setLocale}) => {
   return (
     <Select value={locale} onChange={handleChange} label="locale">
       {
-        locales.map(locale =><MenuItem key={locale.key} value={locale.key}>{locale.name}</MenuItem>)
+        locales.map(localeChoice =>
+          <MenuItem key={localeChoice.key} value={localeChoice.key}>{localeChoice.name}</MenuItem>
+        )
       }
     </Select>
   )
@@ -34,7 +36,6 @@ const ModeSlider = ({mode, switchMode}) => {
 
 const ControlledColorPicker = ({settings, propName, updateValue}) => {
 
-  log("PICKER", settings, propName)
   const handleChange = newValue => updateValue(() => ({[propName]: newValue}))
   const debouncedChangeHandler = debounce(handleChange, 300)
   return (
@@ -48,7 +49,8 @@ const ControlledColorPicker = ({settings, propName, updateValue}) => {
 
 export const SettingsPanel = () => {
   const {settings, switchMode, setLocale, updateValue} = useSettingsStore()
-  console.log("Settings", settings)
+  log("Settings", settings)
+  if (isEmpty(settings)) {return <div/>}
   return (
     <Paper elevation={3} sx={{padding: "20px"}}>
       <Stack spacing={3}>
