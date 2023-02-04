@@ -45,6 +45,11 @@ def pnpm(command, **kwargs):
 
 
 def update_blog(version):
+
+    pnpm("build", env={
+        **os.environ,
+        "REACT_APP_USE_LOCALSTORAGE": "true"
+    })
     rmtree("../sapristi.github.io/journal-startpage")
     copytree("./build", "../sapristi.github.io/journal-startpage")
     git(["add", BLOG_FOLDER], cwd=BLOG_ROOT)
@@ -89,12 +94,13 @@ def main(
     git(["push"])
     git(["push", "origin", tag_name])
 
-    print_header("Updating blog")
-    update_blog(version)
 
     # Very long when using the API, so put it at the end
     print_header("Publish")
     publish_AMO()
+
+    print_header("Updating blog")
+    update_blog(version)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
 
 import {MainPaper, CardList} from "./base"
-import {makeMergingStore} from 'stores/merging_store'
 import {EditableMarkdown} from "./editable"
-import { DateElem, displayDate} from 'utils'
+import {DateElem} from './date_elem'
+import { getTimestamp} from 'utils'
+import { displayDate} from 'utils/locales'
+import {useSyncEntriesStore} from 'stores/sync_entries'
 
 const initData = {
   0: {
-    date: 0,
-    lastModified: 0,
+    date: getTimestamp(),
     content: `
 # Welcome to Journal Startpage !
 
@@ -31,21 +32,19 @@ See [source and more](https://github.com/sapristi/journal-startpage).
   }
 }
 
-export const useJournalStore = makeMergingStore({
-  name: "journal",
-  version: 1,
-  initData
-})
 
 
 
-const Entry = ({itemKey, date, content}) => {
-  const {editItem, deleteItem} = useJournalStore((state) => state.actions)
+const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
 
+  const {date, content} = state
   const handleContentChange = (newValue) => {
-    editItem(itemKey, {content: newValue})
+    setEntry(entryKey, {
+      ...state,
+      content: newValue
+    })
   }
-  const handleDelete = () => {deleteItem(itemKey)}
+  const handleDelete = () => {removeEntry(entryKey)}
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
@@ -64,11 +63,12 @@ const Entry = ({itemKey, date, content}) => {
       </Stack>
     </Paper>
   )
-}
+})
 
-const extractItems = (items, search) => {
-  const nonDeleted = Object.entries(items).filter(
+const extractEntries = (entries, search) => {
+  const nonDeleted = Object.entries(entries).filter(
     ([key, value]) => (
+      value !== null &&
       !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
     )
   )
@@ -77,16 +77,20 @@ const extractItems = (items, search) => {
 }
 
 export const Journal = () => {
-  const items = useJournalStore((state) => state.items)
-  const addItem = useJournalStore((state) => state.actions.addItem)
+  const {entries, setEntry, addEntry, removeEntry} = useSyncEntriesStore(
+    {
+      name: "journal",
+      initData
+    }
+  )
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
 
-  const extractedItems = extractItems(items, search)
+  const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addItem({content: "Dear diary, today I ..."})
+  const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -96,7 +100,15 @@ export const Journal = () => {
       <Button onClick={addEmptyEntry}>Add entry</Button>
       <CardList>
         {
-          extractedItems.map( ([itemKey, item]) => <Entry key={itemKey} itemKey={itemKey} {...item}/>)
+          extractedEntries.map( ([entryKey, entry]) =>
+            <Entry
+              key={entryKey}
+              entryKey={entryKey}
+              setEntry={setEntry}
+              removeEntry={removeEntry}
+              state={entry}
+            />
+          )
         }
       </CardList>
     </MainPaper>

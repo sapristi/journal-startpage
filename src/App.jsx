@@ -9,8 +9,10 @@ import {Tasks} from './components/tasks'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
+import {useSyncValue} from 'stores/sync'
 import {useSettingsStore} from 'stores/settings'
-import {getBrowserLocale} from 'utils'
+import {isEmpty} from 'utils'
+const dayjs = require('dayjs')
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   return createTheme({
@@ -42,23 +44,20 @@ const BottomPanel = memo(() =>{
       </Stack>
   )
 })
-function App() {
-  const {mode, primaryColor, secondaryColor, background, locale, setLocale} = useSettingsStore(state => state)
+const InitializedApp = ({settings}) => {
+  const {mode, primaryColor, secondaryColor, background, locale} = settings
+  console.log("APP", settings)
   const currentTheme = useMemo(
-    () => createCustomTheme({mode, primaryColor, secondaryColor, background}),
+    () => {
+      return createCustomTheme({mode, primaryColor, secondaryColor, background})
+    },
     [mode, primaryColor, secondaryColor, background]
   )
-  useEffect (
-    () => {
-      if (locale === null) {
-        console.log("Setting default locale")
-        setLocale(getBrowserLocale())
-      } else {
-        setLocale(locale)
-      }
-    },
-    []
+  useEffect(() => {
+    dayjs.locale(locale)
+  }
   )
+
   return (
     <ThemeProvider theme={currentTheme}>
       <Paper sx={{minHeight: "100vh"}}>
@@ -73,4 +72,18 @@ function App() {
   );
 }
 
-export default App;
+/* Necessary, otherwise settings are never loaded */
+const SettingsLoader = () => {
+  useSettingsStore()
+  return <div/>
+}
+
+export const App = () => {
+  const settings = useSyncValue("settings")
+  if (isEmpty(settings)) {
+    return <SettingsLoader/>
+  } else {
+    return <InitializedApp settings={settings}/>
+  }
+}
+

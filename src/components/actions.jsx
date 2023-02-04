@@ -1,10 +1,8 @@
 import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button} from '@mui/material';
-import {useJournalStore} from "./journal"
 
 
 export const ActionsPanel = () => {
 
-  const {items, ts, actions: {importState}} = useJournalStore((state) => state)
   // const {importState} = useJournalStore((state) => state.actions)
   const saveFile = async (blob) => {
     const a = document.createElement('a');

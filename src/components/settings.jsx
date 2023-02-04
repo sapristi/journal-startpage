@@ -2,13 +2,14 @@ import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button} fro
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
-import {locales} from 'utils'
-import {ActionsPanel} from "./actions"
+import {makeLogger, isEmpty} from 'utils'
+import {locales} from 'utils/locales'
+// import {ActionsPanel} from "./actions"
 
+const log = makeLogger("Settings component")
 const { version } = require('../../package.json');
 
-const LocaleSelector = () => {
-  const {locale, setLocale} = useSettingsStore()
+const LocaleSelector = ({locale, setLocale}) => {
   const handleChange = (event) => {
     const newLocale = event.target.value
     setLocale(newLocale)
@@ -16,13 +17,14 @@ const LocaleSelector = () => {
   return (
     <Select value={locale} onChange={handleChange} label="locale">
       {
-        locales.map(locale =><MenuItem key={locale.key} value={locale.key}>{locale.name}</MenuItem>)
+        locales.map(localeChoice =>
+          <MenuItem key={localeChoice.key} value={localeChoice.key}>{localeChoice.name}</MenuItem>
+        )
       }
     </Select>
   )
 }
-const ModeSlider = () => {
-  const { mode, switchMode } = useSettingsStore()
+const ModeSlider = ({mode, switchMode}) => {
   return (
     <Stack direction="row" alignItems="center">
       <Typography>Light</Typography>
@@ -32,14 +34,13 @@ const ModeSlider = () => {
   )
 }
 
-const ControlledColorPicker = ({propName}) => {
-  const state = useSettingsStore()
+const ControlledColorPicker = ({settings, propName, updateValue}) => {
 
-  const handleChange = newValue => state.setValue(propName, newValue)
+  const handleChange = newValue => updateValue(() => ({[propName]: newValue}))
   const debouncedChangeHandler = debounce(handleChange, 300)
   return (
     <MuiColorInput
-      value={state[propName]}
+      value={settings[propName]}
       onChange={debouncedChangeHandler}
       label={propName}
     />
@@ -47,7 +48,9 @@ const ControlledColorPicker = ({propName}) => {
 }
 
 export const SettingsPanel = () => {
-
+  const {settings, switchMode, setLocale, updateValue} = useSettingsStore()
+  log("Settings", settings)
+  if (isEmpty(settings)) {return <div/>}
   return (
     <Paper elevation={3} sx={{padding: "20px"}}>
       <Stack spacing={3}>
@@ -58,14 +61,14 @@ export const SettingsPanel = () => {
           <Paper elevation={4} sx={{padding: "20px"}}>
             <Stack spacing={3}>
               <Typography component="h2" variant="h4">Appearance</Typography>
-              <ModeSlider/>
-              <ControlledColorPicker propName="primaryColor"/>
+              <ModeSlider mode={settings.mode} switchMode={switchMode}/>
+              <ControlledColorPicker settings={settings} propName="primaryColor" updateValue={updateValue}/>
               {/* <ControlledColorPicker propName="secondaryColor"/> */}
-              <ControlledColorPicker propName="background"/>
-              <LocaleSelector/>
+              <ControlledColorPicker settings={settings} propName="background" updateValue={updateValue}/>
+              <LocaleSelector locale={settings.locale} setLocale={setLocale}/>
             </Stack>
           </Paper>
-          <ActionsPanel/>
+          {/* <ActionsPanel/> */}
 
         </Stack>
       </Stack>
