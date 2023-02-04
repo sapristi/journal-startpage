@@ -41,7 +41,8 @@ def main():
     sp.run(["pnpm", "react-app-rewired", "build"], env={
         "INLINE_RUNTIME_CHUNK": "false",
         "DEV_MODE": "true",
-        **os.environ
+        "REACT_APP_LOG": "true",
+        **os.environ,
     })
 
     for patch in patches:

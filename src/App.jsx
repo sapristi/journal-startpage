@@ -9,8 +9,7 @@ import {Tasks} from './components/tasks'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
-import {useSettingsStore} from 'stores/settings'
-import {getBrowserLocale} from 'utils'
+import {useSyncValue} from 'stores/sync'
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   return createTheme({
@@ -43,22 +42,19 @@ const BottomPanel = memo(() =>{
   )
 })
 function App() {
-  const {mode, primaryColor, secondaryColor, background, locale, setLocale} = useSettingsStore(state => state)
+  const settings = useSyncValue("settings")
+  const {mode, primaryColor, secondaryColor, background} = settings
+  console.log("APP SETTINGS", settings)
   const currentTheme = useMemo(
-    () => createCustomTheme({mode, primaryColor, secondaryColor, background}),
-    [mode, primaryColor, secondaryColor, background]
-  )
-  useEffect (
     () => {
-      if (locale === null) {
-        console.log("Setting default locale")
-        setLocale(getBrowserLocale())
-      } else {
-        setLocale(locale)
+      if (!mode) {return createTheme()}
+      else {
+        return createCustomTheme({mode, primaryColor, secondaryColor, background})
       }
     },
-    []
+    [mode, primaryColor, secondaryColor, background]
   )
+
   return (
     <ThemeProvider theme={currentTheme}>
       <Paper sx={{minHeight: "100vh"}}>

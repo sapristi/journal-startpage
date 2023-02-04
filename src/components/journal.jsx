@@ -5,8 +5,10 @@ import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/materia
 
 import {MainPaper, CardList} from "./base"
 import {EditableMarkdown} from "./editable"
-import { DateElem, displayDate, getTimestamp} from 'utils'
-import {useSyncEntriesStore} from 'stores/sync'
+import {DateElem} from './date_elem'
+import { getTimestamp} from 'utils'
+import { displayDate} from 'utils/locales'
+import {useSyncEntriesStore} from 'stores/sync_entries'
 
 const initData = {
   0: {

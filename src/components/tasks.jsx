@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 import {EditableMarkdown} from "./editable"
 import {MainPaper, CardList} from "./base"
-import {useSyncEntriesStore} from 'stores/sync'
+import {useSyncEntriesStore} from 'stores/sync_entries'
 
 const initData = {
   0: {

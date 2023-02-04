@@ -1,22 +1,12 @@
-import React from 'react';
 const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 const weekday = require('dayjs/plugin/weekday')
+export const locales = require('dayjs/locale.json')
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(weekday)
-
-export const locales = require('dayjs/locale.json')
-
-export const getTimestamp = () => {
-  return Date.now()
-}
-
-export const getRandomId = () => {
-  return Math.random().toString(36).slice(2, 7);
-}
 
 export const displayRelativeDate = (timestamp) => {
   return dayjs(timestamp).fromNow()
@@ -25,11 +15,10 @@ export const displayRelativeDate = (timestamp) => {
 export const displayDate = (timestamp) => {
   return dayjs(timestamp).format("dddd LL")
 }
-export const DateElem = ({timestamp}) => {
-  return <time dateTime={dayjs(timestamp).format('YYYY-MM-DDTHH:mm:ss')}>
-    {displayRelativeDate(timestamp)}
-  </time>
-}
+
+export const formatTimeProp = (timestamp) => (
+  dayjs(timestamp).format('YYYY-MM-DDTHH:mm:ss')
+)
 
 export const getBrowserLocale = () => {
   const availableLocales = locales.map(locale => locale.key)
@@ -40,7 +29,6 @@ export const getBrowserLocale = () => {
   }
   return "en"
 }
-
 dayjs.locale(require('dayjs/locale/af'), null, true);
 dayjs.locale(require('dayjs/locale/ar-dz'), null, true);
 dayjs.locale(require('dayjs/locale/am'), null, true);

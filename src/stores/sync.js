@@ -1,126 +1,67 @@
-import  {useState, useEffect} from 'react';
-import {getTimestamp, getRandomId} from 'utils'
-/* sync store
-
- */
-
-const filterObject = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(
-  ([key, value]) => predicate(key, value)
-))
-
-const mapObject = (obj, mapFn) => Object.fromEntries(Object.entries(obj).map(mapFn))
-
-const logCall = (name, callable) => {
-  const inner = (...args) => {
-    const res = callable(...args)
-    console.log(args, "=>", res)
-    return res
-  }
-  return inner
-}
+import  {useState, useEffect, useMemo} from 'react';
+import {storage} from './storage_adapter'
+import {getTimestamp, getRandomId, makeLogger} from 'utils'
 
 
-const getStorage = () => {
-  /* eslint-disable */
-  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
-    return chrome.storage.sync
-  } else if (navigator.userAgent.match(/firefox|fxios/i)){
-    /* same interface for firefox than chrome */
-    const get = (arg, callback) => {
-      browser.storage.sync.get(arg).then(callback)
-    }
-    return {
-      ...browser.storage.sync,
-      get,
-    }
-  }
-  /* eslint-enable */
-}
-
-const storage = getStorage()
-
-const makeOperators = (name, callerId, setState) => {
-
-  const prefix = `${name}-`
-  const setEntry = (key, value) => {
-    if (! key.startsWith(prefix)) {throw new Error(`Key should start with ${prefix}`)}
-    console.log("SET", key, value)
-    storage.set(
-      {
-        [key]: value,
-        // add salt to caller id, otherwise chrome doesnt show the change
-        callerId: `${callerId}-${getTimestamp()}`
-      }
-    )
-    setState(state => (
-      {
-        ...state,
-        [key]: value,
-      }))
-  }
-
-  const addEntry = (value) => {
-    const timestamp = getTimestamp()
-    const key = `${prefix}${getTimestamp()}`
-    setEntry(key, {
-      ...value,
-      date: timestamp
+const makeOperators = (name, callerId, setState, log) => {
+  const setValue = (value) => {
+    log("Setting value", value)
+    storage.set({
+      [name]: value,
+      callerId: `${callerId}-${getTimestamp()}`
     })
+    setState(value)
   }
-  const removeEntry = (key) => {
-    if (! key.startsWith(prefix)) {throw new Error(`Key should start with ${prefix}`)}
-    /* we don't remove entries from storage here, since we couldn't track
-      where the change would come from
-    */
-    setEntry(key, null)
+
+  const updateValue = (updateFn) => {
+    storage.get(name, state => {
+      const value = state[name]
+      log("UPDATE", updateFn)
+      const update = updateFn(value)
+      log("updating value", value, "with", update)
+      storage.set({
+        [name]: {
+          ...value,
+          ...update
+        },
+        callerId: `${callerId}-${getTimestamp()}`
+      })
+      setState(value => ({...value, ...update}))
+    })
+
   }
-  return {setEntry, addEntry, removeEntry}
+  return {setValue, updateValue}
 }
+export const useSyncStore = ({name, initValue}) => {
 
-
-
-export const useSyncEntriesStore = ({name, initData}) => {
   const [state, setState] = useState({})
   const [callerId] = useState(getRandomId())
+  const log = useMemo(
+    () => makeLogger(`Store [${name}-${callerId}]`),
+    [name, callerId]
+  )
+  const {setValue, updateValue} = useMemo(
+    () => makeOperators(name, callerId, setState, log),
+    [name, callerId, setState, log]
+  )
 
-  const [{setEntry, addEntry, removeEntry}] = useState(makeOperators(name, callerId, setState))
 
-  const prefix = `${name}-`
-  console.log(`Setting storage for ${name} with ${callerId}`)
+  const updateOnChange = (changes) => {
 
-  function updateOnChange(changes) {
-
-    console.log("CHANGES", changes)
+    log("received changes", changes)
     if (
       changes.callerId === undefined
         || !changes.callerId.newValue
-    ) {console.log("No caller id"); return}
-
-    const changedEntries = []
-    const removedEntries = []
-    for (const [key,value] of Object.entries(changes)) {
-      if (! key.startsWith(prefix)) {continue}
-      if (value.newValue === null) {
-        removedEntries.push(key)
-      } else if (value.newValue === undefined) {
-      } else {
-        changedEntries.push([key, value.newValue])
-      }
-    }
-
-    /* remove deleted entries from storage */
-    if (removedEntries.length > 0) {
-      console.log("REMOVING from storage", removedEntries)
-      storage.remove(removedEntries)
-    }
-    if (changedEntries.length === 0) {console.log("no related change"); return}
-
+    ) {log("No caller id"); return}
     const [changesCallerId] = changes.callerId.newValue.split("-")
-    if (changesCallerId === callerId) {console.log("SAME caller id"); return}
-    setState(logCall("onChange", state => ({
-      ...filterObject(state, (key, value) => (!removedEntries.includes(key))),
-      ...Object.fromEntries(changedEntries)
-    })))
+    if (changesCallerId === callerId) {log("SAME caller id"); return}
+
+    for (const [key,value] of Object.entries(changes)) {
+      if (! key === name) {continue}
+      const newState = value.newValue
+      log("Received new state", newState)
+      setState(newState)
+    }
   }
 
   /* load initial state and set listener*/
@@ -128,32 +69,54 @@ export const useSyncEntriesStore = ({name, initData}) => {
 
     storage.onChanged.addListener(updateOnChange)
 
-    storage.get(null,
-      fullState => {
-        const syncedObjects = filterObject(fullState, (key, value) => key.startsWith(prefix))
-        console.log("SyncedObjects", syncedObjects)
-        if (Object.keys(syncedObjects).length === 0) {
-          const localEntriesStr = localStorage.getItem(name)
-          if (localEntriesStr) {
-            console.log("Loading state from local storage", localEntriesStr)
-            const localEntries = JSON.parse(localEntriesStr)
-            const entries = mapObject(localEntries.state.items, ([key, value]) => ([`${name}-${key}`, value]))
-            setState(entries)
-            Object.entries(entries).map(([key, value]) => setEntry(key,value))
+    storage.get(name,
+      state => {
+        const value = state[name]
+        log("state", value)
+        if (!value || Object.keys(value).length === 0) {
+          const localValueStr = localStorage.getItem(name)
+          if (localValueStr) {
+            log("Loading state from local storage", localValueStr)
+            const localValue = JSON.parse(localValueStr)
+            log("setting PARSEDSettings ", localValue)
+            setValue(localValue)
           } else {
-            console.log("Loading state from init data", initData)
-            const entries = mapObject(initData, ([key, value]) => ([`${name}-${key}`, value]))
-            setState(entries)
-            Object.entries(entries).map(([key, value]) => setEntry(key,value))
+            log("setting default value ", initValue)
+            setValue(initValue)
           }
         } else {
-          console.log("Loading existing state")
-          setState(syncedObjects)
+          log("Loading existing state")
+          setState(value)
         }
       }
     )
   }, [])
-
-  return {entries: state, setEntry, addEntry, removeEntry}
+  return {value: state, setValue, updateValue}
 }
 
+export const useSyncValue = (name) => {
+  const [state, setState] = useState({})
+  const log = useMemo(
+    () => makeLogger(`Value [${name}]`),
+    [name]
+  )
+
+  const updateOnChange = (changes) => {
+
+    log("received changes", changes)
+    if (changes[name]) {
+      if (changes[name].newValue) {
+        log("Received new state", changes[name].newValue)
+        setState(changes[name].newValue)
+      }
+    }
+  }
+
+  useEffect(()=>{
+    storage.get(name, state => {
+      if (state[name]) {setState(state[name])}
+    })
+    storage.onChanged.addListener(updateOnChange)
+  }, [])
+  return state
+}
