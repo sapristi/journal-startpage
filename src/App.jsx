@@ -10,6 +10,7 @@ import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSyncValue} from 'stores/sync'
+import {useSettingsStore} from 'stores/settings'
 import {isEmpty} from 'utils'
 const dayjs = require('dayjs')
 
@@ -69,12 +70,18 @@ const InitializedApp = ({settings}) => {
       </Paper>
     </ThemeProvider>
   );
-
 }
+
+/* Necessary, otherwise settings are never loaded */
+const SettingsLoader = () => {
+  useSettingsStore()
+  return <div/>
+}
+
 export const App = () => {
   const settings = useSyncValue("settings")
   if (isEmpty(settings)) {
-    return <div/>
+    return <SettingsLoader/>
   } else {
     return <InitializedApp settings={settings}/>
   }
