@@ -27,8 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
-    "build:dev": "INLINE_RUNTIME_CHUNK=false DEV_MODE=true react-app-rewired build",
-    "build:dev2": "scripts/build-dev.py",
+    "build:dev": "scripts/build-dev.py",
     "eject": "react-scripts eject",
     "package-ext": "scripts/package.sh",
     "package-source": "scripts/package_source.sh",

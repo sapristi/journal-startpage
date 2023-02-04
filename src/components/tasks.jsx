@@ -5,7 +5,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 import {EditableMarkdown} from "./editable"
 import {MainPaper, CardList} from "./base"
-import {makeMergingStore} from 'stores/merging_store'
+import {useSyncEntriesStore} from 'stores/sync'
+
 const initData = {
   0: {
     lastModified: 0,
@@ -26,25 +27,19 @@ this is done task
   }
 }
 
-export const useTasksStore = makeMergingStore({
-  name: "tasks",
-  version: 1,
-  initData
-})
+
+const Task = ({entryKey, state, setEntry, removeEntry}) => {
 
 
-const Task = ({itemKey, status, content}) => {
-
-  const {editItem, deleteItem} = useTasksStore((state) => state.actions)
-
-  const handleDelete = () => {deleteItem(itemKey)}
+  const {status, content} = state
+  const handleDelete = () => {removeEntry(entryKey)}
 
   const switchStatus = () => {
     const newStatus = (status === "todo")? "done" : "todo";
-    editItem(itemKey, {status: newStatus})
+    setEntry(entryKey, {...state, status: newStatus})
   }
   const handleContentChange = (newValue) => {
-    editItem(itemKey, {content: newValue})
+    setEntry(entryKey, {...state, content: newValue})
   }
   const textColor = (status === "done")? "text.disabled": "text.primary";
   return (
@@ -62,23 +57,28 @@ const Task = ({itemKey, status, content}) => {
   )
 }
 
-const extractTasks = (items) => {
+const extractTasks = (entries) => {
   const todo = []
   const done = []
-  for (const [key, item] of Object.entries(items)) {
-    if (item.deleted) {continue}
-    if (item.status === "todo") {todo.push([key, item])}
-    else {done.push([key, item])}
+  for (const [key, entry] of Object.entries(entries)) {
+    if (entry === null) {continue}
+    if (entry.deleted) {continue}
+    if (entry.status === "todo") {todo.push([key, entry])}
+    else {done.push([key, entry])}
   }
   return {todo, done}
 }
 
 export const Tasks = () => {
-  const items = useTasksStore((state) => state.items)
-  const addItem = useTasksStore((state) => state.actions.addItem)
 
-  const addEmptyTask = () => addItem({status: "todo", content: "TODO"})
-  const {todo, done} = extractTasks(items)
+  const {entries, setEntry, addEntry, removeEntry} = useSyncEntriesStore(
+    {
+      name: "tasks",
+      initData
+    })
+
+  const addEmptyTask = () => addEntry({status: "todo", content: "TODO"})
+  const {todo, done} = extractTasks(entries)
   return (
 
     <MainPaper style={{display: "flex", flexDirection: "column", gap: "20px"}}>
@@ -92,7 +92,12 @@ export const Tasks = () => {
         <Typography variant="h5">Todo</Typography>
         <CardList>
           {
-            todo.map( ([key, entry]) => <Task key={key} itemKey={key} {...entry}/>)
+            todo.map( ([key, entry]) => <Task key={key} entryKey={key}
+                                              setEntry={setEntry}
+                                              removeEntry={removeEntry}
+                                              state={entry}
+
+                                        />)
           }
         </CardList>
       </div>
@@ -101,7 +106,13 @@ export const Tasks = () => {
         <Typography variant="h5">Done</Typography>
         <CardList>
           {
-            done.map( ([key, entry]) => <Task key={key} itemKey={key} {...entry}/>)
+            done.map( ([key, entry]) =>
+              <Task key={key} entryKey={key}
+                    setEntry={setEntry}
+                    removeEntry={removeEntry}
+                    state={entry}
+                    />
+            )
           }
         </CardList>
       </div>

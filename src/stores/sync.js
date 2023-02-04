@@ -8,6 +8,8 @@ const filterObject = (obj, predicate) => Object.fromEntries(Object.entries(obj).
   ([key, value]) => predicate(key, value)
 ))
 
+const mapObject = (obj, mapFn) => Object.fromEntries(Object.entries(obj).map(mapFn))
+
 const logCall = (name, callable) => {
   const inner = (...args) => {
     const res = callable(...args)
@@ -67,7 +69,7 @@ const makeOperators = (name, callerId, setState) => {
   }
   const removeEntry = (key) => {
     if (! key.startsWith(prefix)) {throw new Error(`Key should start with ${prefix}`)}
-    /* we don't remove items from storage here, since we couldn't track
+    /* we don't remove entries from storage here, since we couldn't track
       where the change would come from
     */
     setEntry(key, null)
@@ -75,18 +77,13 @@ const makeOperators = (name, callerId, setState) => {
   return {setEntry, addEntry, removeEntry}
 }
 
-// TODO: caller id needs to be set to random value in order to show
-// in changes values in chrome
-export const useSyncItemsStore = (name) => {
+
+
+export const useSyncEntriesStore = ({name, initData}) => {
   const [state, setState] = useState({})
   const [callerId] = useState(getRandomId())
 
-  const [{setEntry, addEntry, removeEntry}, setOperators] = useState({setEntry: null, addEntry: null, removeEntry: null})
-  useEffect(
-    () => {
-      setOperators(makeOperators(name, callerId, setState))
-    }, [name, callerId, setState]
-  )
+  const [{setEntry, addEntry, removeEntry}] = useState(makeOperators(name, callerId, setState))
 
   const prefix = `${name}-`
   console.log(`Setting storage for ${name} with ${callerId}`)
@@ -99,30 +96,30 @@ export const useSyncItemsStore = (name) => {
         || !changes.callerId.newValue
     ) {console.log("No caller id"); return}
 
-    const changedItems = []
-    const removedItems = []
+    const changedEntries = []
+    const removedEntries = []
     for (const [key,value] of Object.entries(changes)) {
       if (! key.startsWith(prefix)) {continue}
       if (value.newValue === null) {
-        removedItems.push(key)
+        removedEntries.push(key)
       } else if (value.newValue === undefined) {
       } else {
-        changedItems.push([key, value.newValue])
+        changedEntries.push([key, value.newValue])
       }
     }
 
-    /* remove deleted items from storage */
-    if (removedItems.length > 0) {
-      console.log("REMOVING from storage", removedItems)
-      storage.remove(removedItems)
+    /* remove deleted entries from storage */
+    if (removedEntries.length > 0) {
+      console.log("REMOVING from storage", removedEntries)
+      storage.remove(removedEntries)
     }
-    if (changedItems.length === 0) {console.log("no related change"); return}
+    if (changedEntries.length === 0) {console.log("no related change"); return}
 
     const [changesCallerId] = changes.callerId.newValue.split("-")
     if (changesCallerId === callerId) {console.log("SAME caller id"); return}
     setState(logCall("onChange", state => ({
-      ...filterObject(state, (key, value) => (!removedItems.includes(key))),
-      ...Object.fromEntries(changedItems)
+      ...filterObject(state, (key, value) => (!removedEntries.includes(key))),
+      ...Object.fromEntries(changedEntries)
     })))
   }
 
@@ -133,11 +130,30 @@ export const useSyncItemsStore = (name) => {
 
     storage.get(null,
       fullState => {
-        setState(filterObject(fullState, (key, value) => key.startsWith(prefix)))
+        const syncedObjects = filterObject(fullState, (key, value) => key.startsWith(prefix))
+        console.log("SyncedObjects", syncedObjects)
+        if (Object.keys(syncedObjects).length === 0) {
+          const localEntriesStr = localStorage.getItem(name)
+          if (localEntriesStr) {
+            console.log("Loading state from local storage", localEntriesStr)
+            const localEntries = JSON.parse(localEntriesStr)
+            const entries = mapObject(localEntries.state.items, ([key, value]) => ([`${name}-${key}`, value]))
+            setState(entries)
+            Object.entries(entries).map(([key, value]) => setEntry(key,value))
+          } else {
+            console.log("Loading state from init data", initData)
+            const entries = mapObject(initData, ([key, value]) => ([`${name}-${key}`, value]))
+            setState(entries)
+            Object.entries(entries).map(([key, value]) => setEntry(key,value))
+          }
+        } else {
+          console.log("Loading existing state")
+          setState(syncedObjects)
+        }
       }
     )
   }, [])
 
-  return [state, setEntry, addEntry, removeEntry]
+  return {entries: state, setEntry, addEntry, removeEntry}
 }
 
