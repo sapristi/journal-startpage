@@ -10,6 +10,7 @@ import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSyncValue} from 'stores/sync'
+import {nonEmpty} from 'utils'
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   return createTheme({
@@ -41,16 +42,12 @@ const BottomPanel = memo(() =>{
       </Stack>
   )
 })
-function App() {
-  const settings = useSyncValue("settings")
+const InitializedApp = ({settings}) => {
   const {mode, primaryColor, secondaryColor, background} = settings
-  console.log("APP SETTINGS", settings)
+  console.log("APP", settings)
   const currentTheme = useMemo(
     () => {
-      if (!mode) {return createTheme()}
-      else {
-        return createCustomTheme({mode, primaryColor, secondaryColor, background})
-      }
+      return createCustomTheme({mode, primaryColor, secondaryColor, background})
     },
     [mode, primaryColor, secondaryColor, background]
   )
@@ -67,6 +64,14 @@ function App() {
       </Paper>
     </ThemeProvider>
   );
+
+}
+export const App = () => {
+  const settings = useSyncValue("settings")
+  if (nonEmpty(settings)) {
+    return <InitializedApp settings={settings}/>
+  } else {
+    return <div/>
+  }
 }
 
-export default App;

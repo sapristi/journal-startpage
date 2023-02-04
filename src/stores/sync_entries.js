@@ -102,7 +102,8 @@ export const useSyncEntriesStore = ({name, initData}) => {
       log("REMOVING from storage", removedEntries)
       storage.remove(removedEntries)
     }
-    if (changedEntries.length === 0) {log("no related change"); return}
+    if (changedEntries.length === 0 && removedEntries.length ===0) {
+      log("no related change"); return}
 
     const [changesCallerId] = changes.callerId.newValue.split("-")
     if (changesCallerId === callerId) {log("SAME caller id"); return}

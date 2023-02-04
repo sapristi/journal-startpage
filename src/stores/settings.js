@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import { TinyColor } from '@ctrl/tinycolor';
 import {useSyncStore} from 'stores/sync'
 import {getBrowserLocale} from 'utils/locales'
@@ -14,6 +15,12 @@ const initValue = {
 
 export const useSettingsStore = () => {
   const {value, updateValue} = useSyncStore({name: "settings", initValue})
+  useEffect(
+    () => {
+      if (value.locale) {dayjs.locale(value.locale)}
+    },
+    [value.locale]
+  )
 
   const switchMode = () => (
     updateValue( value => {

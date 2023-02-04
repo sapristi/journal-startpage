@@ -78,8 +78,8 @@ export const useSyncStore = ({name, initValue}) => {
           if (localValueStr) {
             log("Loading state from local storage", localValueStr)
             const localValue = JSON.parse(localValueStr)
-            log("setting PARSEDSettings ", localValue)
-            setValue(localValue)
+            log("setting PARSEDSettings ", localValue.state)
+            setValue(localValue.state)
           } else {
             log("setting default value ", initValue)
             setValue(initValue)
