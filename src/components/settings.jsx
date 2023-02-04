@@ -4,7 +4,7 @@ import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 import {makeLogger, isEmpty} from 'utils'
 import {locales} from 'utils/locales'
-// import {ActionsPanel} from "./actions"
+import {ActionsPanel} from "./actions"
 
 const log = makeLogger("Settings component")
 const { version } = require('../../package.json');
@@ -68,7 +68,7 @@ export const SettingsPanel = () => {
               <LocaleSelector locale={settings.locale} setLocale={setLocale}/>
             </Stack>
           </Paper>
-          {/* <ActionsPanel/> */}
+          <ActionsPanel/>
 
         </Stack>
       </Stack>

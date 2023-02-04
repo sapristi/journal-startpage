@@ -1,32 +1,19 @@
 import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button} from '@mui/material';
-
+import {saveFile, filterObject} from 'utils'
+import {storage} from 'stores/storage_adapter'
 
 export const ActionsPanel = () => {
 
-  // const {importState} = useJournalStore((state) => state.actions)
-  const saveFile = async (blob) => {
-    const a = document.createElement('a');
-    a.download = 'journal.json';
-    a.href = URL.createObjectURL(blob);
-    a.addEventListener('click', (e) => {
-      setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
-    });
-    a.click();
-  };
-
-
-  function readFile(file) {
-    return new Promise((resolve, reject) => {
-      let fr = new FileReader();
-      fr.onload = x=> resolve(fr.result);
-      fr.readAsText(file);
-    })}
-
-  const handleClick = () => {
-    const blob = new Blob([JSON.stringify({items, ts})], { type: 'application/json' });
-    saveFile(blob)
+  const handleJournalExport = () => {
+    storage.get(null, obj => {
+      console.log("GOT", obj)
+      const journalEntries = filterObject(obj, key => key.startsWith("journal-")) 
+      console.log("entries", journalEntries)
+      const blob = new Blob([JSON.stringify(journalEntries)], { type: 'application/json' });
+      saveFile("journal.json", blob)
+    })
   }
-  const handleFileUpload = (event) => {
+  const handleJournalImport = (event) => {
     if (!event.target.files) {
       return;
     }
@@ -39,7 +26,16 @@ export const ActionsPanel = () => {
         return;
       }
       const { result } = evt.target;
-      importState(JSON.parse(result))
+      const entries = JSON.parse(result)
+      console.log("Read json file")
+      const journalEntries = filterObject(entries, key => key.startsWith("journal-")) 
+      const wrongEntries = filterObject(entries, key => !key.startsWith("journal-"))
+      const wrongKeys = Object.keys(wrongEntries)
+      if (wrongKeys.length > 0) {
+        console.warn("JSON file contains unsupported entries: ", wrongKeys)
+      }
+      console.log(`Found ${Object.keys(journalEntries).length} entries to import`)
+      storage.set(journalEntries)
     };
     reader.readAsBinaryString(file);
   };
@@ -48,13 +44,13 @@ export const ActionsPanel = () => {
     <Paper elevation={4} sx={{padding: "20px"}}>
       <Stack spacing={3}>
         <Typography component="h2" variant="h4">Actions</Typography>
-        <Button onClick={handleClick} variant="outlined">Export journal</Button>
+        <Button onClick={handleJournalExport} variant="outlined">Export journal</Button>
         <input
           accept="application/json"
           style={{ display: 'none' }}
           id="raised-button-file"
           type="file"
-          onChange={handleFileUpload}
+          onChange={handleJournalImport}
         />
         <label htmlFor="raised-button-file">
           <Button variant="outlined" component="span" >

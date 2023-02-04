@@ -1,25 +1,6 @@
 import  {useState, useEffect, useMemo} from 'react';
-import {getTimestamp, getRandomId, makeLogger} from 'utils'
+import {getTimestamp, getRandomId, makeLogger, filterObject, mapObject} from 'utils'
 import {storage} from './storage_adapter'
-/* sync store
-
- */
-
-const filterObject = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(
-  ([key, value]) => predicate(key, value)
-))
-
-const mapObject = (obj, mapFn) => Object.fromEntries(Object.entries(obj).map(mapFn))
-
-const logCall = (name, callable) => {
-  const inner = (...args) => {
-    const res = callable(...args)
-    console.log(args, "=>", res)
-    return res
-  }
-  return inner
-}
-
 
 
 const makeOperators = (name, callerId, setState, log) => {
@@ -107,10 +88,10 @@ export const useSyncEntriesStore = ({name, initData}) => {
 
     const [changesCallerId] = changes.callerId.newValue.split("-")
     if (changesCallerId === callerId) {log("SAME caller id"); return}
-    setState(logCall("onChange", state => ({
+    setState(state => ({
       ...filterObject(state, (key, value) => (!removedEntries.includes(key))),
       ...Object.fromEntries(changedEntries)
-    })))
+    }))
   }
 
   /* load initial state and set listener*/
