@@ -14,7 +14,7 @@ import {useSettingsStore} from 'stores/settings'
 import {isEmpty} from 'utils'
 const dayjs = require('dayjs')
 
-const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
+const createCustomTheme = ({mode, primaryColor, secondaryColor, background, backgroundImage}) =>{
   return createTheme({
     palette: {
       mode ,
@@ -45,7 +45,7 @@ const BottomPanel = memo(() =>{
   )
 })
 const InitializedApp = ({settings}) => {
-  const {mode, primaryColor, secondaryColor, background, locale} = settings
+  const {mode, primaryColor, secondaryColor, background, locale, backgroundImageURL} = settings
   console.log("APP", settings)
   const currentTheme = useMemo(
     () => {
@@ -58,9 +58,13 @@ const InitializedApp = ({settings}) => {
   }
   )
 
+  const backgroundTheme = (backgroundImageURL) ? {
+    backgroundImage: `url("${backgroundImageURL}")`,
+    backgroundSize: "cover",
+  } : {}
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper sx={{minHeight: "100vh"}}>
+      <Paper sx={{minHeight: "100vh", ...backgroundTheme}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <TopPanel/>

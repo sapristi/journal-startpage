@@ -69,6 +69,28 @@ const extractTasks = (entries) => {
   return {todo, done}
 }
 
+export const TasksList = ({title, entries, setEntry, removeEntry}) => {
+  if (Object.keys(entries).length === 0) {
+    return null
+  }
+  return (
+
+    <div>
+      <Typography variant="h5">{title}</Typography>
+      <CardList>
+        {
+          entries.map( ([key, entry]) => <Task key={key} entryKey={key}
+                                 setEntry={setEntry}
+                                 removeEntry={removeEntry}
+                                 state={entry}
+
+                            />)
+        }
+      </CardList>
+    </div>
+  )
+}
+
 export const Tasks = () => {
 
   const {entries, setEntry, addEntry, removeEntry} = useSyncEntriesStore(
@@ -87,36 +109,8 @@ export const Tasks = () => {
       <Button onClick={addEmptyTask}>Add entry</Button>
         <Divider/>
       </div>
-
-      <div>
-        <Typography variant="h5">Todo</Typography>
-        <CardList>
-          {
-            todo.map( ([key, entry]) => <Task key={key} entryKey={key}
-                                              setEntry={setEntry}
-                                              removeEntry={removeEntry}
-                                              state={entry}
-
-                                        />)
-          }
-        </CardList>
-      </div>
-
-      <div>
-        <Typography variant="h5">Done</Typography>
-        <CardList>
-          {
-            done.map( ([key, entry]) =>
-              <Task key={key} entryKey={key}
-                    setEntry={setEntry}
-                    removeEntry={removeEntry}
-                    state={entry}
-                    />
-            )
-          }
-        </CardList>
-      </div>
-
+      <TasksList title={"Todo"} entries={todo} setEntry={setEntry} removeEntry={removeEntry} />
+      <TasksList title={"Done"} entries={done} setEntry={setEntry} removeEntry={removeEntry} />
     </MainPaper>
   )
 }

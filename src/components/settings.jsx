@@ -1,4 +1,4 @@
-import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button} from '@mui/material';
+import {Paper, Typography, Stack, Switch, Select, MenuItem, Divider, Button, TextField} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
@@ -47,6 +47,15 @@ const ControlledColorPicker = ({settings, propName, updateValue}) => {
   )
 }
 
+const BackgroundImagePicker = ({value, updateValue}) => {
+  const fieldValue = (value)? value : ""
+  const handleChange = (event) => {
+    const newValue = event.target.value
+    updateValue(() => ({backgroundImageURL: newValue}))
+  }
+  return <TextField value={fieldValue} onChange={handleChange} label="Background Image URL"/>
+}
+
 export const SettingsPanel = () => {
   const {settings, switchMode, setLocale, updateValue} = useSettingsStore()
   log("Settings", settings)
@@ -65,6 +74,7 @@ export const SettingsPanel = () => {
               <ControlledColorPicker settings={settings} propName="primaryColor" updateValue={updateValue}/>
               {/* <ControlledColorPicker propName="secondaryColor"/> */}
               <ControlledColorPicker settings={settings} propName="background" updateValue={updateValue}/>
+              <BackgroundImagePicker value={settings.backgroundImage} updateValue={updateValue}/>
               <LocaleSelector locale={settings.locale} setLocale={setLocale}/>
             </Stack>
           </Paper>
