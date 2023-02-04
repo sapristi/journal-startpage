@@ -38,15 +38,18 @@ def main():
             patch["transform"](patch["initial_content"])
         )
 
-    sp.run(["pnpm", "react-app-rewired", "build"], env={
-        "INLINE_RUNTIME_CHUNK": "false",
-        "DEV_MODE": "true",
-        "REACT_APP_LOG": "true",
-        **os.environ,
-    })
-
-    for patch in patches:
-        patch["filepath"].write_text(patch["initial_content"])
+    try:
+        sp.run(["pnpm", "react-app-rewired", "build"], env={
+            "INLINE_RUNTIME_CHUNK": "false",
+            "DEV_MODE": "true",
+            "REACT_APP_LOG": "true",
+            **os.environ,
+        })
+    except KeyboardInterrupt:
+        pass
+    finally:
+        for patch in patches:
+            patch["filepath"].write_text(patch["initial_content"])
 
 if __name__ == "__main__":
     main()
