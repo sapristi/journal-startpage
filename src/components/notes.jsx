@@ -4,56 +4,47 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
 
 import {MainPaper, CardList} from "./base"
-import {EditableMarkdown} from "./editable"
+import {EditableMarkdown, EditableInput} from "./editable"
 import {DateElem} from './date_elem'
 import { getTimestamp} from 'utils'
 import { displayDate} from 'utils/locales'
 import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
 
-const initData = {
-  0: {
-    date: getTimestamp(),
-    content: `
-# Welcome to Journal Startpage !
 
-## Features
+const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
 
-- Task list
-- Journal entries
-
-See [source and more](https://github.com/sapristi/journal-startpage).
-
-## Shortcuts
-
-- Double click to edit
-- Ctrl+Enter to validate (or click outside)
-- Escape to cancel edition
-`
-  }
-}
-
-
-
-
-const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
-
-  const {date, content} = state
+  const {lastModified, content, title} = state
   const handleContentChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
-      content: newValue
+      content: newValue,
+      lastModified: getTimestamp()
     })
   }
+  const handleTitleChange = (newValue) => {
+    setEntry(entryKey, {
+      ...state,
+      title: newValue,
+      lastModified: getTimestamp()
+    })
+  }
+
   const handleDelete = () => {removeEntry(entryKey)}
 
   return (
     <Paper elevation={8} sx={{p: 1, pl: 2}}>
       <Stack>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <div>
-            <Typography variant="h5">{displayDate(date)}</Typography>
-            <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
+          <div style={{flexGrow: 1}}>
+            <EditableInput
+              value={title}
+              onChange={handleTitleChange}
+              Component={Typography}
+              componentProps={{variant:"h5"}}
+            />
+            {/* <Typography variant="h5">{title}</Typography> */}
+            <Typography color="text.secondary"><DateElem timestamp={lastModified}/></Typography>
           </div>
           <div>
             <Button onClick={handleDelete}><ClearIcon/></Button>
@@ -70,19 +61,18 @@ const extractEntries = (entries, search) => {
   const nonDeleted = Object.entries(entries).filter(
     ([key, value]) => (
       value !== null &&
-      !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
+        !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
     )
   )
-  nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.date - value1.date})
+  nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.lastModified - value1.lastModified})
   return nonDeleted
 }
-
-export const Journal = () => {
+export const Notes = () => {
   const {switchActiveTab} = useTransientSettings()
   const {entries, setEntry, addEntry, removeEntry} = useSyncEntriesStore(
     {
-      name: "journal",
-      initData
+      name: "notes",
+      initData: {}
     }
   )
   const [search, setSearch] = useState(() => "")
@@ -92,21 +82,25 @@ export const Journal = () => {
 
   const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
+  const addEmptyEntry = () => addEntry({
+    title: "New note",
+    content: "...",
+    lastModified: getTimestamp()
+  })
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>
-        <Typography component="h1" variant="h3">Journal</Typography>
+        <Typography component="h1" variant="h3">Notes</Typography>
         <div>
-          <Button onClick={switchActiveTab}>Show Notes</Button>
+          <Button onClick={switchActiveTab}>Show Journal</Button>
           <TextField label="search" value={search} onChange={handleSearchChange} />
         </div>
       </div>
-      <Button onClick={addEmptyEntry}>Add entry</Button>
+      <Button onClick={addEmptyEntry}>Add note</Button>
       <CardList>
         {
           extractedEntries.map( ([entryKey, entry]) =>
-            <Entry
+            <Note
               key={entryKey}
               entryKey={entryKey}
               setEntry={setEntry}

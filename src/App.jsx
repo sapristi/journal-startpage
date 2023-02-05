@@ -1,11 +1,13 @@
-import { useEffect, useMemo, memo } from 'react'
+import { useEffect, useMemo, memo, useState } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper, Stack} from '@mui/material';
 
 import {Journal} from './components/journal'
+import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
+import {MainPaper} from './components/base'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
@@ -29,7 +31,7 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, background, back
 }
 
 const BottomPanel = memo(() =>{
-  const {settingsActive} = useTransientSettings()
+  const {settingsActive, activeTab} = useTransientSettings()
   return (
     settingsActive ?
       <SettingsPanel/>
@@ -39,7 +41,9 @@ const BottomPanel = memo(() =>{
           <Tasks/>
         </div>
         <div style={{flexGrow: 1}}>
-          <Journal/>
+          {
+            (activeTab === "journal")? <Journal/>: <Notes/>
+          }
         </div>
       </Stack>
   )

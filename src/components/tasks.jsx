@@ -106,7 +106,7 @@ export const Tasks = () => {
     <MainPaper style={{display: "flex", flexDirection: "column", gap: "20px"}}>
       <div>
       <Typography variant="h3" component="h1">Tasks</Typography>
-      <Button onClick={addEmptyTask}>Add entry</Button>
+      <Button onClick={addEmptyTask}>Add task</Button>
         <Divider/>
       </div>
       <TasksList title={"Todo"} entries={todo} setEntry={setEntry} removeEntry={removeEntry} />
