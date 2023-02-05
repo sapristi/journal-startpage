@@ -57,7 +57,7 @@ def update_blog(version):
     git(["push"], cwd=BLOG_ROOT)
 
 def publish_AMO():
-    # Old command is 
+    # Old command is
     # pnpm web-ext sign -s build --channel=listed
     sp.run(
         [
@@ -80,7 +80,7 @@ def print_header(*args):
 def main(
     version: str,
 ):
-    print_header("Updating files with new version")
+    print_header(f"Updating files with new version {version}")
     update_json_file(version, MANIFEST)
     update_json_file(version, "package.json")
     tag_name = f"v{version}"
