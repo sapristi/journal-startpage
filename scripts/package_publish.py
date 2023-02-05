@@ -57,6 +57,8 @@ def update_blog(version):
     git(["push"], cwd=BLOG_ROOT)
 
 def publish_AMO():
+    # Old command is 
+    # pnpm web-ext sign -s build --channel=listed
     sp.run(
         [
             "pnpm", "web-ext", "sign", "-s=build", "--channel=listed",
