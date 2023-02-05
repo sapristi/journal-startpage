@@ -37,16 +37,16 @@ def update_json_file(version, filepath):
     with open(filepath, "w") as f:
         json.dump(data, f, indent=2)
 
-def git(command, **kwargs):
-    sp.run(["git", *command], **kwargs)
+def git(command: list[str], **kwargs):
+    sp.run(["git", *command], **kwargs, check=True)
 
-def pnpm(command, **kwargs):
-    sp.run(["pnpm", *command], **kwargs)
+def pnpm(command: list[str], **kwargs):
+    sp.run(["pnpm", *command], **kwargs, check=True)
 
 
 def update_blog(version):
 
-    pnpm("build", env={
+    pnpm(["build"], env={
         **os.environ,
         "REACT_APP_USE_LOCALSTORAGE": "true"
     })
