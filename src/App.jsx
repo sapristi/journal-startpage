@@ -14,15 +14,15 @@ import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
 const dayjs = require('dayjs')
 
-const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
+const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}) =>{
   return createTheme({
     palette: {
       mode ,
       primary: {main: primaryColor},
       secondary: {main: secondaryColor},
       background: {
-        paper: background,
-        default: background
+        paper: backgroundColor,
+        default: backgroundColor
       }
     }
   })
@@ -48,12 +48,12 @@ const BottomPanel = memo(() =>{
 })
 
 export const App = () => {
-  const {mode, primaryColor, secondaryColor, background, locale, backgroundImageURL} = useSettingsStore()
+  const {mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL} = useSettingsStore()
   const currentTheme = useMemo(
     () => {
-      return createCustomTheme({mode, primaryColor, secondaryColor, background})
+      return createCustomTheme({mode, primaryColor, secondaryColor, backgroundColor})
     },
-    [mode, primaryColor, secondaryColor, background]
+    [mode, primaryColor, secondaryColor, backgroundColor]
   )
   useEffect(() => {
     dayjs.locale(locale)

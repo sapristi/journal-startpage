@@ -6,7 +6,7 @@ import {getBrowserLocale} from 'utils/locales'
 const dayjs = require('dayjs')
 
 const initValue = {
-  background: "rgb(18, 18, 18)",
+  backgroundColor: "rgb(18, 18, 18)",
   primaryColor: "rgb(96, 125, 139)",
   secondaryColor: "#DD0033",
   mode: "dark",
