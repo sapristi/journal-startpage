@@ -9,7 +9,8 @@ import {ActionsPanel} from "./actions"
 const log = makeLogger("Settings component")
 const { version } = require('../../package.json');
 
-const LocaleSelector = ({locale, setLocale}) => {
+const LocaleSelector = () => {
+  const {locale, setLocale} = useSettingsStore()
   const handleChange = (event) => {
     const newLocale = event.target.value
     setLocale(newLocale)
@@ -24,7 +25,8 @@ const LocaleSelector = ({locale, setLocale}) => {
     </Select>
   )
 }
-const ModeSlider = ({mode, switchMode}) => {
+const ModeSlider = () => {
+  const {mode, switchMode} = useSettingsStore()
   return (
     <Stack direction="row" alignItems="center">
       <Typography>Light</Typography>
@@ -34,32 +36,31 @@ const ModeSlider = ({mode, switchMode}) => {
   )
 }
 
-const ControlledColorPicker = ({settings, propName, updateValue}) => {
+const ControlledColorPicker = ({ propName}) => {
+  const {[propName]: value, setValue} = useSettingsStore()
 
-  const handleChange = newValue => updateValue(() => ({[propName]: newValue}))
+  const handleChange = newValue => setValue(propName, newValue)
   const debouncedChangeHandler = debounce(handleChange, 300)
   return (
     <MuiColorInput
-      value={settings[propName]}
+      value={value}
       onChange={debouncedChangeHandler}
       label={propName}
     />
   )
 }
 
-const BackgroundImagePicker = ({value, updateValue}) => {
-  const fieldValue = (value)? value : ""
+const BackgroundImagePicker = () => {
+  const {backgroundImageURL, setValue} = useSettingsStore()
   const handleChange = (event) => {
     const newValue = event.target.value
-    updateValue(() => ({backgroundImageURL: newValue}))
+    console.log("NEW VALUE", newValue)
+    setValue("backgroundImageURL", newValue)
   }
-  return <TextField value={fieldValue} onChange={handleChange} label="Background Image URL"/>
+  return <TextField value={backgroundImageURL} onChange={handleChange} label="Background Image URL"/>
 }
 
 export const SettingsPanel = () => {
-  const {settings, switchMode, setLocale, updateValue} = useSettingsStore()
-  log("Settings", settings)
-  if (isEmpty(settings)) {return <div/>}
   return (
     <Paper elevation={3} sx={{padding: "20px"}}>
       <Stack spacing={3}>
@@ -70,12 +71,12 @@ export const SettingsPanel = () => {
           <Paper elevation={4} sx={{padding: "20px"}}>
             <Stack spacing={3}>
               <Typography component="h2" variant="h4">Appearance</Typography>
-              <ModeSlider mode={settings.mode} switchMode={switchMode}/>
-              <ControlledColorPicker settings={settings} propName="primaryColor" updateValue={updateValue}/>
+              <ModeSlider />
+              <ControlledColorPicker propName="primaryColor"/>
               {/* <ControlledColorPicker propName="secondaryColor"/> */}
-              <ControlledColorPicker settings={settings} propName="background" updateValue={updateValue}/>
-              <BackgroundImagePicker value={settings.backgroundImage} updateValue={updateValue}/>
-              <LocaleSelector locale={settings.locale} setLocale={setLocale}/>
+              <ControlledColorPicker  propName="background"/>
+              <BackgroundImagePicker />
+              <LocaleSelector />
             </Stack>
           </Paper>
           <ActionsPanel/>

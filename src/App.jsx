@@ -11,12 +11,10 @@ import {MainPaper} from './components/base'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
-import {useSyncValue} from 'stores/sync'
 import {useSettingsStore} from 'stores/settings'
-import {isEmpty} from 'utils'
 const dayjs = require('dayjs')
 
-const createCustomTheme = ({mode, primaryColor, secondaryColor, background, backgroundImage}) =>{
+const createCustomTheme = ({mode, primaryColor, secondaryColor, background}) =>{
   return createTheme({
     palette: {
       mode ,
@@ -48,9 +46,9 @@ const BottomPanel = memo(() =>{
       </Stack>
   )
 })
-const InitializedApp = ({settings}) => {
-  const {mode, primaryColor, secondaryColor, background, locale, backgroundImageURL} = settings
-  console.log("APP", settings)
+
+export const App = () => {
+  const {mode, primaryColor, secondaryColor, background, locale, backgroundImageURL} = useSettingsStore()
   const currentTheme = useMemo(
     () => {
       return createCustomTheme({mode, primaryColor, secondaryColor, background})
@@ -60,7 +58,7 @@ const InitializedApp = ({settings}) => {
   useEffect(() => {
     dayjs.locale(locale)
   }
-  )
+           )
 
   const backgroundTheme = (backgroundImageURL) ? {
     backgroundImage: `url("${backgroundImageURL}")`,
@@ -68,7 +66,7 @@ const InitializedApp = ({settings}) => {
   } : {}
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper sx={{minHeight: "100vh", ...backgroundTheme}}>
+      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <TopPanel/>
@@ -78,20 +76,5 @@ const InitializedApp = ({settings}) => {
       </Paper>
     </ThemeProvider>
   );
-}
-
-/* Necessary, otherwise settings are never loaded */
-const SettingsLoader = () => {
-  useSettingsStore()
-  return <div/>
-}
-
-export const App = () => {
-  const settings = useSyncValue("settings")
-  if (isEmpty(settings)) {
-    return <SettingsLoader/>
-  } else {
-    return <InitializedApp settings={settings}/>
-  }
 }
 
