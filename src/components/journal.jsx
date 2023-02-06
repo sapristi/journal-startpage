@@ -38,11 +38,12 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 
 const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
 
-  const {date, content} = state
+  const {date, content, isDraft} = state
   const handleContentChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
-      content: newValue
+      content: newValue,
+      isDraft: false,
     })
   }
   const handleDelete = () => {removeEntry(entryKey)}
@@ -60,7 +61,9 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
           </div>
         </Stack>
         <Divider/>
-        <EditableMarkdown value={content} onChange={handleContentChange}/>
+        <EditableMarkdown value={content} onChange={handleContentChange}
+                          isDraft={isDraft} handleCancelDraft={handleDelete}
+        />
       </Stack>
     </Paper>
   )
@@ -92,7 +95,7 @@ export const Journal = () => {
 
   const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addEntry({content: "Dear diary, today I ..."})
+  const addEmptyEntry = () => addEntry({isDraft: true, content: "Dear diary, today I ..."})
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>

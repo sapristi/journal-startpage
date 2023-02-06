@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow, TableContainer} from '@mui/material';
 import remarkGfm from 'remark-gfm'
+import {makeLogger} from 'utils'
+const log = makeLogger("EditableComp")
 
-const useEditableState = (initial, onChange) => {
-  const [active, setActive] = useState(false)
+const useEditableState = (initial, onChange, isActive) => {
+  const [active, setActive] = useState(isActive)
   const [curValue, setCurValue] = useState(initial)
 
   /* update curValue if the initial value was changed externally */
@@ -32,8 +34,12 @@ const useEditableState = (initial, onChange) => {
   return {curValue, active, handleChange, commitChange, cancelChange, handleClick}
 }
 
-export const EditableInput = ({value, onChange, Component, componentProps}) => {
-  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange)
+export const EditableInput = ({
+  value, onChange, Component, componentProps,
+  isDraft, handleCancelDraft
+}) => {
+  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(
+    value, onChange, isDraft)
   const handleKeyPress = (event) => {
     if (event.code === "Enter" && event.ctrlKey) {
       commitChange()
@@ -41,7 +47,11 @@ export const EditableInput = ({value, onChange, Component, componentProps}) => {
   }
   const handleKeyUp = (event) => {
     if (event.code === "Escape") {
-      cancelChange()
+      if (isDraft) {
+        handleCancelDraft()
+      } else {
+        cancelChange()
+      }
     }
   }
   if (active) {
@@ -70,8 +80,8 @@ const mdComponents = {
   th: (node, ...props) => <TableCell>{node.children}</TableCell>,
 }
 
-export const EditableMarkdown = ({value, onChange}) => {
-  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange)
+export const EditableMarkdown = ({value, onChange, isDraft, handleCancelDraft}) => {
+  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange, isDraft)
 
   const handleKeyPress = (event) => {
     if (event.code === "Enter" && event.ctrlKey) {
@@ -80,7 +90,11 @@ export const EditableMarkdown = ({value, onChange}) => {
   }
   const handleKeyUp = (event) => {
     if (event.code === "Escape") {
-      cancelChange()
+      if (isDraft && handleCancelDraft) {
+        handleCancelDraft()
+      } else {
+        cancelChange()
+      }
     }
   }
   if (active) {

@@ -76,7 +76,7 @@ const BackgroundPicker = () => {
 
   return (
     <div>
-      <Select value={backgroundType} handleChange={setBackgroundType} label="Background Image">
+      <Select value={backgroundType} handleChange={setBackgroundType} label="Background Image" sx={{minWidth: "50%"}}>
       <MenuItem value="color">Color</MenuItem>
       <MenuItem value="url">From URL</MenuItem>
       <MenuItem value="file">From file</MenuItem>
