@@ -56,12 +56,12 @@ def update_blog(version):
     git(["commit", "-m", f"update journal-startpage to v{version}"], cwd=BLOG_ROOT)
     git(["push"], cwd=BLOG_ROOT)
 
-def publish_AMO():
+def publish_AMO(channel):
     # Old command is
     # pnpm web-ext sign -s build --channel=listed
     sp.run(
         [
-            "pnpm", "web-ext", "sign", "-s=build", "--channel=listed",
+            "pnpm", "web-ext", "sign", "-s=build", f"--channel={channel}",
             "--use-submission-api", "--amo-base-url=https://addons.mozilla.org/api/v5/"
         ],
         env={
@@ -79,6 +79,7 @@ def print_header(*args):
 
 def main(
     version: str,
+    channel: str
 ):
     print_header(f"Updating files with new version {version}")
     update_json_file(version, MANIFEST)
@@ -98,8 +99,8 @@ def main(
 
 
     # Very long when using the API, so put it at the end
-    print_header("Publish")
-    publish_AMO()
+    print_header(f"Publish as {channel}")
+    publish_AMO(channel)
 
     print_header("Updating blog")
     update_blog(version)
@@ -119,4 +120,5 @@ if __name__ == "__main__":
 
     main(
         args.version,
+        args.channel
     )
