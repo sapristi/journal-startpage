@@ -1,10 +1,21 @@
+const parse_safe = (value) => {
+  try {
+    return JSON.parse(value)
+  } catch  {
+    return undefined
+  }
+}
+
 const makeLocalStorageAdapter = () => {
   const get = (arg, callback) => {
     if (!arg) {
       callback(Object.fromEntries(
         Object.entries(localStorage).map(
-          ([key, value]) => ([key, JSON.parse(value)])
-        )))
+          ([key, value]) => ([key, parse_safe(value)])
+        ).filter(
+          ([key, value]) => (value !== undefined)
+        )
+      ))
     } else if (typeof arg === "string") {
       callback({
         [arg]: JSON.parse(localStorage.getItem(arg))
