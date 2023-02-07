@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 import subprocess as sp
+import argparse
+from contextlib import contextmanager
 
 
 def add_permission_to_manifest(content:str):
@@ -21,7 +23,8 @@ def add_devtools_import(content: str):
         )
     )
 
-def main():
+@contextmanager
+def dev_patches():
     patches = (
         {
             "filepath": Path("public/manifest.json"),
@@ -39,17 +42,31 @@ def main():
         )
 
     try:
-        sp.run(["pnpm", "react-app-rewired", "build"], env={
-            "INLINE_RUNTIME_CHUNK": "false",
-            "DEV_MODE": "true",
-            "REACT_APP_LOG": "true",
-            **os.environ,
-        })
-    except KeyboardInterrupt:
-        pass
+        yield
     finally:
         for patch in patches:
             patch["filepath"].write_text(patch["initial_content"])
+def main(action):
+    with dev_patches():
+        if action == "build":
+            sp.run(["pnpm", "react-app-rewired", "build"], env={
+                "INLINE_RUNTIME_CHUNK": "false",
+                "DEV_MODE": "true",
+                "REACT_APP_LOG": "true",
+                **os.environ,
+            })
+        elif action == "start":
+            sp.run(["pnpm", "react-scripts", "start"], env={
+                "INLINE_RUNTIME_CHUNK": "false",
+                "DEV_MODE": "true",
+                "REACT_APP_LOG": "true",
+                "REACT_APP_USE_LOCALSTORAGE": "true",
+                **os.environ,
+            })
+
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("action", choices=["build", "start"])
+    args = parser.parse_args()
+    main(args.action)
