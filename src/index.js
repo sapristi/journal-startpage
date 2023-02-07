@@ -1,3 +1,4 @@
+import 'react-devtools'
 import React, {Profiler} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

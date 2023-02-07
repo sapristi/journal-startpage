@@ -3,7 +3,7 @@ import {getTimestamp, getRandomId, makeLogger, filterObject, mapObject} from 'ut
 import {storage} from './storage_adapter'
 
 
-const makeOperators = (name, callerId, setState, log) => {
+const makeOperators = (name, setState, log) => {
 
   const prefix = `${name}-`
   const setEntry = (key, value) => {
@@ -12,15 +12,15 @@ const makeOperators = (name, callerId, setState, log) => {
     storage.set(
       {
         [key]: value,
-        // add salt to caller id, otherwise chrome doesnt show the change
-        callerId: `${callerId}-${getTimestamp()}`
       }
     )
-    setState(state => (
-      {
-        ...state,
-        [key]: value,
-      }))
+    if (process.env.REACT_APP_USE_LOCALSTORAGE) {
+      setState(state => (
+        {
+          ...state,
+          [key]: value,
+        }))
+    }
   }
 
   const addEntry = (value) => {
@@ -45,26 +45,19 @@ const makeOperators = (name, callerId, setState, log) => {
 
 export const useSyncEntriesStore = ({name, initData}) => {
   const [state, setState] = useState({})
-  const [callerId] = useState(getRandomId())
   const log = useMemo(
-    () => makeLogger(`Store [${name}-${callerId}]`),
-    [name, callerId]
+    () => makeLogger(`Store [${name}]`),
+    [name]
   )
   const {setEntry, addEntry, removeEntry} = useMemo(
-    () => makeOperators(name, callerId, setState, log),
-    [name, callerId, setState, log]
+    () => makeOperators(name, setState, log),
+    [name, setState, log]
   )
 
   const prefix = `${name}-`
-  log(`Setting storage for ${name} with ${callerId}`)
+  log(`Setting storage for ${name}`)
 
   function updateOnChange(changes) {
-
-    log("CHANGES", changes)
-    if (
-      changes.callerId === undefined
-        || !changes.callerId.newValue
-    ) {log("No caller id"); return}
 
     const changedEntries = []
     const removedEntries = []
@@ -86,8 +79,6 @@ export const useSyncEntriesStore = ({name, initData}) => {
     if (changedEntries.length === 0 && removedEntries.length ===0) {
       log("no related change"); return}
 
-    const [changesCallerId] = changes.callerId.newValue.split("-")
-    if (changesCallerId === callerId) {log("SAME caller id"); return}
     setState(state => ({
       ...filterObject(state, (key, value) => (!removedEntries.includes(key))),
       ...Object.fromEntries(changedEntries)
