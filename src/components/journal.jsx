@@ -63,6 +63,7 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
         <Divider/>
         <EditableMarkdown value={content} onChange={handleContentChange}
                           isDraft={isDraft} handleCancelDraft={handleDelete}
+                          textFieldProps={{placeholder: "Dear diary, today I..."}}
         />
       </Stack>
     </Paper>
@@ -95,7 +96,7 @@ export const Journal = () => {
 
   const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addEntry({isDraft: true, content: "Dear diary, today I ..."})
+  const addEmptyEntry = () => addEntry({isDraft: true, content: ""})
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>

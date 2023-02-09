@@ -5,14 +5,14 @@ import remarkGfm from 'remark-gfm'
 import {makeLogger} from 'utils'
 const log = makeLogger("EditableComp")
 
-const useEditableState = (initial, onChange, isActive) => {
-  const [active, setActive] = useState(isActive)
+const useEditableState = (initial, onChange, isDraft) => {
+  const [active, setActive] = useState(isDraft)
   const [curValue, setCurValue] = useState(initial)
 
   /* update curValue if the initial value was changed externally */
   useEffect(
     () => {
-      setCurValue(initial)
+        setCurValue(initial)
     },
     [initial]
   )
@@ -35,8 +35,8 @@ const useEditableState = (initial, onChange, isActive) => {
 }
 
 export const EditableInput = ({
-  value, onChange, Component, componentProps,
-  isDraft, handleCancelDraft
+    value, onChange, Component, componentProps, textFieldProps,
+    isDraft, handleCancelDraft, placeholder
 }) => {
   const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(
     value, onChange, isDraft)
@@ -64,6 +64,7 @@ export const EditableInput = ({
                       onKeyPress={handleKeyPress}
                       onKeyUp={handleKeyUp}
                       fullWidth
+                      {...textFieldProps}
            />
   } else {
     return <Component {...componentProps} onDoubleClick={handleClick}>{value}</Component>
@@ -80,45 +81,64 @@ const mdComponents = {
   th: (node, ...props) => <TableCell>{node.children}</TableCell>,
 }
 
-export const EditableMarkdown = ({value, onChange, isDraft, handleCancelDraft}) => {
-  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange, isDraft)
 
-  const handleKeyPress = (event) => {
-    if (event.code === "Enter" && event.ctrlKey) {
-      commitChange()
-    }
-  }
-  const handleKeyUp = (event) => {
-    if (event.code === "Escape") {
-      if (isDraft && handleCancelDraft) {
-        handleCancelDraft()
-      } else {
-        cancelChange()
-      }
-    }
-  }
-  if (active) {
-    return <TextField
-             sx={{width: "100%"}}
-             value={curValue}
-             onChange={handleChange}
-             onBlur={commitChange}
-             autoFocus
-             onKeyPress={handleKeyPress}
-             onKeyUp={handleKeyUp}
-             multiline
-           />
-  } else {
-    return (
-      <div
-        onDoubleClick={handleClick}
-        style={{flexGrow: 1}}
-      >
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={mdComponents}
-        >{value}</ReactMarkdown>
-      </div>)
-  }
+
+export const EditableMarkdown = (props) => {
+    const Component = ({children, onDoubleClick}) => (
+        <div
+          onDoubleClick={onDoubleClick}
+            style={{ flexGrow: 1 }}
+        >
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={mdComponents}
+            >{children}</ReactMarkdown>
+        </div>
+    )
+    return <EditableInput {...props} textFieldProps={{multiline: true, ...props.textFieldProps}} Component={Component}/>
 }
+
+
+// export const EditableMarkdown = ({value, onChange, isDraft, handleCancelDraft}) => {
+//   const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(value, onChange, isDraft)
+
+//   const handleKeyPress = (event) => {
+//     if (event.code === "Enter" && event.ctrlKey) {
+//       commitChange()
+//     }
+//   }
+//   const handleKeyUp = (event) => {
+//     if (event.code === "Escape") {
+//       if (isDraft && handleCancelDraft) {
+//         handleCancelDraft()
+//       } else {
+//         cancelChange()
+//       }
+//     }
+//   }
+//   if (active) {
+//     return <TextField
+//              sx={{width: "100%"}}
+//              value={curValue}
+//              onChange={handleChange}
+//              onBlur={commitChange}
+//              autoFocus
+//              onKeyPress={handleKeyPress}
+//              onKeyUp={handleKeyUp}
+//              multiline
+//              placeholder={value}
+//            />
+//   } else {
+//     return (
+//       <div
+//         onDoubleClick={handleClick}
+//         style={{flexGrow: 1}}
+//       >
+//         <ReactMarkdown
+//           remarkPlugins={[remarkGfm]}
+//           components={mdComponents}
+//         >{value}</ReactMarkdown>
+//       </div>)
+//   }
+// }
 

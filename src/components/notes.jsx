@@ -14,12 +14,13 @@ import {useTransientSettings} from "stores/transient"
 
 const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
 
-  const {lastModified, content, title} = state
+    const {lastModified, content, title, isDraft} = state
   const handleContentChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
       content: newValue,
-      lastModified: getTimestamp()
+        lastModified: getTimestamp(),
+        isDraft: false
     })
   }
   const handleTitleChange = (newValue) => {
@@ -51,7 +52,10 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
           </div>
         </Stack>
         <Divider/>
-        <EditableMarkdown value={content} onChange={handleContentChange}/>
+        <EditableMarkdown value={content} onChange={handleContentChange}
+                          isDraft={isDraft} handleCancelDraft={handleDelete}
+                          textFieldProps={{ placeholder: "..." }}
+        />
       </Stack>
     </Paper>
   )
@@ -84,8 +88,9 @@ export const Notes = () => {
 
   const addEmptyEntry = () => addEntry({
     title: "New note",
-    content: "...",
-    lastModified: getTimestamp()
+    content: "",
+      lastModified: getTimestamp(),
+      isDraft: true,
   })
   return (
     <MainPaper>

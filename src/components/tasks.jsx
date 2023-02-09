@@ -30,8 +30,7 @@ this is done task
 
 const Task = ({entryKey, state, setEntry, removeEntry}) => {
 
-
-  const {status, content} = state
+    const {status, content, isDraft} = state
   const handleDelete = () => {removeEntry(entryKey)}
 
   const switchStatus = () => {
@@ -39,7 +38,7 @@ const Task = ({entryKey, state, setEntry, removeEntry}) => {
     setEntry(entryKey, {...state, status: newStatus})
   }
   const handleContentChange = (newValue) => {
-    setEntry(entryKey, {...state, content: newValue})
+      setEntry(entryKey, {...state, content: newValue, isDraft: false})
   }
   const textColor = (status === "done")? "text.disabled": "text.primary";
   return (
@@ -49,7 +48,10 @@ const Task = ({entryKey, state, setEntry, removeEntry}) => {
           <Checkbox sx={{p: 0, pr:1 }} onChange={switchStatus} checked={status==="done"} />
         </div>
         <div style={{flex: 1, display: "flex"}}>
-          <EditableMarkdown value={content} onChange={handleContentChange}/>
+          <EditableMarkdown value={content} onChange={handleContentChange}
+                            isDraft={isDraft} handleCancelDraft={handleDelete}
+                            textFieldProps={{ placeholder: "To do" }}
+          />
         </div>
         <Button onClick={handleDelete}><ClearIcon/></Button>
       </Stack>
@@ -99,7 +101,7 @@ export const Tasks = () => {
       initData
     })
 
-  const addEmptyTask = () => addEntry({status: "todo", content: "TODO"})
+    const addEmptyTask = () => addEntry({status: "todo", content: "", isDraft: true})
   const {todo, done} = extractTasks(entries)
   return (
 
