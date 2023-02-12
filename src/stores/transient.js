@@ -2,7 +2,7 @@ import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export const useTransientSettings = create(persist(
-  (set) => ({
+  (set, get) => ({
     settingsActive: false,
     activeTab: "journal",
     switchSettings: () => set(state => ({
@@ -10,7 +10,13 @@ export const useTransientSettings = create(persist(
     })),
     switchActiveTab: () => set(state => ({
       activeTab: (state.activeTab === "journal")?"notes":"journal"
-    }))
+    })),
+    setActiveTab: (newTabValue) => {
+      const current = get().activeTab
+      if (current !== newTabValue) {
+        set(state => ({activeTab: newTabValue}))
+      }
+    }
   }),
   {
     name: "transient"

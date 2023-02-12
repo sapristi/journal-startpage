@@ -24,11 +24,17 @@ const initData = {
 
 See [source and more](https://github.com/sapristi/journal-startpage).
 
-## Shortcuts
+## How to use
 
 - Double click to edit
 - Ctrl+Enter to validate (or click outside)
 - Escape to cancel edition
+
+## Shortcuts
+
+- `j` to create a new journal entry
+- `n` to create a new note
+- `t` to create a new task
 `
   }
 }

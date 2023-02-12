@@ -1,4 +1,4 @@
-import { useEffect, useMemo, memo, useState, Fragment } from 'react'
+import { useEffect, useMemo, memo, Fragment } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -12,6 +12,9 @@ import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
+import {storage} from 'stores/storage_adapter'
+import {getTimestamp, makeLogger} from 'utils'
+
 const dayjs = require('dayjs')
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}) =>{
@@ -74,7 +77,7 @@ const VisibleApp = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}} onKeyUp={console.log}>
+      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <TopPanel/>
@@ -88,23 +91,47 @@ const VisibleApp = () => {
 
 
 const HotKeysProvider = () => {
+  const {setActiveTab} = useTransientSettings()
+  const log = makeLogger("HOTKEYS")
+  const addEntry = (name, value) => {
+    const timestamp = getTimestamp()
+    const key = `${name}-${timestamp}`
+    storage.set(
+      {
+        [key]: {
+          ...value,
+          date: timestamp,
+          isDraft: true,
+        },
+      }
+    )
+  }
+  const addJournalEntry = () => addEntry("journal", {content: ""})
+  const addTask = () => addEntry("tasks", {status: "todo", content: ""})
+  const addNote = () => addEntry("notes", {title: "New Note", content: "", lastModified: getTimestamp()})
+  const handleKeyUp = (event) => {
+    const {target, key} = event;
+
+    if (target.localName !== "body") {return}
+    switch (key) {
+    case "n":
+      setActiveTab("notes")
+      addNote()
+      break;
+    case "j":
+      setActiveTab("journal")
+      addJournalEntry()
+      break;
+    case "t":
+      addTask()
+      break;
+    }
+  }
   useEffect(
     () => {
-      const handleKeyUp = (event) => {
-        // console.log(event)
-        const {target, key} = event;
-        if (!target.localName === "body") {return}
-        switch (key) {
-        case "n":
-          break;
-        case "j":
-          break;
-        case "t":
-          break;
-        }
-      }
       document.addEventListener("keyup", handleKeyUp)
-    }, []
+      return () => document.removeEventListener("keyup", handleKeyUp)
+    }, [setActiveTab, handleKeyUp]
   )
   return null
 }

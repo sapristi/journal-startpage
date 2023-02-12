@@ -2,8 +2,9 @@ import  {useState, useEffect, useMemo} from 'react';
 import {getTimestamp, getRandomId, makeLogger, filterObject, mapObject} from 'utils'
 import {storage} from './storage_adapter'
 
+// TODO: factory to create the hook, so that the hook can be used at multiple places
 
-const makeOperators = (name, setState, log) => {
+const makeOperators = (name, log) => {
 
   const prefix = `${name}-`
   const setEntry = (key, value) => {
@@ -18,7 +19,7 @@ const makeOperators = (name, setState, log) => {
 
   const addEntry = (value) => {
     const timestamp = getTimestamp()
-    const key = `${prefix}${getTimestamp()}`
+    const key = `${prefix}${timestamp}`
     setEntry(key, {
       ...value,
       date: timestamp
@@ -43,8 +44,8 @@ export const useSyncEntriesStore = ({name, initData}) => {
     [name]
   )
   const {setEntry, addEntry, removeEntry} = useMemo(
-    () => makeOperators(name, setState, log),
-    [name, setState, log]
+    () => makeOperators(name, log),
+    [name, log]
   )
 
   const prefix = `${name}-`

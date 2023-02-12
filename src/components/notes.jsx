@@ -7,7 +7,6 @@ import {MainPaper, CardList} from "./base"
 import {EditableMarkdown, EditableInput} from "./editable"
 import {DateElem} from './date_elem'
 import { getTimestamp} from 'utils'
-import { displayDate} from 'utils/locales'
 import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
 
@@ -89,8 +88,8 @@ export const Notes = () => {
   const addEmptyEntry = () => addEntry({
     title: "New note",
     content: "",
-      lastModified: getTimestamp(),
-      isDraft: true,
+    lastModified: getTimestamp(),
+    isDraft: true,
   })
   return (
     <MainPaper>
