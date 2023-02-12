@@ -30,10 +30,10 @@ def dev_patches():
             "filepath": Path("public/manifest.json"),
             "transform": add_permission_to_manifest
         },
-        # {
-        #     "filepath": Path("src/index.js"),
-        #     "transform": add_devtools_import
-        # }
+        {
+            "filepath": Path("src/index.js"),
+            "transform": add_devtools_import
+        }
     )
     for patch in patches:
         patch["initial_content"] = patch["filepath"].read_text()

@@ -52,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "react-devtools": "^4.27.2",
     "sass": "^1.57.1",
     "web-ext": "^7.4.0"
   }
