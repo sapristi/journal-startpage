@@ -24,20 +24,48 @@ const makeLocalStorageAdapter = () => {
         throw new Error(`Unsupported value ${arg}`)
       }
   }
+  const callbacks = []
+  const onChanged = {
+    addListener: (callback) => {
+      // We could also add a listener for storage events
+      // See https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event
+      // - only usefull for multi-window
+      // - slightly different interface
+      callbacks.push(callback)
+    }
+  }
   const set = (obj) => {
     Object.entries(obj).forEach(
       ([key, value]) => {
         localStorage.setItem(key, JSON.stringify(value))
       }
     )
-  }
-  const onChanged = {
-    addListener: (callback) => {
-      // we can't do anything here
+    const event = Object.entries(obj).map(
+      ([key, value]) => ({
+        oldValue: localStorage.getItem(key),
+        newValue: value
+      })
+    )
+    for (const callback of callbacks) {
+      callback(event)
     }
   }
 
-  const remove = (keys) => {keys.forEach(key => localStorage.removeItem(key))}
+  const remove = (keys) => {
+    keys.forEach(key => localStorage.removeItem(key))
+    const event = Object.fromEntries(
+      keys.map(
+        (key) => [key, localStorage.getItem(key)]
+      ).filter(
+        ([key, value]) => value !== null
+      ).map(
+        ([key, value]) => ([key, {oldValue: value}])
+      ))
+    for (const callback of callbacks) {
+      callback(event)
+    }
+
+  }
 
   return {
     get, set, onChanged, remove
