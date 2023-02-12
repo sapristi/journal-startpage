@@ -32,9 +32,9 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 
 ## Shortcuts
 
-- `j` to create a new journal entry
-- `n` to create a new note
-- `t` to create a new task
+- \`j\` to create a new journal entry
+- \`n\` to create a new note
+- \`t\` to create a new task
 `
   }
 }

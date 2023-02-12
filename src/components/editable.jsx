@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import ReactMarkdown from 'react-markdown';
 import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow, TableContainer} from '@mui/material';
 import remarkGfm from 'remark-gfm'
 import {makeLogger} from 'utils'
 const log = makeLogger("EditableComp")
 
-const useEditableState = (initial, onChange, isDraft) => {
+const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
   const [active, setActive] = useState(isDraft)
   const [curValue, setCurValue] = useState(initial)
 
@@ -16,30 +16,56 @@ const useEditableState = (initial, onChange, isDraft) => {
     },
     [initial]
   )
-  const handleChange = (event) => {
-    setCurValue(event.target.value)
-  }
-  const commitChange = () => {
-    setActive(false);
-    onChange(curValue);
-  }
+  const {
+    handleChange,
+    commitChange,
+    handleClick,
+    cancelChange,
+    handleCancelAction
+  } = useMemo(
+    () => {
+      const handleChange = (event) => {
+        setCurValue(event.target.value)
+      }
+      const commitChange = () => {
+        log("COMMIT", curValue)
+        if (isDraft && curValue === "") {
+          handleCancelDraft()
+        } else {
+          setActive(false);
+          onChange(curValue);
+        }
+      }
 
-  const handleClick = () => {
-    setActive(true);
-  }
-  const cancelChange = () => {
-    setCurValue(initial);
-    setActive(false);
-  }
-  return {curValue, active, handleChange, commitChange, cancelChange, handleClick}
+      const handleClick = () => {
+        setActive(true);
+      }
+      const cancelChange = () => {
+        setCurValue(initial);
+        setActive(false);
+      }
+
+      const handleCancelAction = () => {
+        if (isDraft) {
+          handleCancelDraft()
+        } else {
+          cancelChange()
+        }
+      }
+      return {curValue, active, handleChange, commitChange, cancelChange, handleClick, handleCancelAction}
+    }
+  )
+
+  return {curValue, active, handleChange, commitChange, cancelChange, handleClick, handleCancelAction}
 }
 
 export const EditableInput = ({
     value, onChange, Component, componentProps, textFieldProps,
     isDraft, handleCancelDraft, placeholder
 }) => {
-  const {curValue, active, handleChange, commitChange, cancelChange, handleClick} = useEditableState(
-    value, onChange, isDraft)
+  const {curValue, active, handleChange, commitChange, handleClick, handleCancelAction} = useEditableState(
+    {initial: value, onChange, isDraft, handleCancelDraft}
+  )
   const handleKeyPress = (event) => {
     if (event.code === "Enter" && event.ctrlKey) {
       commitChange()
@@ -47,11 +73,7 @@ export const EditableInput = ({
   }
   const handleKeyUp = (event) => {
     if (event.code === "Escape") {
-      if (isDraft) {
-        handleCancelDraft()
-      } else {
-        cancelChange()
-      }
+      handleCancelAction()
     }
   }
   if (active) {
