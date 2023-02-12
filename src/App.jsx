@@ -1,4 +1,4 @@
-import { useEffect, useMemo, memo, useState } from 'react'
+import { useEffect, useMemo, memo, useState, Fragment } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -47,26 +47,34 @@ const BottomPanel = memo(() =>{
   )
 })
 
-export const App = () => {
+const VisibleApp = () => {
   const {mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL} = useSettingsStore()
+  useEffect(
+    () => {
+      dayjs.locale(locale)
+    },
+  [locale])
+
   const currentTheme = useMemo(
     () => {
       return createCustomTheme({mode, primaryColor, secondaryColor, backgroundColor})
     },
     [mode, primaryColor, secondaryColor, backgroundColor]
   )
-  useEffect(() => {
-    dayjs.locale(locale)
-  }
-           )
 
-  const backgroundTheme = (backgroundImageURL) ? {
+  const backgroundTheme = useMemo( () =>
+    (
+    (backgroundImageURL) ? {
     backgroundImage: `url("${backgroundImageURL}")`,
     backgroundSize: "cover",
-  } : {}
+    } : {}),
+    [backgroundImageURL]
+  )
+
+
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
+      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}} onKeyUp={console.log}>
         <Container maxWidth="xl">
           <Stack spacing={3}>
             <TopPanel/>
@@ -78,3 +86,34 @@ export const App = () => {
   );
 }
 
+
+const HotKeysProvider = () => {
+  useEffect(
+    () => {
+      const handleKeyUp = (event) => {
+        // console.log(event)
+        const {target, key} = event;
+        if (!target.localName === "body") {return}
+        switch (key) {
+        case "n":
+          break;
+        case "j":
+          break;
+        case "t":
+          break;
+        }
+      }
+      document.addEventListener("keyup", handleKeyUp)
+    }, []
+  )
+  return null
+}
+
+export const App = () => {
+  return (
+    <Fragment>
+      <HotKeysProvider/>
+      <VisibleApp/>
+    </Fragment>
+  )
+}
