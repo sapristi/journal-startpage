@@ -12,7 +12,7 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
   /* update curValue if the initial value was changed externally */
   useEffect(
     () => {
-        setCurValue(initial)
+      setCurValue(initial)
     },
     [initial]
   )
@@ -52,16 +52,17 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
           cancelChange()
         }
       }
-      return {curValue, active, handleChange, commitChange, cancelChange, handleClick, handleCancelAction}
-    }
+      return { handleChange, commitChange, cancelChange, handleClick, handleCancelAction}
+    },
+    [ curValue, handleCancelDraft, initial, isDraft, onChange]
   )
 
-  return {curValue, active, handleChange, commitChange, cancelChange, handleClick, handleCancelAction}
+  return {curValue, active, handleChange, commitChange, handleClick, handleCancelAction}
 }
 
 export const EditableInput = ({
-    value, onChange, Component, componentProps, textFieldProps,
-    isDraft, handleCancelDraft, placeholder
+  value, onChange, Component, componentProps, textFieldProps,
+  isDraft, handleCancelDraft, placeholder
 }) => {
   const {curValue, active, handleChange, commitChange, handleClick, handleCancelAction} = useEditableState(
     {initial: value, onChange, isDraft, handleCancelDraft}
@@ -78,16 +79,16 @@ export const EditableInput = ({
   }
   if (active) {
     return <TextField type="text"
-                      value={curValue}
-                      onChange={handleChange}
-                      onBlur={commitChange}
-                      autoFocus
-                      variant="standard"
-                      onKeyPress={handleKeyPress}
-                      onKeyUp={handleKeyUp}
-                      fullWidth
-                      {...textFieldProps}
-           />
+                           value={curValue}
+                           onChange={handleChange}
+                           onBlur={commitChange}
+                           autoFocus
+                           variant="standard"
+                           onKeyPress={handleKeyPress}
+                           onKeyUp={handleKeyUp}
+                           fullWidth
+                           {...textFieldProps}
+                 />
   } else {
     return <Component {...componentProps} onDoubleClick={handleClick}>{value}</Component>
   }
@@ -104,18 +105,22 @@ const mdComponents = {
 }
 
 
+export const Markdown = ({children}) => {
+  return <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={mdComponents}
+      >{children}</ReactMarkdown>
+}
+
 
 export const EditableMarkdown = (props) => {
-    const Component = ({children, onDoubleClick}) => (
-        <div
-          onDoubleClick={onDoubleClick}
-            style={{ flexGrow: 1 }}
-        >
-            <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={mdComponents}
-            >{children}</ReactMarkdown>
-        </div>
-    )
-    return <EditableInput {...props} textFieldProps={{multiline: true, ...props.textFieldProps}} Component={Component}/>
+  const Component = ({children, onDoubleClick}) => (
+    <div
+      onDoubleClick={onDoubleClick}
+      style={{ flexGrow: 1 }}
+    >
+      <Markdown>{children}</Markdown>
+    </div>
+  )
+  return <EditableInput {...props} textFieldProps={{multiline: true, ...props.textFieldProps}} Component={Component}/>
 }

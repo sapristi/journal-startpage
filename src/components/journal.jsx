@@ -1,42 +1,20 @@
 import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Divider, Stack, TextField} from '@mui/material';
+import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
 
 import {MainPaper, CardList} from "./base"
 import {EditableMarkdown} from "./editable"
 import {DateElem} from './date_elem'
-import { getTimestamp} from 'utils'
+import { getTimestamp, helpText} from 'utils'
 import { displayDate} from 'utils/locales'
 import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
-import { Button} from "components/base"
 
 const initData = {
   0: {
     date: getTimestamp(),
-    content: `
-# Welcome to Journal Startpage !
-
-## Features
-
-- Task list
-- Journal entries
-
-See [source and more](https://github.com/sapristi/journal-startpage).
-
-## How to use
-
-- Double click to edit
-- Ctrl+Enter to validate (or click outside)
-- Escape to cancel edition
-
-## Shortcuts
-
-- \`j\` to create a new journal entry
-- \`n\` to create a new note
-- \`t\` to create a new task
-`
+    content: "# Welcome to Journal Startpage !\n" + helpText
   }
 }
 
@@ -81,7 +59,7 @@ const extractEntries = (entries, search) => {
   const nonDeleted = Object.entries(entries).filter(
     ([key, value]) => (
       value !== null &&
-      !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
+        !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
     )
   )
   nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.date - value1.date})

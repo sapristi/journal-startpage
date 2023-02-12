@@ -3,11 +3,12 @@ import {Paper, Typography, Stack, Switch,  MenuItem, Divider, Button, TextField,
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
-import {makeLogger, isEmpty} from 'utils'
+import {makeLogger, helpText} from 'utils'
 import {locales} from 'utils/locales'
 import {ActionsPanel} from "./actions"
 import {Select} from "components/select"
 import {FileUpload} from "components/file_upload"
+import {Markdown} from "components/editable"
 
 const log = makeLogger("Settings component")
 const { version } = require('../../package.json');
@@ -86,6 +87,18 @@ const BackgroundPicker = () => {
   )
 }
 
+const HelpPanel = () => {
+  return (
+    <Paper elevation={4} sx={{padding: "20px"}}>
+    <Stack spacing={3}>
+    <Typography component="h2" variant="h4">About</Typography>
+
+    <Markdown>{helpText}</Markdown>
+
+    </Stack>
+    </Paper>
+  )
+}
 
 export const SettingsPanel = () => {
   return (
@@ -107,7 +120,7 @@ export const SettingsPanel = () => {
             </Stack>
           </Paper>
           <ActionsPanel/>
-
+          <HelpPanel/>
         </Stack>
       </Stack>
       <Typography sx={{padding: "10px"}}>Version: {version}</Typography>

@@ -7,7 +7,7 @@ This browser extension provides a startpage with productivity tools.  [Try it !]
 
 Tools:
  - journal
- - notes
+ - notes (textual or tabular)
  - tasks
  - display calendar
 
@@ -46,6 +46,7 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 - select locale
 - Search journal
 - browser sync storage
+- tabular notes
 
 # Develop
 
