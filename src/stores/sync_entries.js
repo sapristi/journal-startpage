@@ -14,13 +14,6 @@ const makeOperators = (name, setState, log) => {
         [key]: value,
       }
     )
-    if (process.env.REACT_APP_USE_LOCALSTORAGE) {
-      setState(state => (
-        {
-          ...state,
-          [key]: value,
-        }))
-    }
   }
 
   const addEntry = (value) => {
@@ -59,6 +52,7 @@ export const useSyncEntriesStore = ({name, initData}) => {
 
   function updateOnChange(changes) {
 
+    log("CHANGES", changes)
     const changedEntries = []
     const removedEntries = []
     for (const [key,value] of Object.entries(changes)) {

@@ -1,3 +1,5 @@
+import {mapObject, makeLogger} from 'utils'
+
 const parse_safe = (value) => {
   try {
     return JSON.parse(value)
@@ -7,6 +9,7 @@ const parse_safe = (value) => {
 }
 
 const makeLocalStorageAdapter = () => {
+  const log = makeLogger("LocalStorage Adapter")
   const get = (arg, callback) => {
     if (!arg) {
       callback(Object.fromEntries(
@@ -40,12 +43,13 @@ const makeLocalStorageAdapter = () => {
         localStorage.setItem(key, JSON.stringify(value))
       }
     )
-    const event = Object.entries(obj).map(
-      ([key, value]) => ({
+    const event = mapObject(
+      obj,
+      ([key, value]) => ([key, {
         oldValue: localStorage.getItem(key),
         newValue: value
-      })
-    )
+      }]))
+    // log("SET EVENT", event)
     for (const callback of callbacks) {
       callback(event)
     }
@@ -61,6 +65,7 @@ const makeLocalStorageAdapter = () => {
       ).map(
         ([key, value]) => ([key, {oldValue: value}])
       ))
+    // log("REMOVE EVENT", event)
     for (const callback of callbacks) {
       callback(event)
     }
