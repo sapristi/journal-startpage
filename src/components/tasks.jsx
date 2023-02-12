@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {  Button, Paper, Typography, Divider , Checkbox, Stack } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Paper, Typography, Divider , Checkbox, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import {EditableMarkdown} from "./editable"
-import {MainPaper, CardList} from "./base"
+import {MainPaper, CardList, Button, IconButton} from "./base"
 import {useSyncEntriesStore} from 'stores/sync_entries'
 
 const initData = {
@@ -53,7 +53,7 @@ const Task = ({entryKey, state, setEntry, removeEntry}) => {
                             textFieldProps={{ placeholder: "To do" }}
           />
         </div>
-        <Button onClick={handleDelete}><ClearIcon/></Button>
+        <IconButton onClick={handleDelete}><DeleteIcon/></IconButton>
       </Stack>
     </Paper>
   )

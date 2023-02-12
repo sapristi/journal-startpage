@@ -1,27 +1,40 @@
 import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
-
-import {MainPaper, CardList} from "./base"
-import {EditableMarkdown, EditableInput} from "./editable"
-import {DateElem} from './date_elem'
+import {Paper, Typography, Divider, Stack, TextField} from '@mui/material';
+import {MainPaper, CardList} from "components/base"
+import {EditableMarkdown, EditableInput} from "components/editable"
+import {DateElem} from 'components/date_elem'
 import { getTimestamp} from 'utils'
 import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
 
+import {TabularNoteBody} from "./table"
+import { Button} from "components/base"
 
-const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
 
-    const {lastModified, content, title, isDraft} = state
+const TextualNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
+  const { content, isDraft} = state
   const handleContentChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
       content: newValue,
-        lastModified: getTimestamp(),
-        isDraft: false
+      lastModified: getTimestamp(),
+      isDraft: false
     })
   }
+  return (
+    <EditableMarkdown value={content} onChange={handleContentChange}
+                      isDraft={isDraft} handleCancelDraft={handleDelete}
+                      textFieldProps={{ placeholder: "..." }}
+    />
+
+  )
+}
+
+const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
+
+  const {lastModified, title, type} = state
   const handleTitleChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
@@ -29,6 +42,7 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
       lastModified: getTimestamp()
     })
   }
+  const BodyComponent = (type === "table")? TabularNoteBody : TextualNoteBody
 
   const handleDelete = () => {removeEntry(entryKey)}
 
@@ -51,9 +65,8 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
           </div>
         </Stack>
         <Divider/>
-        <EditableMarkdown value={content} onChange={handleContentChange}
-                          isDraft={isDraft} handleCancelDraft={handleDelete}
-                          textFieldProps={{ placeholder: "..." }}
+        <BodyComponent entryKey={entryKey} state={state} setEntry={setEntry}
+                         handleDelete={handleDelete}
         />
       </Stack>
     </Paper>
@@ -61,14 +74,28 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
 })
 
 const extractEntries = (entries, search) => {
-  const nonDeleted = Object.entries(entries).filter(
-    ([key, value]) => (
-      value !== null &&
-        !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
+  let selected
+  if (search === "") {
+    selected = Object.entries(entries).filter(
+      ([key, value]) => (
+        value !== null
+          && !value.deleted
+      )
     )
-  )
-  nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.lastModified - value1.lastModified})
-  return nonDeleted
+  } else {
+    selected = Object.entries(entries).filter(
+      ([key, value]) => (
+        value !== null
+          && !value.deleted
+          && (
+            value.title.toLowerCase().includes(search.toLowerCase())
+              || (value.type !== "table" && value.content.toLowerCase().includes(search.toLowerCase()))
+          )
+      )
+    )
+  }
+  selected.sort(([key1, value1], [key2, value2])=> {return value2.lastModified - value1.lastModified})
+  return selected
 }
 export const Notes = () => {
   const {switchActiveTab} = useTransientSettings()
@@ -90,7 +117,16 @@ export const Notes = () => {
     content: "",
     lastModified: getTimestamp(),
     isDraft: true,
+    type: "note",
   })
+  const addEmptyTabularEntry = () => addEntry({
+    title: "New table",
+    columns: ["Name", "Value"],
+    rows: [],
+    lastModified: getTimestamp(),
+    type: "table",
+  })
+
   return (
     <MainPaper>
       <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -101,6 +137,7 @@ export const Notes = () => {
         </div>
       </div>
       <Button onClick={addEmptyEntry}>Add note</Button>
+      <Button onClick={addEmptyTabularEntry}>Add table note</Button>
       <CardList>
         {
           extractedEntries.map( ([entryKey, entry]) =>

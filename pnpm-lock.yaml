@@ -6,6 +6,7 @@ specifiers:
   '@emotion/styled': ^11.10.5
   '@mui/icons-material': ^5.11.0
   '@mui/material': ^5.11.7
+  '@mui/x-data-grid': ^5.17.23
   '@mui/x-date-pickers': ^5.0.13
   dayjs: ^1.11.7
   immer: ^9.0.17
@@ -30,6 +31,7 @@ dependencies:
   '@emotion/styled': 11.10.5_hp5f5nkljdiwilp4rgxyefcplu
   '@mui/icons-material': 5.11.0_gcc4slj53ya266xgbug43l7pri
   '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
+  '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
   '@mui/x-date-pickers': 5.0.13_hbec2hdowikcxry2p3aoafufcm
   dayjs: 1.11.7
   immer: 9.0.17
@@ -2346,6 +2348,25 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-is: 18.2.0
+    dev: false
+
+  /@mui/x-data-grid/5.17.23_juhrskmuvyorwpajghq6zhdw2q:
+    resolution: {integrity: sha512-vCGHiwUp479S/5Le+8zpeJ6hBRVYcP/F0Wbai2rk0VoP6q5ZKPcJ08jdlax62QsIAkmGY67jhXMEQeq43lobqw==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.4.1
+      '@mui/system': ^5.4.1
+      react: ^17.0.2 || ^18.0.0
+      react-dom: ^17.0.2 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
+      '@mui/utils': 5.11.7_react@18.2.0
+      clsx: 1.2.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      reselect: 4.1.7
     dev: false
 
   /@mui/x-date-pickers/5.0.13_hbec2hdowikcxry2p3aoafufcm:
@@ -11151,6 +11172,10 @@ packages:
 
   /requires-port/1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+    dev: false
+
+  /reselect/4.1.7:
+    resolution: {integrity: sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==}
     dev: false
 
   /resolve-alpn/1.2.1:

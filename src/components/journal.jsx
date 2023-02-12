@@ -1,7 +1,7 @@
 import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
+import {Paper, Typography, Divider, Stack, TextField} from '@mui/material';
 
 import {MainPaper, CardList} from "./base"
 import {EditableMarkdown} from "./editable"
@@ -10,6 +10,7 @@ import { getTimestamp} from 'utils'
 import { displayDate} from 'utils/locales'
 import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
+import { Button} from "components/base"
 
 const initData = {
   0: {
