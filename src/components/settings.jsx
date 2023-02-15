@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {Paper, Typography, Stack, Switch,  MenuItem, Divider, Button, TextField, InputLabel, FormControl} from '@mui/material';
+import {Paper, Typography, Stack, Switch,  MenuItem, Divider} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
@@ -9,6 +9,9 @@ import {ActionsPanel} from "./actions"
 import {Select} from "components/select"
 import {FileUpload} from "components/file_upload"
 import {Markdown} from "components/editable"
+
+import {ActionInput} from "components/base"
+import SaveIcon from '@mui/icons-material/Save';
 
 const log = makeLogger("Settings component")
 const { version } = require('../../package.json');
@@ -67,7 +70,11 @@ const BackgroundPicker = () => {
   let secondaryInput = null;
   if (backgroundType === "url") {
     secondaryInput = (
-      <TextField value={backgroundImageURL} onChange={handleUrlChange} label="Background Image URL"/>
+      <ActionInput value=""
+                   action={value => setValue("backgroundImageURL", value)}
+                   Icon={SaveIcon}
+                   label="Background image url"
+      />
     )
   } else if (backgroundType === "file"){
     secondaryInput = (
