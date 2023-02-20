@@ -1,9 +1,9 @@
 import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Button, Divider, Stack, TextField} from '@mui/material';
+import {Typography, Button, Divider, Stack, TextField} from '@mui/material';
 
-import {MainPaper, CardList} from "./base"
+import {CardList, BackgroundPaper, ForegroundPaper} from "./base"
 import {EditableMarkdown} from "./editable"
 import {DateElem} from './date_elem'
 import { getTimestamp, helpText} from 'utils'
@@ -34,7 +34,7 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
   const handleDelete = () => {removeEntry(entryKey)}
 
   return (
-    <Paper elevation={8} sx={{p: 1, pl: 2}}>
+    <ForegroundPaper sx={{p: 1, pl: 2}}>
       <Stack>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <div>
@@ -51,7 +51,7 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
                           textFieldProps={{placeholder: "Dear diary, today I..."}}
         />
       </Stack>
-    </Paper>
+    </ForegroundPaper>
   )
 })
 
@@ -83,7 +83,7 @@ export const Journal = () => {
 
   const addEmptyEntry = () => addEntry({isDraft: true, content: ""})
   return (
-    <MainPaper>
+    <BackgroundPaper style={{padding: "20px"}}>
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <Typography component="h1" variant="h3">Journal</Typography>
         <div>
@@ -105,6 +105,6 @@ export const Journal = () => {
           )
         }
       </CardList>
-    </MainPaper>
+    </BackgroundPaper>
   )
 }

@@ -1,8 +1,8 @@
 import React, {useState, memo} from 'react';
 
 import ClearIcon from '@mui/icons-material/Clear';
-import {Paper, Typography, Divider, Stack, TextField} from '@mui/material';
-import {MainPaper, CardList} from "components/base"
+import {Typography, Divider, Stack, TextField} from '@mui/material';
+import {CardList, BackgroundPaper, ForegroundPaper} from "components/base"
 import {EditableMarkdown, EditableInput} from "components/editable"
 import {DateElem} from 'components/date_elem'
 import { getTimestamp} from 'utils'
@@ -47,7 +47,7 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
   const handleDelete = () => {removeEntry(entryKey)}
 
   return (
-    <Paper elevation={8} sx={{p: 1, pl: 2}}>
+    <ForegroundPaper sx={{p: 1, pl: 2}}>
       <Stack>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <div style={{flexGrow: 1}}>
@@ -69,7 +69,7 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
                          handleDelete={handleDelete}
         />
       </Stack>
-    </Paper>
+    </ForegroundPaper>
   )
 })
 
@@ -128,7 +128,7 @@ export const Notes = () => {
   })
 
   return (
-    <MainPaper>
+    <BackgroundPaper sx={{padding: "20px"}}>
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <Typography component="h1" variant="h3">Notes</Typography>
         <div>
@@ -151,6 +151,6 @@ export const Notes = () => {
           )
         }
       </CardList>
-    </MainPaper>
+    </BackgroundPaper>
   )
 }

@@ -1,9 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton} from '@mui/material';
 
-export const MainPaper = ({title, children, style, ...props}) => (
-  <Paper style={{padding: "20px", ...style}} elevation={5} {...props}>
-      {children}
+
+export const BackgroundPaper = ({children, ...props}) => (
+  <Paper elevation={1} {...props}>
+    {children}
+  </Paper>
+)
+
+export const ForegroundPaper = ({children, ...props}) => (
+  <Paper elevation={5} {...props}>
+    {children}
   </Paper>
 )
 
@@ -45,3 +52,4 @@ export const ActionInput = ({currentValue, action, textFieldProps, label, Icon})
     />
   )
 }
+

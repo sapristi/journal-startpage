@@ -3,11 +3,11 @@ import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Paper, Stack} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 
 import {Journal} from './components/journal'
 import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
-import {MainPaper} from './components/base'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
@@ -35,18 +35,21 @@ const BottomPanel = memo(() =>{
   const {settingsActive, activeTab} = useTransientSettings()
   return (
     settingsActive ?
+
+    <Grid xs={12}>
       <SettingsPanel/>
-      :
-      <Stack direction="row" spacing={3}>
-        <div style={{flexGrow: 0.5}}>
-          <Tasks/>
-        </div>
-        <div style={{flexGrow: 1}}>
-          {
-            (activeTab === "journal")? <Journal/>: <Notes/>
-          }
-        </div>
-      </Stack>
+    </Grid>
+    :
+    <>
+      <Grid xs={4}>
+        <Tasks/>
+      </Grid>
+      <Grid xs={8}>
+        {
+          (activeTab === "journal")? <Journal/>: <Notes/>
+        }
+      </Grid>
+    </>
   )
 })
 
@@ -79,10 +82,12 @@ const VisibleApp = () => {
     <ThemeProvider theme={currentTheme}>
       <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
         <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <TopPanel/>
+          <Grid container spacing={3}>
+            <Grid xs={12}>
+              <TopPanel/>
+            </Grid>
             <BottomPanel/>
-          </Stack>
+          </Grid>
         </Container>
       </Paper>
     </ThemeProvider>

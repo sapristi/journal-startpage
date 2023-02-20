@@ -9,7 +9,8 @@
     "192": "icon.svg"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "bookmarks"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

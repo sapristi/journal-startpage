@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {Paper, Typography, Stack, Switch,  MenuItem, Divider} from '@mui/material';
+import { Typography, Stack, Switch,  MenuItem, Divider} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
@@ -10,11 +10,11 @@ import {Select} from "components/select"
 import {FileUpload} from "components/file_upload"
 import {Markdown} from "components/editable"
 
-import {ActionInput} from "components/base"
+import {ActionInput, BackgroundPaper, ForegroundPaper} from "components/base"
 import SaveIcon from '@mui/icons-material/Save';
 
 const log = makeLogger("Settings component")
-const { version } = require('../../package.json');
+const { version } = require('../../../package.json');
 
 const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -96,26 +96,26 @@ const BackgroundPicker = () => {
 
 const HelpPanel = () => {
   return (
-    <Paper elevation={4} sx={{padding: "20px"}}>
-    <Stack spacing={3}>
-    <Typography component="h2" variant="h4">About</Typography>
+    <ForegroundPaper sx={{padding: "20px"}}>
+      <Stack spacing={3}>
+        <Typography component="h2" variant="h4">About</Typography>
 
-    <Markdown>{helpText}</Markdown>
+        <Markdown>{helpText}</Markdown>
 
-    </Stack>
-    </Paper>
+      </Stack>
+    </ForegroundPaper>
   )
 }
 
 export const SettingsPanel = () => {
   return (
-    <Paper elevation={3} sx={{padding: "20px"}}>
+    <BackgroundPaper sx={{padding: "20px"}}>
       <Stack spacing={3}>
         <Typography component="h1" variant="h3">Settings</Typography>
         <Divider/>
         <Stack direction="row" spacing={3}>
 
-          <Paper elevation={4} sx={{padding: "20px"}}>
+          <ForegroundPaper elevation={4} sx={{padding: "20px"}}>
             <Stack spacing={3}>
               <Typography component="h2" variant="h4">Appearance</Typography>
               <ModeSlider />
@@ -125,12 +125,12 @@ export const SettingsPanel = () => {
               <BackgroundPicker />
               <LocaleSelector />
             </Stack>
-          </Paper>
+          </ForegroundPaper>
           <ActionsPanel/>
           <HelpPanel/>
         </Stack>
       </Stack>
       <Typography sx={{padding: "10px"}}>Version: {version}</Typography>
-    </Paper>
+    </BackgroundPaper>
   )
 }

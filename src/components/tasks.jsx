@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Paper, Typography, Divider , Checkbox, Stack } from '@mui/material';
+import { Typography, Divider , Checkbox, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import {EditableMarkdown} from "./editable"
-import {MainPaper, CardList, Button, IconButton} from "./base"
+import { CardList, Button, IconButton, BackgroundPaper, ForegroundPaper} from "./base"
 import {useSyncEntriesStore} from 'stores/sync_entries'
 
 const initData = {
@@ -42,7 +42,7 @@ const Task = ({entryKey, state, setEntry, removeEntry}) => {
   }
   const textColor = (status === "done")? "text.disabled": "text.primary";
   return (
-    <Paper elevation={8} sx={{p: 1, pl: 2, color: textColor}}>
+    <ForegroundPaper sx={{p: 1, pl: 2, color: textColor}}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <div>
           <Checkbox sx={{p: 0, pr:1 }} onChange={switchStatus} checked={status==="done"} />
@@ -55,7 +55,7 @@ const Task = ({entryKey, state, setEntry, removeEntry}) => {
         </div>
         <IconButton onClick={handleDelete}><DeleteIcon/></IconButton>
       </Stack>
-    </Paper>
+    </ForegroundPaper>
   )
 }
 
@@ -105,15 +105,15 @@ export const Tasks = () => {
   const {todo, done} = extractTasks(entries)
   return (
 
-    <MainPaper style={{display: "flex", flexDirection: "column", gap: "20px"}}>
+    <BackgroundPaper sx={{display: "flex", flexDirection: "column", gap: "20px", padding: 2}}>
       <div>
-      <Typography variant="h3" component="h1">Tasks</Typography>
-      <Button onClick={addEmptyTask}>Add task</Button>
+        <Typography variant="h3" component="h1">Tasks</Typography>
+        <Button onClick={addEmptyTask}>Add task</Button>
         <Divider/>
       </div>
       <TasksList title={"Todo"} entries={todo} setEntry={setEntry} removeEntry={removeEntry} />
       <TasksList title={"Done"} entries={done} setEntry={setEntry} removeEntry={removeEntry} />
-    </MainPaper>
+    </BackgroundPaper>
   )
 }
 

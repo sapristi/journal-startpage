@@ -1,8 +1,10 @@
 import { useState, useEffect, memo } from 'react'
-import {Paper, Toolbar, Typography,  Switch} from '@mui/material';
+import {Toolbar, Typography,  Switch, Stack, Box} from '@mui/material';
 import {Calendar} from "./calendar"
+import {Bookmarks} from "./bookmarks"
 import {useTransientSettings} from "stores/transient"
 import {useSyncValue} from 'stores/sync'
+import {BackgroundPaper, ForegroundPaper} from "./base"
 
 const dayjs = require('dayjs')
 
@@ -17,10 +19,10 @@ const AutoUpdatingTimePanel = () => {
   }, []);
 
   return (
-    <>
+    <Box sx={{padding: 2}}>
       <Typography variant="h3">{dayjs().format("LT")}</Typography>
       <Typography variant="h4">{dayjs().format("dddd LL")}</Typography>
-    </>
+    </Box>
   )
 }
 
@@ -30,22 +32,18 @@ export const TopPanel = memo(() => {
   const {locale} = useSyncValue("settings")
   const {settingsActive, switchSettings} = useTransientSettings()
   return (
-    <Paper elevation={3}>
-      <Toolbar sx={{justifyContent: "space-between"}}>
-        <div style={{flexGrow: 1, display: "flex", flexDirection: "column"}}>
-          <div style={{flexGrow: 1}}>
-            <AutoUpdatingTimePanel/>
+    <BackgroundPaper>
+      <Stack direction="row" justifyContent="space-between">
+        <Stack direction="column" justifyContent="space-between">
+          <AutoUpdatingTimePanel/>
+          <div>
+            Settings
+            <Switch checked={settingsActive} onChange={switchSettings} label="Settings"/>
           </div>
-          <div style={{display: "flex", justyfyContent: "space-between"}}>
-            <div style={{flexGrow: 1}}/>
-            <div>
-              Settings
-              <Switch checked={settingsActive} onChange={switchSettings} label="Settings"/>
-            </div>
-          </div>
-        </div>
+        </Stack>
+        <Bookmarks/>
         <Calendar locale={locale}/>
-      </Toolbar>
-    </Paper>
+      </Stack>
+    </BackgroundPaper>
   )
 })
