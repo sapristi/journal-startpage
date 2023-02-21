@@ -1,6 +1,5 @@
 import React, {useState, memo} from 'react';
 
-import ClearIcon from '@mui/icons-material/Clear';
 import {Typography, Divider, Stack, TextField} from '@mui/material';
 import {CardList, BackgroundPaper, ForegroundPaper} from "components/base"
 import {EditableMarkdown, EditableInput} from "components/editable"
@@ -10,7 +9,7 @@ import {useSyncEntriesStore} from 'stores/sync_entries'
 import {useTransientSettings} from "stores/transient"
 
 import {TabularNoteBody} from "./table"
-import { Button} from "components/base"
+import { Button, DeleteButton } from "components/base"
 
 
 const TextualNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
@@ -61,7 +60,7 @@ const Note = memo(({entryKey, state, setEntry, removeEntry}) => {
             <Typography color="text.secondary"><DateElem timestamp={lastModified}/></Typography>
           </div>
           <div>
-            <Button onClick={handleDelete}><ClearIcon/></Button>
+            <DeleteButton onClick={handleDelete}/>
           </div>
         </Stack>
         <Divider/>

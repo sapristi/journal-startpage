@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton} from '@mui/material';
 
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const BackgroundPaper = ({children, ...props}) => (
   <Paper elevation={3} {...props}>
@@ -27,6 +28,11 @@ export const Button = ({children, ...props}) => {
 export const IconButton = ({children, ...props}) => {
   return <MuiIconButton color="primary" {...props}>{children}</MuiIconButton>
 }
+
+export const DeleteButton = (props) => {
+  return <IconButton {...props} variant="outlined" {...props}><DeleteIcon/></IconButton>
+}
+
 
 
 export const ActionInput = ({currentValue, action, textFieldProps, label, Icon}) => {

@@ -1,4 +1,4 @@
-import {Button} from '@mui/material';
+import {Button} from './base';
 import {Fragment} from "react"
 
 export const FileUpload = ({id, label, accept, handler, readerMethod}) => {
@@ -31,7 +31,7 @@ export const FileUpload = ({id, label, accept, handler, readerMethod}) => {
         onChange={handleFileUpload}
       />
       <label htmlFor={id}>
-        <Button variant="outlined" component="span" >
+        <Button  component="span" >
           {label}
         </Button>
       </label>

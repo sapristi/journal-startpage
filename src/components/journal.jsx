@@ -1,9 +1,8 @@
 import React, {useState, memo} from 'react';
 
-import ClearIcon from '@mui/icons-material/Clear';
-import {Typography, Button, Divider, Stack, TextField} from '@mui/material';
+import {Typography, Divider, Stack, TextField} from '@mui/material';
 
-import {CardList, BackgroundPaper, ForegroundPaper} from "./base"
+import {CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton} from "./base"
 import {EditableMarkdown} from "./editable"
 import {DateElem} from './date_elem'
 import { getTimestamp, helpText} from 'utils'
@@ -42,7 +41,7 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
             <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
           </div>
           <div>
-            <Button onClick={handleDelete}><ClearIcon/></Button>
+            <DeleteButton onClick={handleDelete}/>
           </div>
         </Stack>
         <Divider/>
