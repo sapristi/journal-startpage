@@ -1,19 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton} from '@mui/material';
-
 import DeleteIcon from '@mui/icons-material/Delete';
+import {useSettingsStore} from 'stores/settings'
 
-export const BackgroundPaper = ({children, ...props}) => (
-  <Paper elevation={3} {...props}>
-    {children}
-  </Paper>
-)
+export const BackgroundPaper = ({children, ...props}) => {
+  const {panelBlur} = useSettingsStore()
+  const sxProps = props.sx || {}
+  return (
+    <Paper elevation={3} {...props} sx={{...sxProps, backdropFilter: `blur(${panelBlur}px)`}}>
+      {children}
+    </Paper>
+  )
+}
 
-export const ForegroundPaper = ({children, ...props}) => (
-  <Paper elevation={6} {...props}>
-    {children}
-  </Paper>
-)
+export const ForegroundPaper = ({children, ...props}) => {
+  return (
+    <Paper elevation={6} {...props}>
+      {children}
+    </Paper>
+  )
+}
 
 export const CardList = ({children}) => (
   <Stack spacing={1}>

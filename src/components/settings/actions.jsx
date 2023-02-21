@@ -1,12 +1,12 @@
-import {Paper, Typography, Stack,  Button} from '@mui/material';
+import {Paper, Typography, Stack} from '@mui/material';
 import {saveFile, filterObject, makeLogger} from 'utils'
 import {storage} from 'stores/storage_adapter'
 import {FileUpload} from 'components/file_upload'
+import {Button} from 'components/base'
 
 const log = makeLogger("Actions")
 
-export const ActionsPanel = () => {
-
+export const JournalExport = () => {
   const handleJournalExport = () => {
     storage.get(null, obj => {
       log("GOT", obj)
@@ -16,7 +16,12 @@ export const ActionsPanel = () => {
       saveFile("journal.json", blob)
     })
   }
+  return (
+    <Button onClick={handleJournalExport} variant="contained">Export journal</Button>
+  )
+}
 
+export const JournalImport = () => {
   const handler = ({name, content}) => {
     const entries = JSON.parse(content)
     console.log(`Read json file '${name}'`)
@@ -31,13 +36,7 @@ export const ActionsPanel = () => {
   }
 
   return (
-    <Paper elevation={4} sx={{padding: "20px"}}>
-      <Stack spacing={3}>
-        <Typography component="h2" variant="h4">Actions</Typography>
-        <Button onClick={handleJournalExport} variant="outlined">Export journal</Button>
-        <FileUpload id="journal-import" label="Import Journal" accept="application/json" handler={handler}
-                    readerMethod="readAsBinaryString"/>
-      </Stack>
-    </Paper>
+    <FileUpload id="journal-import" label="Import Journal" accept="application/json" handler={handler}
+                readerMethod="readAsBinaryString" buttonProps={{variant: "contained", sx: {width: "100%"}}}/>
   )
 }

@@ -13,6 +13,7 @@ const initValue = {
   backgroundImageURL: "",
   bookmarksFolder: "Bookmarks Menu/Journal Startpage",
   locale: getBrowserLocale(),
+  panelBlur: 0,
 }
 
 
@@ -22,7 +23,7 @@ export const useSettingsStore = create(
       ...initValue,
       setValue: (key, value) => set(state => ({[key]: value})),
       switchMode: () => set(state => {
-        if (state.mode == "dark") {
+        if (state.mode === "dark") {
           return {
             mode: "light",
             backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()

@@ -1,7 +1,7 @@
 import {Button} from './base';
 import {Fragment} from "react"
 
-export const FileUpload = ({id, label, accept, handler, readerMethod}) => {
+export const FileUpload = ({id, label, accept, handler, readerMethod, buttonProps}) => {
 
   const handleFileUpload = (event) => {
     if (!event.target.files) {
@@ -31,7 +31,7 @@ export const FileUpload = ({id, label, accept, handler, readerMethod}) => {
         onChange={handleFileUpload}
       />
       <label htmlFor={id}>
-        <Button  component="span" >
+        <Button component="span" {...buttonProps} >
           {label}
         </Button>
       </label>
