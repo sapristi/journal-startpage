@@ -25,12 +25,12 @@ export const useSettingsStore = create(
         if (state.mode == "dark") {
           return {
             mode: "light",
-            background: new TinyColor(state.background).lighten(70).toString()
+            backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()
           }
         } else {
           return {
             mode: "dark",
-            background: new TinyColor(state.background).darken(70).toString()
+            backgroundColor: new TinyColor(state.backgroundColor).darken(70).toString()
           }
         }
       }),
