@@ -3,13 +3,13 @@ import {Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButto
 
 
 export const BackgroundPaper = ({children, ...props}) => (
-  <Paper elevation={1} {...props}>
+  <Paper elevation={3} {...props}>
     {children}
   </Paper>
 )
 
 export const ForegroundPaper = ({children, ...props}) => (
-  <Paper elevation={5} {...props}>
+  <Paper elevation={6} {...props}>
     {children}
   </Paper>
 )
