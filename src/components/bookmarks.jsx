@@ -47,7 +47,7 @@ export const Bookmarks = () => {
         bookmarks => {
           log("BOOKMARKS", bookmarks)
           if (bookmarks === null) {setBookmarks([]); return}
-          const selectedChildren = bookmarks.children.filter(
+          const selectedChildren = bookmarks[0].children.filter(
             child => child.type === "bookmark"
           )
           setBookmarks(selectedChildren)
