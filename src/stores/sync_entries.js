@@ -1,5 +1,5 @@
 import  {useState, useEffect, useMemo} from 'react';
-import {getTimestamp, getRandomId, makeLogger, filterObject, mapObject} from 'utils'
+import {getTimestamp, makeLogger, filterObject, mapObject} from 'utils'
 import {storage} from './storage_adapter'
 
 // TODO: factory to create the hook, so that the hook can be used at multiple places

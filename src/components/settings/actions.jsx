@@ -1,4 +1,3 @@
-import {Paper, Typography, Stack} from '@mui/material';
 import {saveFile, filterObject, makeLogger} from 'utils'
 import {storage} from 'stores/storage_adapter'
 import {FileUpload} from 'components/file_upload'

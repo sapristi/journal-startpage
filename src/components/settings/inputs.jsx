@@ -51,12 +51,8 @@ export const ControlledColorPicker = ({ propName}) => {
 
 export const BackgroundPicker = () => {
   const [backgroundType, setBackgroundType] = useState("color")
-  const {backgroundImageURL, setValue} = useSettingsStore()
+  const {setValue} = useSettingsStore()
 
-  const handleUrlChange = (event) => {
-    const newValue = event.target.value
-    setValue("backgroundImageURL", newValue)
-  }
   const handleFileChange = ({name, content}) => {
     setValue("backgroundImageURL", content)
   }

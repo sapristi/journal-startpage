@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton} from '@mui/material';
 import {DeleteIcon} from "icons"
 import {useSettingsStore} from 'stores/settings'
@@ -47,7 +47,7 @@ export const ActionInput = ({currentValue, action, textFieldProps, label, Icon})
   const handleClick = () => action(value)
   const adornment = (
     <InputAdornment position="end">
-      <IconButton onClick={handleClick} disabled={value == currentValue}>
+      <IconButton onClick={handleClick} disabled={value === currentValue}>
         <Icon/>
       </IconButton>
     </InputAdornment>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import ReactMarkdown from 'react-markdown';
-import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow, TableContainer} from '@mui/material';
+import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
 import remarkGfm from 'remark-gfm'
 import {makeLogger} from 'utils'
 const log = makeLogger("EditableComp")
@@ -20,7 +20,6 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
     handleChange,
     commitChange,
     handleClick,
-    cancelChange,
     handleCancelAction
   } = useMemo(
     () => {

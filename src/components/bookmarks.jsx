@@ -9,30 +9,12 @@ import {bookmarksApi} from 'utils/bookmarks_adapter'
 const log = makeLogger("bookmarks")
 
 
-const getSubTree = (tree, path) => {
-  log("Tree", tree, path)
-  if (path.length === 0) {return tree.children}
-  const [child_title, ...path_tail] = path
-  if (! tree.children) {return null}
-  for (const child of tree.children) {
-    if (child.title === child_title) {
-      return getSubTree(child, path_tail)
-    }
-  }
-  return null
-}
-
 export const Bookmark = ({title, url})=> {
   const imgSrc = `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=32`
   return (
     <ForegroundPaper sx={{ padding: 1, height: "min-content"}}>
       <Link href={url}>
-        {/* <Stack> */}
         <img src={imgSrc} alt={title}/>
-          {/* <Typography variant="caption" sx={{}}> */}
-          {/*   {title} */}
-          {/* </Typography> */}
-        {/* </Stack> */}
       </Link>
     </ForegroundPaper>
   )

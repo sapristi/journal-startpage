@@ -1,10 +1,10 @@
 import { useState, useEffect, memo } from 'react'
-import {Toolbar, Typography,  Switch, Stack, Box} from '@mui/material';
+import { Typography,  Switch, Stack, Box} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {useTransientSettings} from "stores/transient"
 import {useSyncValue} from 'stores/sync'
-import {BackgroundPaper, ForegroundPaper} from "./base"
+import {BackgroundPaper} from "./base"
 
 const dayjs = require('dayjs')
 
