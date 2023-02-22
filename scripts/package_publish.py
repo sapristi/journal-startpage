@@ -38,7 +38,7 @@ def update_json_file(version, filepath):
         json.dump(data, f, indent=2)
 
 def git(command: list[str], **kwargs):
-    sp.run(["git", *command], **kwargs, check=True)
+    return sp.run(["git", *command], **kwargs, check=True)
 
 def pnpm(command: list[str], **kwargs):
     sp.run(["pnpm", *command], **kwargs, check=True)
@@ -78,10 +78,29 @@ def print_header(*args):
     print()
 
 
+def checks():
+    """
+    Checks that the git state is clean, and we didn't put
+    the manifest in dev mode.
+    """
+    status_process = git(["status", "--porcelain"], capture_output=True)
+    if status_process.stdout:
+        print("ERROR Git status is not clean")
+        exit(1)
+
+    manifest = json.loads(MANIFEST.read_text())
+    if "content_security_policy" in  manifest:
+        print("ERROR Code was modified for a dev build")
+        exit(1)
+
+    print("All checks ok")
+    print()
+
 def main(
     version: str,
     channel: str
 ):
+    checks()
     print_header(f"Updating files with new version {version}")
     update_json_file(version, MANIFEST)
     update_json_file(version, "package.json")
