@@ -1,78 +1,62 @@
 const mockBookmarks = [{
   "id": "root________",
   "title": "",
-  "index": 0,
-  "dateAdded": 1664713841404,
   "type": "folder",
-  "dateGroupModified": 1676487364574,
   "children": [
     {
       "id": "menu________",
       "title": "Bookmarks Menu",
-      "index": 0,
-      "dateAdded": 1664713841404,
       "type": "folder",
-      "parentId": "root________",
-      "dateGroupModified": 1664713841670,
       "children": [
         {
-          "id": "tHj2BMXWj2yO",
+          "id": "folder_journal",
           "title": "Journal Startpage",
-          "index": 0,
-          "dateAdded": 1570993025970,
           "type": "folder",
-          "parentId": "menu________",
-          "dateGroupModified": 1670792585000,
           "children": [
             {
               "id": "Q7fnJC-tmZji",
               "title": "Firefox",
-              "index": 0,
-              "dateAdded": 1664478595712,
               "type": "bookmark",
               "url": "https://www.mozilla.org/fr/firefox/new/",
-              "parentId": "tHj2BMXWj2yO"
             },
             {
               "id": "IwSn26weZvae",
               "title": "",
-              "index": 5,
-              "dateAdded": 1528576183846,
               "type": "separator",
               "url": "data:",
-              "parentId": "menu________"
             },
             {
-              "id": "tHj2BMXWj2yO",
+              "id": "folder_test",
               "title": "Test folder",
-              "index": 0,
-              "dateAdded": 1570993025970,
               "type": "folder",
-              "parentId": "menu________",
-              "dateGroupModified": 1670792585000,
               "children": []
             },
             {
+              "id": "b1",
               "title": "Youtube",
               "type": "bookmark",
               "url": "https://www.youtube.com/",
             },
             {
+              "id": "b2",
               "title": "Reddit",
               "type": "bookmark",
               "url": "https://www.reddit.com/",
             },
             {
+              "id": "b3",
               "title": "Discord",
               "type": "bookmark",
               "url": "https://discord.com/app",
             },
             {
+              "id": "b4",
               "title": "Mastodon",
               "type": "bookmark",
               "url": "https://mastodon.social/explore",
             },
             {
+              "id": "b5",
               "title": "Stackoverflow",
               "type": "bookmark",
               "url": "https://stackoverflow.com/",
@@ -83,20 +67,8 @@ const mockBookmarks = [{
         {
           "id": "IwSn26weZvae",
           "title": "",
-          "index": 5,
-          "dateAdded": 1528576183846,
           "type": "separator",
           "url": "data:",
-          "parentId": "menu________"
-        },
-        {
-          "id": "tLYEl7uW6JDj",
-          "title": "",
-          "index": 11,
-          "dateAdded": 1519979270582,
-          "type": "separator",
-          "url": "data:",
-          "parentId": "menu________"
         },
       ]
     },
@@ -111,10 +83,27 @@ const makeBookmarksAdapter = () => {
       resolve(mockBookmarks)
     })
   }
-  return {getTree}
+  const getSubTreeInner = (id, tree) => {
+    if (tree.id === id) {return tree}
+    if (tree.type === "folder") {
+      for (const child of tree.children) {
+        const childRes = getSubTreeInner(id, child)
+        if (childRes != null) {return childRes}
+      }
+    }
+    return null
+  }
+  const getSubTree = (id) => {
+    return new Promise(resolve => {
+      const res = getSubTreeInner(id, mockBookmarks[0])
+      resolve(res)
+    })
+
+  }
+  return {getTree, getSubTree}
 }
 
-export const getBookmarksApi = () => {
+const getBookmarksApi = () => {
   if (process.env.REACT_APP_MOCK_BOOKMARKS === "true") {
     return makeBookmarksAdapter()
   } else {
@@ -122,4 +111,21 @@ export const getBookmarksApi = () => {
     return browser.bookmarks
     /* eslint-enable */
   }
+}
+
+export const bookmarksApi = getBookmarksApi()
+
+const extractFoldersRec = (treeItem,  result) => {
+
+  if (treeItem.type === "folder") {
+    result.push(treeItem)
+    for (const child of treeItem.children) {
+      extractFoldersRec(child, result)
+    }
+  }
+}
+export const extractFolders = (tree) => {
+  const result = []
+  extractFoldersRec(tree, result)
+  return result
 }

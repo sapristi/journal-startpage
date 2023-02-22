@@ -1,14 +1,13 @@
 import {useEffect, useState} from 'react'
-import {getBookmarksApi} from 'utils/bookmarks_adapter'
 import { Stack, Link} from '@mui/material';
 import {ForegroundPaper} from 'components/base'
 import {useSettingsStore} from 'stores/settings'
 import {makeLogger } from 'utils'
+import {bookmarksApi} from 'utils/bookmarks_adapter'
 
 
 const log = makeLogger("bookmarks")
 
-const bookmarksApi = getBookmarksApi()
 
 const getSubTree = (tree, path) => {
   log("Tree", tree, path)
@@ -44,14 +43,11 @@ export const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([])
   useEffect(
     () => {
-      bookmarksApi.getTree().then(
-
+      bookmarksApi.getSubTree(bookmarksFolder).then(
         bookmarks => {
-          log("All Bookmarks", bookmarks)
-          const allChildren = getSubTree(bookmarks[0], bookmarksFolder.split("/"))
-          log("children", allChildren)
-          if (! allChildren) return 
-          const selectedChildren = allChildren.filter(
+          log("BOOKMARKS", bookmarks)
+          if (bookmarks === null) {setBookmarks([]); return}
+          const selectedChildren = bookmarks.children.filter(
             child => child.type === "bookmark"
           )
           setBookmarks(selectedChildren)
@@ -65,7 +61,11 @@ export const Bookmarks = () => {
   if (!bookmarks) {return null}
   return (
     <Stack direction="row" sx={{flexWrap: "wrap", gap:2, rowGap: 2}} alignContent="center">
-      {bookmarks.map(Bookmark)}
+      {
+        bookmarks.map(bookmark =>
+          <Bookmark key={bookmark.id} title={bookmark.title} url={bookmark.url}/>
+        )
+      }
     </Stack>
   )
 }

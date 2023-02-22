@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import { Typography, Stack, Switch,  MenuItem, Slider, Box} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
@@ -8,6 +8,7 @@ import {Select} from "components/select"
 import {FileUpload} from "components/file_upload"
 import {ActionInput} from "components/base"
 import SaveIcon from '@mui/icons-material/Save';
+import {bookmarksApi, extractFolders} from 'utils/bookmarks_adapter'
 
 export const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -88,13 +89,27 @@ export const BackgroundPicker = () => {
 }
 
 export const BookmarksFolderPicker = () => {
+  const [choices, setChoices] = useState([])
   const {bookmarksFolder, setValue} = useSettingsStore()
+  useEffect(() => {
+    bookmarksApi.getTree().then(
+      tree => {
+        const folders = extractFolders(tree[0])
+        const newChoices = folders.map(folder => ({id: folder.id, name: folder.title}))
+        setChoices(newChoices)
+      }
+    )
+  }, [setChoices])
+
+  const setBookmarksFolder = newValue => {setValue("bookmarksFolder", newValue)}
+
   return (
-    <ActionInput value={bookmarksFolder}
-                 action={value => setValue("bookmarksFolder", value)}
-                 Icon={SaveIcon}
-                 label="Bookmarks folder"
-    />
+    <Select value={bookmarksFolder} handleChange={setBookmarksFolder} label="Bookmarks folder">
+      <MenuItem value="">Disabled</MenuItem>
+      {
+        choices.map(choice => <MenuItem key={choice.id} value={choice.id}>{choice.name}</MenuItem>)
+      }
+    </Select>
   )
 }
 

@@ -11,7 +11,7 @@ const initValue = {
   secondaryColor: "#DD0033",
   mode: "dark",
   backgroundImageURL: "",
-  bookmarksFolder: "Bookmarks Menu/Journal Startpage",
+  bookmarksFolder: "",
   locale: getBrowserLocale(),
   panelBlur: 0,
 }
