@@ -55,15 +55,15 @@ const ActionsPanel = () => (
 
 export const SettingsPanel = () => {
   return (
-    <BackgroundPaper sx={{p: 3}}>
+    <BackgroundPaper>
       <Stack spacing={1}>
         <Typography component="h1" variant="h3">Settings</Typography>
         <Divider/>
-        <Grid container spacing={3}>
-          <Grid xs={3}><AppearancePanel/></Grid>
+        <Grid container spacing={3} p={0}>
+          <Grid xs={3} sx={{paddingLeft: 0}}><AppearancePanel/></Grid>
           <Grid xs={3}><PersonalPanel/></Grid>
           <Grid xs={3}><ActionsPanel/></Grid>
-          <Grid xs={3}><HelpPanel/></Grid>
+                  <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
         </Grid>
       </Stack>
       <Typography sx={{padding: "10px"}}>Version: {version}</Typography>

@@ -1,14 +1,15 @@
-import React, {useState, memo} from 'react';
+import React, { useState, memo } from 'react';
 
-import {Typography, Divider, Stack, TextField} from '@mui/material';
+import { Typography, Divider, Stack, TextField } from '@mui/material';
 
-import {CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton} from "./base"
-import {EditableMarkdown} from "./editable"
-import {DateElem} from './date_elem'
-import { getTimestamp, helpText} from 'utils'
-import { displayDate} from 'utils/locales'
-import {useSyncEntriesStore} from 'stores/sync_entries'
-import {useTransientSettings} from "stores/transient"
+import { CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton, IconButton } from "./base"
+import { EditableMarkdown } from "./editable"
+import { DateElem } from './date_elem'
+import { getTimestamp, helpText } from 'utils'
+import { displayDate } from 'utils/locales'
+import { useSyncEntriesStore } from 'stores/sync_entries'
+import { useTransientSettings } from "stores/transient"
+import { AddBoxIcon } from "icons"
 
 const initData = {
   0: {
@@ -20,9 +21,9 @@ const initData = {
 
 
 
-const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
+const Entry = memo(({ entryKey, state, setEntry, removeEntry }) => {
 
-  const {date, content, isDraft} = state
+  const { date, content, isDraft } = state
   const handleContentChange = (newValue) => {
     setEntry(entryKey, {
       ...state,
@@ -30,24 +31,24 @@ const Entry = memo(({entryKey, state, setEntry, removeEntry}) => {
       isDraft: false,
     })
   }
-  const handleDelete = () => {removeEntry(entryKey)}
+  const handleDelete = () => { removeEntry(entryKey) }
 
   return (
-    <ForegroundPaper sx={{p: 1, pl: 2}}>
+    <ForegroundPaper sx={{ p: 1, pl: 2 }}>
       <Stack>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <div>
             <Typography variant="h5">{displayDate(date)}</Typography>
-            <Typography color="text.secondary"><DateElem timestamp={date}/></Typography>
+            <Typography color="text.secondary"><DateElem timestamp={date} /></Typography>
           </div>
           <div>
-            <DeleteButton onClick={handleDelete}/>
+            <DeleteButton onClick={handleDelete} />
           </div>
         </Stack>
-        <Divider/>
+        <Divider />
         <EditableMarkdown value={content} onChange={handleContentChange}
-                          isDraft={isDraft} handleCancelDraft={handleDelete}
-                          textFieldProps={{placeholder: "Dear diary, today I..."}}
+          isDraft={isDraft} handleCancelDraft={handleDelete}
+          textFieldProps={{ placeholder: "Dear diary, today I..." }}
         />
       </Stack>
     </ForegroundPaper>
@@ -58,16 +59,16 @@ const extractEntries = (entries, search) => {
   const nonDeleted = Object.entries(entries).filter(
     ([key, value]) => (
       value !== null &&
-        !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
+      !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
     )
   )
-  nonDeleted.sort(([key1, value1], [key2, value2])=> {return value2.date - value1.date})
+  nonDeleted.sort(([key1, value1], [key2, value2]) => { return value2.date - value1.date })
   return nonDeleted
 }
 
 export const Journal = () => {
-  const {switchActiveTab} = useTransientSettings()
-  const {entries, setEntry, addEntry, removeEntry} = useSyncEntriesStore(
+  const { switchActiveTab } = useTransientSettings()
+  const { entries, setEntry, addEntry, removeEntry } = useSyncEntriesStore(
     {
       name: "journal",
       initData
@@ -80,30 +81,35 @@ export const Journal = () => {
 
   const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addEntry({isDraft: true, content: ""})
+  const addEmptyEntry = () => addEntry({ isDraft: true, content: "" })
   return (
-    <BackgroundPaper style={{padding: "20px"}}>
-      <div style={{display: "flex", justifyContent: "space-between"}}>
-        <Typography component="h1" variant="h3">Journal</Typography>
-        <div>
-          <Button onClick={switchActiveTab}>Show Notes</Button>
-          <TextField label="search" value={search} onChange={handleSearchChange} />
-        </div>
-      </div>
-      <Button onClick={addEmptyEntry}>Add entry</Button>
-      <CardList>
-        {
-          extractedEntries.map( ([entryKey, entry]) =>
-            <Entry
-              key={entryKey}
-              entryKey={entryKey}
-              setEntry={setEntry}
-              removeEntry={removeEntry}
-              state={entry}
-            />
-          )
-        }
-      </CardList>
+    <BackgroundPaper>
+      <Stack spacing={1}>
+        <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography component="h1" variant="h3">Journal</Typography>
+            <IconButton onClick={addEmptyEntry}><AddBoxIcon /></IconButton>
+          </Stack>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Button onClick={switchActiveTab}>Show Notes</Button>
+            <TextField label="search" value={search} onChange={handleSearchChange} />
+          </Stack>
+        </Stack>
+        <Divider />
+        <CardList>
+          {
+            extractedEntries.map(([entryKey, entry]) =>
+              <Entry
+                key={entryKey}
+                entryKey={entryKey}
+                setEntry={setEntry}
+                removeEntry={removeEntry}
+                state={entry}
+              />
+            )
+          }
+        </CardList>
+      </Stack>
     </BackgroundPaper>
   )
 }
