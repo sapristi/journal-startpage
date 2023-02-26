@@ -2,7 +2,7 @@ import { useEffect, useMemo, memo, Fragment } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Container, Paper} from '@mui/material';
+import {Container, Paper, Box} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import {Journal} from './components/journal'
@@ -27,6 +27,9 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}
         paper: backgroundColor,
         default: backgroundColor
       }
+    },
+    shape: {
+      borderRadius: 4
     }
   })
 }
@@ -80,7 +83,7 @@ const VisibleApp = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Paper sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
+      <Box sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
         <Container maxWidth="xl">
           <Grid container spacing={3}>
             <Grid xs={12}>
@@ -89,7 +92,7 @@ const VisibleApp = () => {
             <BottomPanel/>
           </Grid>
         </Container>
-      </Paper>
+      </Box>
     </ThemeProvider>
   );
 }

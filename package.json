@@ -11,6 +11,7 @@
     "@mui/material": "^5.11.7",
     "@mui/x-data-grid": "^5.17.23",
     "@mui/x-date-pickers": "^5.0.13",
+    "@tabler/icons-react": "^2.5.0",
     "dayjs": "^1.11.7",
     "immer": "^9.0.17",
     "lodash": "^4.17.21",

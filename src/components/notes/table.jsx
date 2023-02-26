@@ -1,11 +1,9 @@
 import React, {Fragment} from 'react';
 import {MenuItem , Divider, Stack} from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { DataGrid,  GridColumnMenuContainer } from '@mui/x-data-grid';
+import { DataGrid,  GridColumnMenuContainer, GridFooter } from '@mui/x-data-grid';
 import { getTimestamp, mapObject, filterObject} from 'utils'
 import {ActionInput, Button, IconButton} from "components/base"
+import {SaveIcon, AddIcon, DeleteIcon, IconColumnInsertRight } from 'icons';
 
 const RenameColumnInput = ({currentValue, renameColumn}) => {
   return <ActionInput
@@ -44,6 +42,12 @@ const renderActionsColumn = ({params, removeRow}) => {
   };
 
   return <IconButton onClick={onClick}><DeleteIcon/></IconButton>;
+}
+
+
+const CustomFooter = (props) => {
+  console.log("Footer", props)
+  return <GridFooter/>
 }
 
 export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
@@ -123,7 +127,8 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
           columns={[...cols, deleteButtonCol]}
           rows={rows}
           components={{
-            ColumnMenu: CustomMenu
+            ColumnMenu: CustomMenu,
+            Footer: CustomFooter
           }}
           componentsProps={{
             columnMenu: {

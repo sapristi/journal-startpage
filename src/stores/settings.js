@@ -6,14 +6,14 @@ import {getBrowserLocale} from 'utils/locales'
 const dayjs = require('dayjs')
 
 const initValue = {
-  backgroundColor: "rgb(18, 18, 18)",
-  primaryColor: "rgb(96, 125, 139)",
+  backgroundColor: "rgba(32, 39, 64, 0.44)",
+  primaryColor: "rgb(104, 209, 224)",
   secondaryColor: "#DD0033",
   mode: "dark",
-  backgroundImageURL: "",
+  backgroundImageURL: "https://raw.githubusercontent.com/sapristi/journal-startpage/master/assets/wallpaper_2.jpg",
   bookmarksFolder: "",
   locale: getBrowserLocale(),
-  panelBlur: 0,
+  panelBlur: 4,
 }
 
 

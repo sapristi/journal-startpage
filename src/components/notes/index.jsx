@@ -9,7 +9,7 @@ import { useSyncEntriesStore } from 'stores/sync_entries'
 import { useTransientSettings } from "stores/transient"
 
 import { TabularNoteBody } from "./table"
-import { AddBoxIcon } from "icons"
+import { AddBoxIcon , IconTableAdd} from "icons"
 import TableViewIcon from '@mui/icons-material/TableView';
 
 const TextualNoteBody = ({ entryKey, state, setEntry, handleDelete }) => {
@@ -134,7 +134,7 @@ export const Notes = () => {
             <Typography component="h1" variant="h3">Notes</Typography>
 
             <IconButton onClick={addEmptyEntry}><AddBoxIcon /></IconButton>
-            <IconButton onClick={addEmptyTabularEntry}><TableViewIcon /></IconButton>
+            <IconButton onClick={addEmptyTabularEntry}><IconTableAdd /></IconButton>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button onClick={switchActiveTab}>Show Journal</Button>
