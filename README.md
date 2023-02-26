@@ -10,27 +10,25 @@ Tools:
  - notes (textual or tabular)
  - tasks
  - display calendar
+ - show bookmarks from selected folder
 
-It uses your browser sync storage, so that your data is safely backed-up.
+It uses your browser sync storage, so that your data is safely backed-up, and can be shared between 
 
 - [Mozilla add-on](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)
 
 
-Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/elegant-startage-new-tab/)
+**Credit:**
+
+- Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/elegant-startage-new-tab/)
+- Default wallpaper from https://www.publicdomainpictures.net/fr/view-image.php?image=85030&picture=blue-sunset-wallpaper
 
 ## Roadmap
 
 ### Todo
 
 - **Short term:**
-  - bookmarks
   - Reorder tasks
   - double click to delete entry
-  - improve apperance customization:
-     - background color (different than paper color)
-     - blur
-     - roundness ?
-     - also better defaults
 
 - **Long term**
   - rework journal:
@@ -47,6 +45,7 @@ Inspired by [Elegant New Tab](https://addons.mozilla.org/en-US/firefox/addon/ele
 - Search journal
 - browser sync storage
 - tabular notes
+- bookmarks
 
 # Develop
 
