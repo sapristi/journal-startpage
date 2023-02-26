@@ -1,9 +1,9 @@
 import React, {Fragment} from 'react';
 import {MenuItem , Divider, Stack} from '@mui/material';
-import { DataGrid,  GridColumnMenuContainer, GridFooter } from '@mui/x-data-grid';
+import { DataGrid,  GridColumnMenuContainer, GridFooter, GridFooterContainer, GridPagination } from '@mui/x-data-grid';
 import { getTimestamp, mapObject, filterObject} from 'utils'
 import {ActionInput, Button, IconButton} from "components/base"
-import {SaveIcon, AddIcon, DeleteIcon, IconColumnInsertRight } from 'icons';
+import {SaveIcon, AddIcon, DeleteIcon, IconColumnInsertRight,IconRowInsertBottom } from 'icons';
 
 const RenameColumnInput = ({currentValue, renameColumn}) => {
   return <ActionInput
@@ -45,9 +45,24 @@ const renderActionsColumn = ({params, removeRow}) => {
 }
 
 
-const CustomFooter = (props) => {
+const CustomFooter = ({addColumn, addRow, ...props}) => {
+
   console.log("Footer", props)
-  return <GridFooter/>
+  return (
+    <GridFooterContainer>
+      <Stack direction="row">
+        <ActionInput
+          currentValue=""
+          action={addColumn}
+          Icon={AddIcon}
+          label="Add column"
+          textFieldProps={{color: "primary"}}
+        />
+        <Button onClick={addRow}>Add row</Button>
+      </Stack>
+      <GridPagination/>
+    </GridFooterContainer>
+  )
 }
 
 export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
@@ -110,18 +125,6 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
   return (
 
     <Fragment>
-      <Stack direction="row">
-        <Button onClick={addRow}>Add Row</Button>
-        <ActionInput
-          currentValue=""
-          action={addColumn}
-          Icon={AddIcon}
-          label="Add column"
-          textFieldProps={{color: "primary"}}
-        />
-
-        {/* <InputButton label="Add column" placeholder="column name" action={addColumn}/> */}
-      </Stack>
       <Divider/>
         <DataGrid
           columns={[...cols, deleteButtonCol]}
@@ -134,6 +137,10 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
             columnMenu: {
               renameColumn,
               removeColumn
+            },
+            footer: {
+              addColumn,
+              addRow
             }
           }}
           experimentalFeatures={{ newEditingApi: true }}
