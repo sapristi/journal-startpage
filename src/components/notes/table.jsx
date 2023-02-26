@@ -37,16 +37,6 @@ const CustomMenu = ({hideMenu, currentColumn, renameColumn, removeColumn,  ...ot
     </GridColumnMenuContainer>
   )
 }
-const InputButton = ({action, placeholder, label}) => {
-  const [value, setValue] = useState("")
-  const handleInputChange = (event) => {const value = event.target.value; setValue(value)}
-  return (
-    <div>
-      <TextField label={placeholder} value={value} onChange={handleInputChange} />
-      <Button onClick={() => action(value)} disabled={value === ""}>{label}</Button>
-    </div>
-  )
-}
 
 const renderActionsColumn = ({params, removeRow}) => {
   const onClick = (e) => {
