@@ -1,13 +1,14 @@
 import {useState, useEffect} from 'react';
-import { Typography, Stack, Divider} from '@mui/material';
+import { Typography, Stack, Divider, Link} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import {makeLogger, helpText} from 'utils'
 import {Markdown} from "components/editable"
 import {ForegroundPaper, BackgroundPaper, ActionInput, Button} from "components/base"
 import {JournalExport, JournalImport} from "./actions"
-import {LocaleSelector, ModeSlider, ControlledColorPicker, BackgroundPicker,
-        BookmarksFolderPicker, BlurSelector
-       } from './inputs'
+import {
+  LocaleSelector, ModeSlider, ControlledColorPicker,
+  BookmarksFolderPicker, BlurSelector
+} from './inputs'
 import {storage} from 'stores/storage_adapter'
 import {FileUpload} from "components/file_upload"
 import {useSettingsStore} from 'stores/settings'
@@ -52,7 +53,6 @@ const AppearancePanel = () => (
 )
 
 const BackgroundImagePanel = () => {
-  const [backgroundType, setBackgroundType] = useState("color")
   const {setValue} = useSettingsStore()
   const handleFileChange = ({name, content}) => {
     setValue("backgroundImageURL", content)
@@ -115,7 +115,13 @@ export const SettingsPanel = () => {
   return (
     <BackgroundPaper>
       <Stack spacing={1}>
-        <Typography component="h1" variant="h3">Settings</Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography component="h1" variant="h3">Settings</Typography>
+          <Stack>
+            <Typography>Journal Startpage version: {version}</Typography>
+    <Typography><Link href="https://github.com/sapristi/journal-startpage/">See source on GitHub</Link></Typography>
+          </Stack>
+        </Stack>
         <Divider/>
         <Grid container spacing={3} p={0}>
           <Grid xs={3} sx={{paddingLeft: 0}}>
@@ -133,7 +139,6 @@ export const SettingsPanel = () => {
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
         </Grid>
       </Stack>
-      <Typography sx={{padding: "10px"}}>Version: {version}</Typography>
     </BackgroundPaper>
   )
 }

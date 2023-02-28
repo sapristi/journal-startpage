@@ -49,40 +49,6 @@ export const ControlledColorPicker = ({ propName}) => {
   )
 }
 
-export const BackgroundPicker = () => {
-  const [backgroundType, setBackgroundType] = useState("color")
-  const {setValue} = useSettingsStore()
-
-  const handleFileChange = ({name, content}) => {
-    setValue("backgroundImageURL", content)
-  }
-
-  let secondaryInput = null;
-  if (backgroundType === "url") {
-    secondaryInput = (
-      <ActionInput value=""
-                   action={value => setValue("backgroundImageURL", value)}
-                   Icon={SaveIcon}
-                   label="Background image url"
-      />
-    )
-  } else if (backgroundType === "file"){
-    secondaryInput = (
-      <FileUpload id="background-image-upload" label="Background image" accept="image/*" handler={handleFileChange} readerMethod="readAsDataURL"/>
-    )
-  }
-
-  return (
-    <div>
-      <Select value={backgroundType} handleChange={setBackgroundType} label="Background Image" sx={{minWidth: "50%"}}>
-      <MenuItem value="color">Color</MenuItem>
-      <MenuItem value="url">From URL</MenuItem>
-      <MenuItem value="file">From file</MenuItem>
-    </Select>
-      {secondaryInput}
-    </div>
-  )
-}
 
 export const BookmarksFolderPicker = () => {
   const [choices, setChoices] = useState([])
