@@ -76,7 +76,7 @@ const VisibleApp = () => {
     (backgroundImageURL) ? {
     backgroundImage: `url("${backgroundImageURL}")`,
     backgroundSize: "cover",
-    } : {}),
+    } : {backgroundColor}),
     [backgroundImageURL]
   )
 
