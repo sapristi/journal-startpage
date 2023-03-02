@@ -5,17 +5,22 @@ import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteB
 import { EditableMarkdown, EditableInput } from "components/editable"
 import { DateElem } from 'components/date_elem'
 import { getTimestamp } from 'utils'
-import { useSyncEntriesStore } from 'stores/sync_entries'
 import { useTransientSettings } from "stores/transient"
 
 import { TabularNoteBody } from "./table"
 import { AddBoxIcon , IconTableAdd} from "icons"
-import TableViewIcon from '@mui/icons-material/TableView';
+import {
+  useNotesStore,
+  addEmptyNote,
+  addEmptyTabularNote,
+  setNote,
+  removeNote,
+} from 'stores/notes'
 
-const TextualNoteBody = ({ entryKey, state, setEntry, handleDelete }) => {
+const TextualNoteBody = ({ entryKey, state, handleDelete }) => {
   const { content, isDraft } = state
   const handleContentChange = (newValue) => {
-    setEntry(entryKey, {
+    setNote(entryKey, {
       ...state,
       content: newValue,
       lastModified: getTimestamp(),
@@ -31,11 +36,11 @@ const TextualNoteBody = ({ entryKey, state, setEntry, handleDelete }) => {
   )
 }
 
-const Note = memo(({ entryKey, state, setEntry, removeEntry }) => {
+const Note = memo(({ entryKey, state }) => {
 
   const { lastModified, title, type } = state
   const handleTitleChange = (newValue) => {
-    setEntry(entryKey, {
+    setNote(entryKey, {
       ...state,
       title: newValue,
       lastModified: getTimestamp()
@@ -43,7 +48,7 @@ const Note = memo(({ entryKey, state, setEntry, removeEntry }) => {
   }
   const BodyComponent = (type === "table") ? TabularNoteBody : TextualNoteBody
 
-  const handleDelete = () => { removeEntry(entryKey) }
+  const handleDelete = () => { removeNote(entryKey) }
 
   return (
     <ForegroundPaper sx={{ p: 1, pl: 2 }}>
@@ -64,8 +69,8 @@ const Note = memo(({ entryKey, state, setEntry, removeEntry }) => {
           </div>
         </Stack>
         <Divider />
-        <BodyComponent entryKey={entryKey} state={state} setEntry={setEntry}
-          handleDelete={handleDelete}
+        <BodyComponent entryKey={entryKey} state={state}
+                       handleDelete={handleDelete}
         />
       </Stack>
     </ForegroundPaper>
@@ -98,33 +103,13 @@ const extractEntries = (entries, search) => {
 }
 export const Notes = () => {
   const { switchActiveTab } = useTransientSettings()
-  const { entries, setEntry, addEntry, removeEntry } = useSyncEntriesStore(
-    {
-      name: "notes",
-      initData: {}
-    }
-  )
+  const {entries} = useNotesStore()
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
 
   const extractedEntries = extractEntries(entries, search)
-
-  const addEmptyEntry = () => addEntry({
-    title: "New note",
-    content: "",
-    lastModified: getTimestamp(),
-    isDraft: true,
-    type: "note",
-  })
-  const addEmptyTabularEntry = () => addEntry({
-    title: "New table",
-    columns: ["Name", "Value"],
-    rows: [],
-    lastModified: getTimestamp(),
-    type: "table",
-  })
 
   return (
     <BackgroundPaper>
@@ -133,8 +118,8 @@ export const Notes = () => {
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography component="h1" variant="h3">Notes</Typography>
 
-            <IconButton onClick={addEmptyEntry}><AddBoxIcon /></IconButton>
-            <IconButton onClick={addEmptyTabularEntry}><IconTableAdd /></IconButton>
+            <IconButton onClick={addEmptyNote}><AddBoxIcon /></IconButton>
+            <IconButton onClick={addEmptyTabularNote}><IconTableAdd /></IconButton>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button onClick={switchActiveTab}>Show Journal</Button>
@@ -149,8 +134,6 @@ export const Notes = () => {
               <Note
                 key={entryKey}
                 entryKey={entryKey}
-                setEntry={setEntry}
-                removeEntry={removeEntry}
                 state={entry}
               />
             )

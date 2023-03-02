@@ -1,9 +1,13 @@
 import React, {Fragment} from 'react';
 import {MenuItem , Divider, Stack} from '@mui/material';
-import { DataGrid,  GridColumnMenuContainer, GridFooter, GridFooterContainer, GridPagination } from '@mui/x-data-grid';
+import { DataGrid,  GridColumnMenuContainer, GridFooterContainer, GridPagination } from '@mui/x-data-grid';
 import { getTimestamp, mapObject, filterObject} from 'utils'
 import {ActionInput, Button, IconButton} from "components/base"
-import {SaveIcon, AddIcon, DeleteIcon, IconColumnInsertRight,IconRowInsertBottom } from 'icons';
+import {SaveIcon, AddIcon, DeleteIcon } from 'icons';
+import {
+  setNote,
+} from 'stores/notes'
+
 
 const RenameColumnInput = ({currentValue, renameColumn}) => {
   return <ActionInput
@@ -65,11 +69,11 @@ const CustomFooter = ({addColumn, addRow, ...props}) => {
   )
 }
 
-export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
+export const TabularNoteBody = ({entryKey, state}) => {
   const { columns, rows} = state
 
   const removeRow = (rowId) => {
-    setEntry(entryKey, {
+    setNote(entryKey, {
       ...state,
       rows: rows.filter(row => row.id !== rowId)
     })
@@ -84,10 +88,10 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
     sortable: false,
     renderCell: (params) => renderActionsColumn({params, removeRow})
   }
-  const addRow = () => setEntry(entryKey, {...state, rows: [...state.rows, {
+  const addRow = () => setNote(entryKey, {...state, rows: [...state.rows, {
     id: getTimestamp(),
   }]})
-  const addColumn = (colName) => setEntry(entryKey, {...state, columns: [...state.columns, colName]})
+  const addColumn = (colName) => setNote(entryKey, {...state, columns: [...state.columns, colName]})
 
   const renameColumn = (colName, newColName) => {
     const rename = value => (value === colName)? newColName: value
@@ -95,7 +99,7 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
     const newRows = rows.map(
       row => mapObject(row, ([key, value]) => ([rename(key), value]))
     )
-    setEntry(entryKey, {
+    setNote(entryKey, {
       ...state,
       rows: newRows,
       columns: newColumns,
@@ -107,14 +111,14 @@ export const TabularNoteBody = ({entryKey, state, setEntry, handleDelete}) => {
     const newRows = rows.map(
       row => filterObject(row, (key, value) => key !== colName)
     )
-    setEntry(entryKey, {
+    setNote(entryKey, {
       ...state,
       rows: newRows,
       columns: newColumns,
     })
   }
   const processRowUpdate = (data) => {
-    setEntry(entryKey, {...state, rows:
+    setNote(entryKey, {...state, rows:
       state.rows.map(row => {
         if (row.id === data.id) {return data}
         else {return row}

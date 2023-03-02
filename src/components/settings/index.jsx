@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react';
 import { Typography, Stack, Divider, Link} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import {makeLogger, helpText} from 'utils'
@@ -9,10 +8,13 @@ import {
   LocaleSelector, ModeSlider, ControlledColorPicker,
   BookmarksFolderPicker, BlurSelector
 } from './inputs'
-import {storage} from 'stores/storage_adapter'
 import {FileUpload} from "components/file_upload"
 import {useSettingsStore} from 'stores/settings'
 import SaveIcon from '@mui/icons-material/Save';
+
+import {useJournalStore} from 'stores/journal'
+import {useNotesStore} from 'stores/notes'
+import {useTasksStore} from 'stores/tasks'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -79,33 +81,21 @@ const ActionsPanel = () => (
 )
 
 const StatsPanel = () => {
-  const [counts, setCounts] = useState({tasks: 0, journal: 0, notes: 0})
-  useEffect(
-    () => {
-      storage.get(null, fullState => {
-        var count = {tasks: 0, journal: 0, notes: 0}
-        for (const key of Object.keys(fullState)) {
-          for (const prefix of ["tasks", "journal", "notes"]) {
-            if (key.startsWith(`${prefix}-`)) {
-              count[prefix] += 1
-            }
-          }
-        }
-        console.log("COUNT", count)
-        setCounts(count)
-      })
-    },
-    []
-  )
+  const {entries: journalEntries} = useJournalStore()
+  const {entries: tasks} = useTasksStore()
+  const {entries: notes} = useNotesStore()
 
+  const nbJournal = Object.keys(journalEntries).length
+  const nbTasks = Object.keys(tasks).length
+  const nbNotes = Object.keys(notes).length
   return (
     <SettingsSubPanel title="Stats">
       <span>How much of your sync storage quota is being used:</span>
       <ul>
-        <li>Journal: {counts.journal}</li>
-        <li>Notes: {counts.notes}</li>
-        <li>Tasks: {counts.tasks}</li>
-        <li>Total: {counts.tasks+counts.journal+counts.notes}/512</li>
+        <li>Journal: {nbJournal}</li>
+        <li>Notes: {nbNotes}</li>
+        <li>Tasks: {nbTasks}</li>
+        <li>Total: {nbTasks+nbJournal+nbNotes}/512</li>
       </ul>
     </SettingsSubPanel>
   )

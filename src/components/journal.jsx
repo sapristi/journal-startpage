@@ -5,33 +5,30 @@ import { Typography, Divider, Stack, TextField } from '@mui/material';
 import { CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton, IconButton } from "./base"
 import { EditableMarkdown } from "./editable"
 import { DateElem } from './date_elem'
-import { getTimestamp, helpText } from 'utils'
 import { displayDate } from 'utils/locales'
-import { useSyncEntriesStore } from 'stores/sync_entries'
 import { useTransientSettings } from "stores/transient"
 import { AddBoxIcon } from "icons"
 
-const initData = {
-  0: {
-    date: getTimestamp(),
-    content: "# Welcome to Journal Startpage !\n" + helpText
-  }
-}
+import { useJournalStore,   setJournalEntry,
+         addEmptyJournalEntry,
+         removeJournalEntry
+ } from 'stores/journal'
 
 
 
 
-const Entry = memo(({ entryKey, state, setEntry, removeEntry }) => {
+
+const Entry = memo(({ entryKey, state }) => {
 
   const { date, content, isDraft } = state
   const handleContentChange = (newValue) => {
-    setEntry(entryKey, {
+    setJournalEntry(entryKey, {
       ...state,
       content: newValue,
       isDraft: false,
     })
   }
-  const handleDelete = () => { removeEntry(entryKey) }
+  const handleDelete = () => { removeJournalEntry(entryKey) }
 
   return (
     <ForegroundPaper sx={{ p: 1, pl: 2 }}>
@@ -68,12 +65,8 @@ const extractEntries = (entries, search) => {
 
 export const Journal = () => {
   const { switchActiveTab } = useTransientSettings()
-  const { entries, setEntry, addEntry, removeEntry } = useSyncEntriesStore(
-    {
-      name: "journal",
-      initData
-    }
-  )
+  const {entries} = useJournalStore()
+  console.log("JOURNAL ENTRIES", entries)
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -81,14 +74,13 @@ export const Journal = () => {
 
   const extractedEntries = extractEntries(entries, search)
 
-  const addEmptyEntry = () => addEntry({ isDraft: true, content: "" })
   return (
     <BackgroundPaper>
       <Stack spacing={1}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography component="h1" variant="h3">Journal</Typography>
-            <IconButton onClick={addEmptyEntry}><AddBoxIcon /></IconButton>
+            <IconButton onClick={addEmptyJournalEntry}><AddBoxIcon /></IconButton>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button onClick={switchActiveTab}>Show Notes</Button>
@@ -102,8 +94,6 @@ export const Journal = () => {
               <Entry
                 key={entryKey}
                 entryKey={entryKey}
-                setEntry={setEntry}
-                removeEntry={removeEntry}
                 state={entry}
               />
             )

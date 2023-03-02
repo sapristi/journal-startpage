@@ -4,40 +4,26 @@ import { Typography, Divider, Checkbox, Stack } from '@mui/material';
 
 import { EditableMarkdown } from "./editable"
 import { CardList, Button, BackgroundPaper, ForegroundPaper, DeleteButton, IconButton } from "./base"
-import { useSyncEntriesStore } from 'stores/sync_entries'
 import { AddBoxIcon } from "icons"
-const initData = {
-  0: {
-    lastModified: 0,
-    status: "todo",
-    content: `
-this is a task
-- with some
-- items
-`
-  },
-  1: {
-    lastModified: 1,
-    status: "done",
-    content: `
-this is done task
-- with one item
-`
-  }
-}
+import {
+  useTasksStore,
+  addEmptyTask,
+  setTask,
+  removeTask,
+} from 'stores/tasks'
 
 
-const Task = ({ entryKey, state, setEntry, removeEntry }) => {
+const Task = ({ entryKey, state }) => {
 
   const { status, content, isDraft } = state
-  const handleDelete = () => { removeEntry(entryKey) }
+  const handleDelete = () => { removeTask(entryKey) }
 
   const switchStatus = () => {
     const newStatus = (status === "todo") ? "done" : "todo";
-    setEntry(entryKey, { ...state, status: newStatus })
+    setTask(entryKey, { ...state, status: newStatus })
   }
   const handleContentChange = (newValue) => {
-    setEntry(entryKey, { ...state, content: newValue, isDraft: false })
+    setTask(entryKey, { ...state, content: newValue, isDraft: false })
   }
   const textColor = (status === "done") ? "text.disabled" : "text.primary";
   return (
@@ -93,14 +79,8 @@ export const TasksList = ({ title, entries, setEntry, removeEntry }) => {
 }
 
 export const Tasks = () => {
+  const {entries} = useTasksStore()
 
-  const { entries, setEntry, addEntry, removeEntry } = useSyncEntriesStore(
-    {
-      name: "tasks",
-      initData
-    })
-
-  const addEmptyTask = () => addEntry({ status: "todo", content: "", isDraft: true })
   const { todo, done } = extractTasks(entries)
   return (
 
@@ -111,8 +91,8 @@ export const Tasks = () => {
           <IconButton onClick={addEmptyTask}><AddBoxIcon/></IconButton>
         </Stack>
         <Divider />
-        <TasksList title={"Todo"} entries={todo} setEntry={setEntry} removeEntry={removeEntry} />
-        <TasksList title={"Done"} entries={done} setEntry={setEntry} removeEntry={removeEntry} />
+        <TasksList title={"Todo"} entries={todo} />
+        <TasksList title={"Done"} entries={done} />
       </Stack>
     </BackgroundPaper>
   )
