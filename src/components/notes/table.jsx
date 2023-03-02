@@ -59,7 +59,7 @@ const CustomFooter = ({addColumn, addRow, ...props}) => {
           action={addColumn}
           Icon={AddIcon}
           label="Add column"
-          textFieldProps={{color: "primary"}}
+          textFieldProps={{color: "primary", size: "small"}}
         />
         <Button onClick={addRow}>Add row</Button>
       </Stack>

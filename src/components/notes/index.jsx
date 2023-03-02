@@ -100,7 +100,7 @@ export const Notes = () => {
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button onClick={switchActiveTab}>Show Journal</Button>
-            <TextField label="search" value={search} onChange={handleSearchChange} />
+            <TextField label="search" value={search} onChange={handleSearchChange} size="small"/>
           </Stack>
         </Stack>
 
