@@ -30,10 +30,7 @@ export const saveFile = async (filename, blob) => {
 };
 
 
-export const filterObject = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(
-  ([key, value]) => predicate(key, value)
-))
-
+export const filterObject = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate))
 export const mapObject = (obj, mapFn) => Object.fromEntries(Object.entries(obj).map(mapFn))
 
 export const logCall = (name, callable) => {
@@ -66,4 +63,6 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 - \`j\` to create a new journal entry
 - \`n\` to create a new note
 - \`t\` to create a new task
+- \`s\` to switch between journal and notes
+- \`e\` to edit the last entry (journal or note)
 `

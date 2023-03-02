@@ -5,9 +5,6 @@ import {debounce} from 'lodash';
 import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils/locales'
 import {Select} from "components/select"
-import {FileUpload} from "components/file_upload"
-import {ActionInput} from "components/base"
-import SaveIcon from '@mui/icons-material/Save';
 import {bookmarksApi, extractFolders} from 'utils/bookmarks_adapter'
 
 export const LocaleSelector = () => {

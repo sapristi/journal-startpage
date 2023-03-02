@@ -13,8 +13,8 @@ import {SettingsPanel} from "./components/settings"
 import {useTransientSettings} from "stores/transient"
 import {useSettingsStore} from 'stores/settings'
 import { makeLogger} from 'utils'
-import {addEmptyJournalEntry} from 'stores/journal'
-import {addEmptyNote} from 'stores/notes'
+import {addEmptyJournalEntry, editLastJournalEntry} from 'stores/journal'
+import {addEmptyNote, editLastNote} from 'stores/notes'
 import {addEmptyTask} from 'stores/tasks'
 
 
@@ -102,7 +102,7 @@ const VisibleApp = () => {
 
 
 const HotKeysProvider = () => {
-  const {setActiveTab} = useTransientSettings()
+  const {setActiveTab, activeTab, switchActiveTab} = useTransientSettings()
   const log = makeLogger("HOTKEYS")
   const handleKeyUp = useMemo(
     () => {
@@ -122,12 +122,27 @@ const HotKeysProvider = () => {
         case "t":
           addEmptyTask()
           break;
+        case "e":
+          switch (activeTab) {
+          case "notes":
+            editLastNote()
+            break
+          case "journal":
+            editLastJournalEntry()
+            break
+          default:
+            break
+          }
+          break;
+        case "s":
+          switchActiveTab()
+          break
         default:
           break
         }
       }
     },
-    [setActiveTab]
+    [setActiveTab, activeTab, switchActiveTab]
   )
   useEffect(
     () => {

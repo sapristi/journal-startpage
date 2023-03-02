@@ -15,6 +15,7 @@ import {
   addEmptyTabularNote,
   setNote,
   removeNote,
+  selectEntries,
 } from 'stores/notes'
 
 const TextualNoteBody = ({ entryKey, state, handleDelete }) => {
@@ -77,30 +78,6 @@ const Note = memo(({ entryKey, state }) => {
   )
 })
 
-const extractEntries = (entries, search) => {
-  let selected
-  if (search === "") {
-    selected = Object.entries(entries).filter(
-      ([key, value]) => (
-        value !== null
-        && !value.deleted
-      )
-    )
-  } else {
-    selected = Object.entries(entries).filter(
-      ([key, value]) => (
-        value !== null
-        && !value.deleted
-        && (
-          value.title.toLowerCase().includes(search.toLowerCase())
-          || (value.type !== "table" && value.content.toLowerCase().includes(search.toLowerCase()))
-        )
-      )
-    )
-  }
-  selected.sort(([key1, value1], [key2, value2]) => { return value2.lastModified - value1.lastModified })
-  return selected
-}
 export const Notes = () => {
   const { switchActiveTab } = useTransientSettings()
   const {entries} = useNotesStore()
@@ -109,7 +86,7 @@ export const Notes = () => {
     setSearch(event.target.value)
   }
 
-  const extractedEntries = extractEntries(entries, search)
+  const extractedEntries = selectEntries(entries, search)
 
   return (
     <BackgroundPaper>

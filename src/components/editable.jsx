@@ -16,6 +16,10 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
     },
     [initial]
   )
+  useEffect(
+    () => setActive(isDraft),
+    [isDraft]
+  )
   const {
     handleChange,
     commitChange,
@@ -23,9 +27,11 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
     handleCancelAction
   } = useMemo(
     () => {
+      // Change in the input
       const handleChange = (event) => {
         setCurValue(event.target.value)
       }
+      // commit
       const commitChange = () => {
         log("COMMIT", curValue)
         if (isDraft && curValue === "") {
@@ -40,12 +46,16 @@ const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
         setActive(true);
       }
       const cancelChange = () => {
-        setCurValue(initial);
         setActive(false);
+        // Note: if we do not set the current Value,
+        // we keep the modified state, which may come
+        // handy in case of accidental cancel
+        setCurValue(initial);
+        onChange(initial);
       }
 
       const handleCancelAction = () => {
-        if (isDraft) {
+        if (initial === "") {
           handleCancelDraft()
         } else {
           cancelChange()
@@ -78,16 +88,16 @@ export const EditableInput = ({
   }
   if (active) {
     return <TextField type="text"
-                           value={curValue}
-                           onChange={handleChange}
-                           onBlur={commitChange}
-                           autoFocus
-                           variant="standard"
-                           onKeyPress={handleKeyPress}
-                           onKeyUp={handleKeyUp}
-                           fullWidth
-                           {...textFieldProps}
-                 />
+                      value={curValue}
+                      onChange={handleChange}
+                      onBlur={commitChange}
+                      autoFocus
+                      variant="standard"
+                      onKeyPress={handleKeyPress}
+                      onKeyUp={handleKeyUp}
+                      fullWidth
+                      {...textFieldProps}
+           />
   } else {
     return <Component {...componentProps} onDoubleClick={handleClick}>{value}</Component>
   }
@@ -106,9 +116,9 @@ const mdComponents = {
 
 export const Markdown = ({children}) => {
   return <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={mdComponents}
-      >{children}</ReactMarkdown>
+           remarkPlugins={[remarkGfm]}
+           components={mdComponents}
+                                    >{children}</ReactMarkdown>
 }
 
 

@@ -8,7 +8,8 @@ const {
   useStore: useNotesStore,
   setEntry: setNote,
   addEntry: addNote,
-  removeEntry: removeNote
+  removeEntry: removeNote,
+  getEntries: getNoteEntries,
 } = makeSyncEntriesStore("notes", initData)
 
 const addEmptyNote = () => addNote({
@@ -27,6 +28,41 @@ const addEmptyTabularNote = () => addNote({
   type: "table",
 })
 
+const selectEntries = (entries, search) => {
+  let selected
+  if (search === "") {
+    selected = Object.entries(entries).filter(
+      ([key, value]) => (
+        value !== null
+          && !value.deleted
+      )
+    )
+  } else {
+    selected = Object.entries(entries).filter(
+      ([key, value]) => (
+        value !== null
+          && !value.deleted
+          && (
+            value.title.toLowerCase().includes(search.toLowerCase())
+              || (value.type !== "table" && value.content.toLowerCase().includes(search.toLowerCase()))
+          )
+      )
+    )
+  }
+  selected.sort(([key1, value1], [key2, value2]) => { return value2.lastModified - value1.lastModified })
+  return selected
+}
+
+
+const editLastNote = () => {
+  getNoteEntries(
+    entries => {
+      const [firstKey, firstEntry] = selectEntries(entries, "")[0]
+      if (firstEntry.type !== "note") {return}
+      setNote(firstKey, {...firstEntry, isDraft: true})
+    }
+  )
+}
 
 export {
   useNotesStore,
@@ -34,4 +70,6 @@ export {
   addEmptyTabularNote,
   setNote,
   removeNote,
+  selectEntries,
+  editLastNote,
 }

@@ -9,7 +9,7 @@ export const JournalExport = () => {
   const handleJournalExport = () => {
     storage.get(null, obj => {
       log("GOT", obj)
-      const journalEntries = filterObject(obj, key => key.startsWith("journal-")) 
+      const journalEntries = filterObject(obj, ([key, value]) => key.startsWith("journal-")) 
       log("entries", journalEntries)
       const blob = new Blob([JSON.stringify(journalEntries)], { type: 'application/json' });
       saveFile("journal.json", blob)
@@ -24,8 +24,8 @@ export const JournalImport = () => {
   const handler = ({name, content}) => {
     const entries = JSON.parse(content)
     console.log(`Read json file '${name}'`)
-    const journalEntries = filterObject(entries, key => key.startsWith("journal-")) 
-    const wrongEntries = filterObject(entries, key => !key.startsWith("journal-"))
+    const journalEntries = filterObject(entries, ([key, value]) => key.startsWith("journal-")) 
+    const wrongEntries = filterObject(entries, ([key, value])  => !key.startsWith("journal-"))
     const wrongKeys = Object.keys(wrongEntries)
     if (wrongKeys.length > 0) {
       console.warn("JSON file contains unsupported entries: ", wrongKeys)

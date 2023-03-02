@@ -11,7 +11,8 @@ import { AddBoxIcon } from "icons"
 
 import { useJournalStore,   setJournalEntry,
          addEmptyJournalEntry,
-         removeJournalEntry
+         removeJournalEntry,
+         selectEntries,
  } from 'stores/journal'
 
 
@@ -52,27 +53,16 @@ const Entry = memo(({ entryKey, state }) => {
   )
 })
 
-const extractEntries = (entries, search) => {
-  const nonDeleted = Object.entries(entries).filter(
-    ([key, value]) => (
-      value !== null &&
-      !value.deleted && value.content.toLowerCase().includes(search.toLowerCase())
-    )
-  )
-  nonDeleted.sort(([key1, value1], [key2, value2]) => { return value2.date - value1.date })
-  return nonDeleted
-}
 
 export const Journal = () => {
   const { switchActiveTab } = useTransientSettings()
   const {entries} = useJournalStore()
-  console.log("JOURNAL ENTRIES", entries)
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
 
-  const extractedEntries = extractEntries(entries, search)
+  const extractedEntries = selectEntries(entries, search)
 
   return (
     <BackgroundPaper>

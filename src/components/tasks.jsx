@@ -3,7 +3,7 @@ import React from 'react';
 import { Typography, Divider, Checkbox, Stack } from '@mui/material';
 
 import { EditableMarkdown } from "./editable"
-import { CardList, Button, BackgroundPaper, ForegroundPaper, DeleteButton, IconButton } from "./base"
+import { CardList, BackgroundPaper, ForegroundPaper, DeleteButton, IconButton } from "./base"
 import { AddBoxIcon } from "icons"
 import {
   useTasksStore,

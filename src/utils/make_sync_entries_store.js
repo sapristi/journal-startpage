@@ -3,6 +3,7 @@ import {getTimestamp, makeLogger, filterObject, mapObject} from 'utils'
 import {storage} from 'utils/storage_adapter'
 
 
+
 export const makeSyncEntriesStore = (name, initData) => {
   const prefix = `${name}-`
   const log = makeLogger(`Store [${name}]`)
@@ -31,10 +32,18 @@ export const makeSyncEntriesStore = (name, initData) => {
       date: timestamp
     })
   }
+
   const removeEntry = (key) => {
     if (! key.startsWith(prefix)) {throw new Error(`Key should start with ${prefix}`)}
     storage.remove([key])
   }
+
+  const getEntries = (callback) => storage.get(
+    null,
+    entries => {
+      return callback(filterObject(entries, ([key, value]) => key.startsWith(prefix)))
+    }
+  )
 
   const reducer = (state, action) => {
     log("ACTION", state, action)
@@ -44,7 +53,7 @@ export const makeSyncEntriesStore = (name, initData) => {
     case "updateOnChange":
       const {changedEntries, removedEntries} = action.payload
       return {
-        ...filterObject(state, (key, value) => (!removedEntries.includes(key))),
+        ...filterObject(state, ([key, value]) => (!removedEntries.includes(key))),
         ...Object.fromEntries(changedEntries)
       }
     default:
@@ -80,7 +89,7 @@ export const makeSyncEntriesStore = (name, initData) => {
   storage.get(
     null,
     fullState => {
-      const syncedObjects = filterObject(fullState, (key, value) => key.startsWith(prefix))
+      const syncedObjects = filterObject(fullState, ([key, value]) => key.startsWith(prefix))
       log("SyncedObjects", syncedObjects)
       if (Object.keys(syncedObjects).length === 0) {
         log("Setting state from init data", initData)
@@ -99,7 +108,7 @@ export const makeSyncEntriesStore = (name, initData) => {
         storage.get(
           null,
           fullState => {
-            const syncedObjects = filterObject(fullState, (key, value) => key.startsWith(prefix))
+            const syncedObjects = filterObject(fullState, ([key, value]) => key.startsWith(prefix))
             log("Loaded initial state", syncedObjects)
             dispatch({type: "initial", payload: syncedObjects})
           })
@@ -120,7 +129,8 @@ export const makeSyncEntriesStore = (name, initData) => {
     useStore,
     setEntry,
     addEntry,
-    removeEntry
+    removeEntry,
+    getEntries
   }
 }
 

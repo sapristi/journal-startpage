@@ -51,7 +51,6 @@ const renderActionsColumn = ({params, removeRow}) => {
 
 const CustomFooter = ({addColumn, addRow, ...props}) => {
 
-  console.log("Footer", props)
   return (
     <GridFooterContainer>
       <Stack direction="row">
@@ -109,7 +108,7 @@ export const TabularNoteBody = ({entryKey, state}) => {
   const removeColumn = (colName) => {
     const newColumns = columns.filter(col => col !== colName)
     const newRows = rows.map(
-      row => filterObject(row, (key, value) => key !== colName)
+      row => filterObject(row, ([key, value]) => key !== colName)
     )
     setNote(entryKey, {
       ...state,
