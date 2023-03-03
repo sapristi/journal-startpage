@@ -1,10 +1,12 @@
 import { useState, useEffect, memo } from 'react'
-import { Typography,  Switch, Stack, Box} from '@mui/material';
+import { Typography, Stack, Box, ToggleButton, ToggleButtonGroup} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
-import {useLocalSettings} from "stores/local"
-import {BackgroundPaper} from "./base"
+import {BackgroundPaper, Switch, IconButton} from "./base"
+import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useSettingsStore} from 'stores/settings'
+import {useTransientSettings} from 'stores/transient'
+import {useLocalSettings} from 'stores/local'
 
 const dayjs = require('dayjs')
 
@@ -28,18 +30,25 @@ const AutoUpdatingTimePanel = () => {
 
 
 export const TopPanel = memo(() => {
+  const {activeTab} = useLocalSettings()
 
-  const {locale} = useSettingsStore()
-  const {settingsActive, switchSettings} = useLocalSettings()
+  const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
+  const {locale, showContentAtStart} = useSettingsStore()
   return (
     <BackgroundPaper>
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="column" justifyContent="space-between">
           <AutoUpdatingTimePanel/>
-          <div>
-            Settings
-            <Switch checked={settingsActive} onChange={switchSettings} label="Settings"/>
-          </div>
+          <Stack sx={{width: "min-content"}} direction="row">
+            <ToggleButton selected={settingsActive} onChange={switchSettings}>
+              <SettingsIcon />
+            </ToggleButton>
+            <IconButton onClick={switchShowContent} color="">
+              {
+                (showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>
+              }
+            </IconButton>
+          </Stack>
         </Stack>
         <Bookmarks/>
         <Calendar locale={locale}/>

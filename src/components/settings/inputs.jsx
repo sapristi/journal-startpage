@@ -6,6 +6,7 @@ import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils/locales'
 import {Select} from "components/select"
 import {bookmarksApi, extractFolders} from 'utils/bookmarks_adapter'
+import {DualLabelSwitch} from 'components/base'
 
 export const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -21,15 +22,13 @@ export const LocaleSelector = () => {
     </Select>
   )
 }
+
 export const ModeSlider = () => {
   const {mode, switchMode} = useSettingsStore()
-  return (
-    <Stack direction="row" alignItems="center">
-      <Typography>Light</Typography>
-      <Switch checked={(mode==="dark")} onChange={switchMode}/>
-      <Typography>Dark</Typography>
-    </Stack>
-  )
+  return <DualLabelSwitch
+           leftLabel="Light" rightLabel="Dark"
+           checked={(mode==="dark")} onChange={switchMode}
+         />
 }
 
 export const ControlledColorPicker = ({ propName}) => {
@@ -91,3 +90,5 @@ export const BlurSelector = ({propName}) => {
     </Box>
   )
 }
+
+

@@ -10,13 +10,13 @@ import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
-import {useLocalSettings} from "stores/local"
-import {useSettingsStore} from 'stores/settings'
 import { makeLogger} from 'utils'
 import {addEmptyJournalEntry, editLastJournalEntry} from 'stores/journal'
 import {addEmptyNote, editLastNote} from 'stores/notes'
 import {addEmptyTask} from 'stores/tasks'
-
+import {useLocalSettings} from "stores/local"
+import {useSettingsStore} from 'stores/settings'
+import {useTransientSettings} from 'stores/transient'
 
 const dayjs = require('dayjs')
 
@@ -38,14 +38,26 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}
 }
 
 const BottomPanel = memo(() =>{
-  const {settingsActive, activeTab} = useLocalSettings()
-  return (
-    settingsActive ?
+  const {settingsActive, showContent, setShowContent} = useTransientSettings()
+  const {activeTab} = useLocalSettings()
+  const {showContentAtStart} = useSettingsStore()
 
-    <Grid xs={12}>
-      <SettingsPanel/>
-    </Grid>
-    :
+  // show content at startup only if enabled
+  useEffect(
+    () => {
+      if (showContentAtStart) {setShowContent(true)}
+    }, []
+  )
+
+  if (settingsActive) {
+    return (
+      <Grid xs={12}>
+        <SettingsPanel/>
+      </Grid>
+    )
+  }
+  if (!showContent) {return null}
+  return (
     <>
       <Grid xs={4}>
         <Tasks/>
@@ -60,7 +72,9 @@ const BottomPanel = memo(() =>{
 })
 
 const VisibleApp = () => {
-  const {mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL} = useSettingsStore()
+  const {
+    mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL,
+  } = useSettingsStore()
   useEffect(
     () => {
       dayjs.locale(locale)
@@ -102,6 +116,7 @@ const VisibleApp = () => {
 
 
 const HotKeysProvider = () => {
+  const {showContent, setShowContent, settingsActive, switchSettings} = useTransientSettings()
   const {setActiveTab, activeTab, switchActiveTab} = useLocalSettings()
   const log = makeLogger("HOTKEYS")
   const handleKeyUp = useMemo(
@@ -110,7 +125,11 @@ const HotKeysProvider = () => {
         const {target, key} = event;
 
         if (target.localName !== "body") {return}
+        log("received", key)
         switch (key) {
+        case "Escape":
+          if (settingsActive) {switchSettings()}
+          break
         case "n":
           setActiveTab("notes")
           addEmptyNote()
@@ -135,6 +154,7 @@ const HotKeysProvider = () => {
           }
           break;
         case "s":
+          if (!showContent) {setShowContent(true)}
           switchActiveTab()
           break
         default:
@@ -142,7 +162,7 @@ const HotKeysProvider = () => {
         }
       }
     },
-    [setActiveTab, activeTab, switchActiveTab]
+    [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent]
   )
   useEffect(
     () => {

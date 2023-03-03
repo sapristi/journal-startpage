@@ -4,8 +4,11 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import SettingsIcon from '@mui/icons-material/Settings';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import {IconColumnInsertRight, IconRowInsertBottom, IconTable} from '@tabler/icons-react';
 
 import {ReactComponent as IconTableAddSvg} from './table-add.svg'
 
@@ -15,4 +18,7 @@ const IconTableAdd = (props) => (
   </SvgIcon>
 )
 
-export {AddBoxIcon, DeleteIcon, SaveIcon, AddIcon, IconColumnInsertRight, IconRowInsertBottom, IconTable, IconTableAdd}
+export {
+  AddBoxIcon, DeleteIcon, SaveIcon, AddIcon, IconTableAdd,
+  CloseIcon, SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon
+}

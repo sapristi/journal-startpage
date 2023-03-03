@@ -8,7 +8,6 @@ specifiers:
   '@mui/material': ^5.11.7
   '@mui/x-data-grid': ^5.17.23
   '@mui/x-date-pickers': ^5.0.13
-  '@tabler/icons-react': ^2.5.0
   dayjs: ^1.11.7
   immer: ^9.0.17
   lodash: ^4.17.21
@@ -34,7 +33,6 @@ dependencies:
   '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
   '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
   '@mui/x-date-pickers': 5.0.13_hbec2hdowikcxry2p3aoafufcm
-  '@tabler/icons-react': 2.5.0_react@18.2.0
   dayjs: 1.11.7
   immer: 9.0.17
   lodash: 4.17.21
@@ -2717,20 +2715,6 @@ packages:
     dependencies:
       defer-to-connect: 2.0.1
     dev: true
-
-  /@tabler/icons-react/2.5.0_react@18.2.0:
-    resolution: {integrity: sha512-RP5gOEis5QPArMkAuOomMEvT4+nDWF2CBNv2SCGVYFC8mXEz5tYzjPoaBQDpyWO7vB6IeJvvk7feOaLBvD2zRA==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@tabler/icons': 2.5.0
-      prop-types: 15.8.1
-      react: 18.2.0
-    dev: false
-
-  /@tabler/icons/2.5.0:
-    resolution: {integrity: sha512-gQceaW6itR2Wna2Kqcrxz3gm2cNxwg/DCgT17W1N9la4Iri1r9g681uO2LryDskGXfs71Trhd3CtrED/T6dzUQ==}
-    dev: false
 
   /@tootallnate/once/1.1.2:
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}

@@ -14,6 +14,7 @@ const initValue = {
   bookmarksFolder: "",
   locale: getBrowserLocale(),
   panelBlur: 4,
+  showContentAtStart: true,
 }
 
 
@@ -41,6 +42,7 @@ export const useSettingsStore = create(
           locale: newLocale
         }
       }),
+      switchShowContentAtStart: () => set(state => ({showContentAtStart: !state.showContentAtStart}))
     }),
     {
       name: "settings"

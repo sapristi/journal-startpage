@@ -3,11 +3,7 @@ import { persist } from 'zustand/middleware'
 
 export const useLocalSettings = create(persist(
   (set, get) => ({
-    settingsActive: false,
     activeTab: "journal",
-    switchSettings: () => set(state => ({
-      settingsActive: !state.settingsActive
-    })),
     switchActiveTab: () => set(state => ({
       activeTab: (state.activeTab === "journal")?"notes":"journal"
     })),

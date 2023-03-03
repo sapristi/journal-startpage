@@ -2,19 +2,20 @@ import { Typography, Stack, Divider, Link} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import {makeLogger, helpText} from 'utils'
 import {Markdown} from "components/editable"
-import {ForegroundPaper, BackgroundPaper, ActionInput, Button} from "components/base"
+import {ForegroundPaper, BackgroundPaper, ActionInput, Button, Switch, IconButton} from "components/base"
 import {JournalExport, JournalImport} from "./actions"
 import {
   LocaleSelector, ModeSlider, ControlledColorPicker,
   BookmarksFolderPicker, BlurSelector
 } from './inputs'
+import {SaveIcon, CloseIcon} from 'icons'
 import {FileUpload} from "components/file_upload"
 import {useSettingsStore} from 'stores/settings'
-import SaveIcon from '@mui/icons-material/Save';
 
 import {useJournalStore} from 'stores/journal'
 import {useNotesStore} from 'stores/notes'
 import {useTasksStore} from 'stores/tasks'
+import {useTransientSettings} from 'stores/transient'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -36,23 +37,29 @@ const HelpPanel = () => (
   </SettingsSubPanel>
 )
 
-const PersonalPanel = () => (
-  <SettingsSubPanel title="Personal">
-    <LocaleSelector />
-    <BookmarksFolderPicker/>
-  </SettingsSubPanel>
-)
+const BehaviourPanel = () => {
+  const {showContentAtStart, switchShowContentAtStart} = useSettingsStore()
+  return (
+    <SettingsSubPanel title="Behaviour">
+      <LocaleSelector />
+      <BookmarksFolderPicker/>
+      <Switch label="Show content at startup"
+              checked={showContentAtStart} onChange={switchShowContentAtStart}/>
+    </SettingsSubPanel>
+  )
+}
 
-const AppearancePanel = () => (
-  <SettingsSubPanel title="Appearance">
-    <ModeSlider />
-    <ControlledColorPicker propName="primaryColor"/>
-    {/* <ControlledColorPicker propName="secondaryColor"/> */}
-    <ControlledColorPicker  propName="backgroundColor"/>
-    {/* <BackgroundPicker /> */}
-    <BlurSelector propName="panelBlur"/>
-  </SettingsSubPanel>
-)
+const AppearancePanel = () => {
+  return (
+    <SettingsSubPanel title="Appearance">
+      <ModeSlider />
+      <ControlledColorPicker propName="primaryColor"/>
+      {/* <ControlledColorPicker propName="secondaryColor"/> */}
+      <ControlledColorPicker  propName="backgroundColor"/>
+      <BlurSelector propName="panelBlur"/>
+    </SettingsSubPanel>
+  )
+}
 
 const BackgroundImagePanel = () => {
   const {setValue} = useSettingsStore()
@@ -102,15 +109,14 @@ const StatsPanel = () => {
 }
 
 export const SettingsPanel = () => {
+
+  const {switchSettings} = useTransientSettings()
   return (
     <BackgroundPaper>
       <Stack spacing={1}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography component="h1" variant="h3">Settings</Typography>
-          <Stack>
-            <Typography>Journal Startpage version: {version}</Typography>
-    <Typography><Link href="https://github.com/sapristi/journal-startpage/">See source on GitHub</Link></Typography>
-          </Stack>
+          <IconButton onClick={switchSettings}><CloseIcon/></IconButton>
         </Stack>
         <Divider/>
         <Grid container spacing={3} p={0}>
@@ -122,12 +128,18 @@ export const SettingsPanel = () => {
           </Grid>
           <Grid xs={3}>
             <Stack spacing={3}>
-              <PersonalPanel/><StatsPanel/>
+              <BehaviourPanel/><StatsPanel/>
             </Stack>
           </Grid>
           <Grid xs={3}><ActionsPanel/></Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
         </Grid>
+        <Divider/>
+        <Stack direction="row"  justifyContent="space-between">
+          <Typography>Journal Startpage version: {version}</Typography>
+          <Typography><Link href="https://github.com/sapristi/journal-startpage/">See source on GitHub</Link></Typography>
+        </Stack>
+
       </Stack>
     </BackgroundPaper>
   )
