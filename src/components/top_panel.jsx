@@ -5,9 +5,29 @@ import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
+import {useSettingsStore} from 'stores/settings'
+import { createDAVClient } from 'tsdav';
 
 const dayjs = require('dayjs')
 
+let parseCal = (entry) => {
+  
+}
+
+const loadCalendar = () => {
+  const client = await createDAVClient({
+    serverUrl: 'https://framagenda.org/remote.php/dav/calendars/mmillet/personal/',
+    credentials: {
+      username: 'mmillet',
+      password: '',
+    },
+    authMethod: 'Basic',
+    defaultAccountType: 'caldav',
+  })
+
+  const objs = await client.fetchCalendarObjects({calendar: {url: 'https://framagenda.org/remote.php/dav/calendars/mmillet/personal/'}})
+
+}
 const AutoUpdatingTimePanel = () => {
   const [time, setTime] = useState(Date.now());
 
