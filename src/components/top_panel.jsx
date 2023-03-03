@@ -1,8 +1,8 @@
 import { useState, useEffect, memo } from 'react'
-import { Typography, Stack, Box, ToggleButton, ToggleButtonGroup} from '@mui/material';
+import { Typography, Stack, Box, ToggleButton } from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
-import {BackgroundPaper, Switch, IconButton} from "./base"
+import {BackgroundPaper, IconButton} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useSettingsStore} from 'stores/settings'
 import {useTransientSettings} from 'stores/transient'
@@ -14,7 +14,7 @@ const AutoUpdatingTimePanel = () => {
   const [time, setTime] = useState(Date.now());
 
   useEffect(() => {
-    const interval = setInterval(() => setTime(Date.now()), 60000);
+    const interval = setInterval(() => setTime(Date.now()), 10000);
     return () => {
       clearInterval(interval);
     };
@@ -30,10 +30,9 @@ const AutoUpdatingTimePanel = () => {
 
 
 export const TopPanel = memo(() => {
-  const {activeTab} = useLocalSettings()
 
   const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
-  const {locale, showContentAtStart} = useSettingsStore()
+  const {locale} = useSettingsStore()
   return (
     <BackgroundPaper>
       <Stack direction="row" justifyContent="space-between">

@@ -13,6 +13,10 @@ export const useTransientSettings = create(
     switchShowContent: () => set(state => ({
       showContent: !state.showContent
     })),
+    triggerRenderLocaleValue: false,
+    triggerRenderLocale: () => set(state => ({
+      triggerRenderLocaleValue: !state.triggerRenderLocaleValue
+    })),
 
   })
 )

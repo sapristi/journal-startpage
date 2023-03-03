@@ -75,11 +75,8 @@ const VisibleApp = () => {
   const {
     mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL,
   } = useSettingsStore()
-  useEffect(
-    () => {
-      dayjs.locale(locale)
-    },
-  [locale])
+
+  if (dayjs.locale() !== locale) {dayjs.locale(locale)}
 
   const currentTheme = useMemo(
     () => {
@@ -162,7 +159,7 @@ const HotKeysProvider = () => {
         }
       }
     },
-    [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent]
+    [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent, settingsActive, switchSettings, log]
   )
   useEffect(
     () => {
