@@ -6,7 +6,7 @@ import { CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton, IconB
 import { EditableMarkdown } from "./editable"
 import { DateElem } from './date_elem'
 import { displayDate } from 'utils/locales'
-import { useTransientSettings } from "stores/transient"
+import { useLocalSettings } from "stores/local"
 import { AddBoxIcon } from "icons"
 
 import { useJournalStore,   setJournalEntry,
@@ -55,7 +55,7 @@ const Entry = memo(({ entryKey, state }) => {
 
 
 export const Journal = () => {
-  const { switchActiveTab } = useTransientSettings()
+  const { switchActiveTab } = useLocalSettings()
   const {entries} = useJournalStore()
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {

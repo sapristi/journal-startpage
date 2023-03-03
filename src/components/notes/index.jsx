@@ -5,7 +5,7 @@ import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteB
 import { EditableMarkdown, EditableInput } from "components/editable"
 import { DateElem } from 'components/date_elem'
 import { getTimestamp } from 'utils'
-import { useTransientSettings } from "stores/transient"
+import { useLocalSettings } from "stores/local"
 
 import { TabularNoteBody } from "./table"
 import { AddBoxIcon , IconTableAdd} from "icons"
@@ -79,7 +79,7 @@ const Note = memo(({ entryKey, state }) => {
 })
 
 export const Notes = () => {
-  const { switchActiveTab } = useTransientSettings()
+  const { switchActiveTab } = useLocalSettings()
   const {entries} = useNotesStore()
   const [search, setSearch] = useState(() => "")
   const handleSearchChange = (event) => {

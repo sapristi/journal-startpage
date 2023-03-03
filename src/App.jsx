@@ -10,7 +10,7 @@ import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
 import {TopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
-import {useTransientSettings} from "stores/transient"
+import {useLocalSettings} from "stores/local"
 import {useSettingsStore} from 'stores/settings'
 import { makeLogger} from 'utils'
 import {addEmptyJournalEntry, editLastJournalEntry} from 'stores/journal'
@@ -38,7 +38,7 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}
 }
 
 const BottomPanel = memo(() =>{
-  const {settingsActive, activeTab} = useTransientSettings()
+  const {settingsActive, activeTab} = useLocalSettings()
   return (
     settingsActive ?
 
@@ -102,7 +102,7 @@ const VisibleApp = () => {
 
 
 const HotKeysProvider = () => {
-  const {setActiveTab, activeTab, switchActiveTab} = useTransientSettings()
+  const {setActiveTab, activeTab, switchActiveTab} = useLocalSettings()
   const log = makeLogger("HOTKEYS")
   const handleKeyUp = useMemo(
     () => {

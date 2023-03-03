@@ -1,7 +1,7 @@
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export const useTransientSettings = create(persist(
+export const useLocalSettings = create(persist(
   (set, get) => ({
     settingsActive: false,
     activeTab: "journal",
@@ -19,6 +19,6 @@ export const useTransientSettings = create(persist(
     }
   }),
   {
-    name: "transient"
+    name: "local"
   }
 ))

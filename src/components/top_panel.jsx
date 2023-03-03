@@ -2,7 +2,7 @@ import { useState, useEffect, memo } from 'react'
 import { Typography,  Switch, Stack, Box} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
-import {useTransientSettings} from "stores/transient"
+import {useLocalSettings} from "stores/local"
 import {BackgroundPaper} from "./base"
 import {useSettingsStore} from 'stores/settings'
 
@@ -30,7 +30,7 @@ const AutoUpdatingTimePanel = () => {
 export const TopPanel = memo(() => {
 
   const {locale} = useSettingsStore()
-  const {settingsActive, switchSettings} = useTransientSettings()
+  const {settingsActive, switchSettings} = useLocalSettings()
   return (
     <BackgroundPaper>
       <Stack direction="row" justifyContent="space-between">
