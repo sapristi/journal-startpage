@@ -7,26 +7,102 @@ import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
 import { createDAVClient } from 'tsdav';
-
+import {useCalDAVStore} from 'stores/caldav'
+const ICAL = require("ical.js")
 const dayjs = require('dayjs')
 
-let parseCal = (entry) => {
-  
+const encode = (value) => {
+  let utf8Encode = new TextEncoder()
+  return String.fromCharCode.apply(null, utf8Encode.encode(value))
 }
 
-const loadCalendar = () => {
+
+const loadEvents = async ({username, password, url}) => {
   const client = await createDAVClient({
-    serverUrl: 'https://framagenda.org/remote.php/dav/calendars/mmillet/personal/',
+    serverUrl: url,
     credentials: {
-      username: 'mmillet',
-      password: '',
+      username,
+      password: encode(password),
     },
     authMethod: 'Basic',
     defaultAccountType: 'caldav',
   })
 
-  const objs = await client.fetchCalendarObjects({calendar: {url: 'https://framagenda.org/remote.php/dav/calendars/mmillet/personal/'}})
 
+  const parseRawEvent = (rawEvent) => {
+    const jcalData = ICAL.parse(rawEvent.data)
+    const comp = new ICAL.Component(jcalData);
+    const vevent = comp.getFirstSubcomponent("vevent");
+    const summary = vevent.getFirstPropertyValue("summary");
+    const dtstart = vevent.getFirstPropertyValue("dtstart");
+    return {
+      summary,
+      dstart: dtstart._time
+    }
+  }
+
+  const getEvents = async (timeRange) => {
+    const events = await client.fetchCalendarObjects(
+      {
+        calendar: {url},
+        timeRange,
+      }
+    )
+    return events.map(parseRawEvent)
+  }
+  console.log("cleint", client, url)
+  const now = dayjs().hour(0).minute(0).second(0).millisecond(0)
+  let timeRange =  {
+    start: now.toISOString(),
+    end: now.year(now.year()+1).toISOString()
+  }
+  console.log(timeRange, await getEvents(timeRange))
+
+  timeRange= {
+    start: '2023-01-01T00:00:00.000Z',
+    end: '2024-01-01T00:00:00.000Z'
+  }
+  console.log(timeRange, await getEvents(timeRange))
+  timeRange= {
+    start: "2023-01-01T23:00:00.000Z",
+    end: "2023-02-01T23:00:00.000Z"
+  }
+  console.log(timeRange, await getEvents(timeRange))
+
+  timeRange= {
+    start: "2023-02-03T23:00:00.000Z",
+    end: "2024-01-01T23:00:00.000Z"
+  }
+  console.log(timeRange, await getEvents(timeRange))
+
+  const rawEventsBis = await client.fetchCalendarObjects(
+    {
+      calendar: {url},
+      timeRange: {
+        start: '2023-01-01T00:00:00.000Z',
+        end: '2024-01-01T00:00:00.000Z'
+        // start: now.toISOString(),
+        // end: now.year(now.year()+1).toISOString()
+      },
+      // expand: true
+    }
+  )
+  console.log("RAWEVENTS", rawEventsBis)
+
+  const res = rawEventsBis.map(parseRawEvent)
+  console.log("RES", res)
+  return res
+}
+
+
+const Events = () => {
+  const [events, setEvents ] = useState([])
+  const {username, password, url } = useCalDAVStore()
+
+  useEffect(() => {
+    setEvents(loadEvents({username, password, url}))
+  }, [])
+  console.log("EVENTS", events)
 }
 const AutoUpdatingTimePanel = () => {
   const [time, setTime] = useState(Date.now());
@@ -71,6 +147,7 @@ export const TopPanel = memo(() => {
           <Controls/>
         </Stack>
         <Bookmarks/>
+        <Events/>
         <Calendar/>
       </Stack>
     </BackgroundPaper>

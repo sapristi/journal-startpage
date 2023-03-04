@@ -6,7 +6,8 @@ import {ForegroundPaper, BackgroundPaper, ActionInput, Button, Switch, IconButto
 import {DataExport, DataImport} from "./actions"
 import {
   LocaleSelector, ModeSlider, ControlledColorPicker,
-  BookmarksFolderPicker, BlurSelector
+  BookmarksFolderPicker, BlurSelector,
+  CalDAVInputs
 } from './inputs'
 import {SaveIcon, CloseIcon} from 'icons'
 import {FileUpload} from "components/file_upload"
@@ -86,6 +87,11 @@ const ActionsPanel = () => (
     <DataImport />
   </SettingsSubPanel>
 )
+const CalDAVPanel = () => (
+  <SettingsSubPanel title="CalDAV">
+    <CalDAVInputs />
+  </SettingsSubPanel>
+)
 
 const StatsPanel = () => {
   const {entries: journalEntries} = useJournalStore()
@@ -131,7 +137,12 @@ export const SettingsPanel = () => {
               <BehaviourPanel/><StatsPanel/>
             </Stack>
           </Grid>
-          <Grid xs={3}><ActionsPanel/></Grid>
+          <Grid xs={3}>
+            <Stack spacing={3}>
+              <ActionsPanel/>
+              <CalDAVPanel/>
+            </Stack>
+          </Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
         </Grid>
         <Divider/>

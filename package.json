@@ -12,6 +12,7 @@
     "@mui/x-data-grid": "^5.17.23",
     "@mui/x-date-pickers": "^5.0.13",
     "dayjs": "^1.11.7",
+    "ical.js": "^1.5.0",
     "immer": "^9.0.17",
     "lodash": "^4.17.21",
     "marked": "^4.2.5",

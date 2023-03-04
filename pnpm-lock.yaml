@@ -9,6 +9,7 @@ specifiers:
   '@mui/x-data-grid': ^5.17.23
   '@mui/x-date-pickers': ^5.0.13
   dayjs: ^1.11.7
+  ical.js: ^1.5.0
   immer: ^9.0.17
   lodash: ^4.17.21
   marked: ^4.2.5
@@ -35,6 +36,7 @@ dependencies:
   '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
   '@mui/x-date-pickers': 5.0.13_hbec2hdowikcxry2p3aoafufcm
   dayjs: 1.11.7
+  ical.js: 1.5.0
   immer: 9.0.17
   lodash: 4.17.21
   marked: 4.2.5
@@ -6982,6 +6984,10 @@ packages:
   /human-signals/2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+    dev: false
+
+  /ical.js/1.5.0:
+    resolution: {integrity: sha512-7ZxMkogUkkaCx810yp0ZGKvq1ZpRgJeornPttpoxe6nYZ3NLesZe1wWMXDdwTkj/b5NtXT+Y16Aakph/ao98ZQ==}
     dev: false
 
   /iconv-lite/0.4.24:

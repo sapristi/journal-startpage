@@ -10,7 +10,9 @@
   },
   "permissions": [
     "storage",
-    "bookmarks"
+    "bookmarks",
+    "webRequest",
+    "*://*/*"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
