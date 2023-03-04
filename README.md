@@ -12,7 +12,9 @@ Tools:
  - display calendar
  - show bookmarks from selected folder
 
-It uses your browser sync storage, so that your data is safely backed-up, and can be shared between 
+Global shortcuts allow for keyboard-first usage.
+
+It uses your browser sync storage, so that your data is safely backed-up, and can be shared between computers.
 
 - [Mozilla add-on](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)
 
