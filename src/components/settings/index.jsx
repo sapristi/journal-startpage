@@ -3,7 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import {makeLogger, helpText} from 'utils'
 import {Markdown} from "components/editable"
 import {ForegroundPaper, BackgroundPaper, ActionInput, Button, Switch, IconButton} from "components/base"
-import {JournalExport, JournalImport} from "./actions"
+import {DataExport, DataImport} from "./actions"
 import {
   LocaleSelector, ModeSlider, ControlledColorPicker,
   BookmarksFolderPicker, BlurSelector
@@ -82,8 +82,8 @@ const BackgroundImagePanel = () => {
 
 const ActionsPanel = () => (
   <SettingsSubPanel title="Actions">
-    <JournalExport />
-    <JournalImport />
+    <DataExport />
+    <DataImport />
   </SettingsSubPanel>
 )
 

@@ -5,37 +5,52 @@ import {Button} from 'components/base'
 
 const log = makeLogger("Actions")
 
-export const JournalExport = () => {
+export const DataExport = () => {
   const handleJournalExport = () => {
     storage.get(null, obj => {
       log("GOT", obj)
-      const journalEntries = filterObject(obj, ([key, value]) => key.startsWith("journal-")) 
-      log("entries", journalEntries)
-      const blob = new Blob([JSON.stringify(journalEntries)], { type: 'application/json' });
-      saveFile("journal.json", blob)
+      const selectedEntries = filterObject(
+        obj,
+        ([key, value]) => (
+          key.startsWith("journal-")
+            || key.startsWith("notes-")
+            || key.startsWith("tasks-")
+        )
+      )
+      log("entries", selectedEntries)
+      const blob = new Blob([JSON.stringify(selectedEntries)], { type: 'application/json' });
+      const dateStr = new Date().toISOString().replaceAll(":", "-")
+      saveFile(`journal-startpage-${dateStr}.json`, blob)
     })
   }
   return (
-    <Button onClick={handleJournalExport} variant="contained">Export journal</Button>
+    <Button onClick={handleJournalExport} variant="contained">Export data</Button>
   )
 }
 
-export const JournalImport = () => {
+export const DataImport = () => {
   const handler = ({name, content}) => {
     const entries = JSON.parse(content)
     console.log(`Read json file '${name}'`)
-    const journalEntries = filterObject(entries, ([key, value]) => key.startsWith("journal-")) 
-    const wrongEntries = filterObject(entries, ([key, value])  => !key.startsWith("journal-"))
-    const wrongKeys = Object.keys(wrongEntries)
-    if (wrongKeys.length > 0) {
-      console.warn("JSON file contains unsupported entries: ", wrongKeys)
-    }
-    console.log(`Found ${Object.keys(journalEntries).length} entries to import`)
-    storage.set(journalEntries)
+    const selectedEntries = filterObject(
+      entries,
+      ([key, value]) => (
+        key.startsWith("journal-")
+          || key.startsWith("notes-")
+          || key.startsWith("tasks-")
+      )
+    )
+    // const wrongEntries = filterObject(entries, ([key, value])  => !key.startsWith("journal-"))
+    // const wrongKeys = Object.keys(wrongEntries)
+    // if (wrongKeys.length > 0) {
+    //   console.warn("JSON file contains unsupported entries: ", wrongKeys)
+    // }
+    console.log(`Found ${Object.keys(selectedEntries).length} entries to import`)
+    storage.set(selectedEntries)
   }
 
   return (
-    <FileUpload id="journal-import" label="Import Journal" accept="application/json" handler={handler}
+    <FileUpload id="data-import" label="Import  data" accept="application/json" handler={handler}
                 readerMethod="readAsBinaryString" buttonProps={{variant: "contained", sx: {width: "100%"}}}/>
   )
 }

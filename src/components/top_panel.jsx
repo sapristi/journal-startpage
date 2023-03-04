@@ -31,7 +31,7 @@ const Controls = () => {
   const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
   return (
     <Stack sx={{width: "min-content"}} direction="row">
-      <ToggleButton selected={settingsActive} onChange={switchSettings}>
+      <ToggleButton selected={settingsActive} onChange={switchSettings} value="settings">
         <SettingsIcon />
       </ToggleButton>
       <IconButton onClick={switchShowContent} color="">
