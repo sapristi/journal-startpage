@@ -4,9 +4,7 @@ import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
-import {useSettingsStore} from 'stores/settings'
 import {useTransientSettings} from 'stores/transient'
-import {useLocalSettings} from 'stores/local'
 
 const dayjs = require('dayjs')
 
@@ -29,28 +27,31 @@ const AutoUpdatingTimePanel = () => {
 }
 
 
-export const TopPanel = memo(() => {
-
+const Controls = () => {
   const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
-  const {locale} = useSettingsStore()
+  return (
+    <Stack sx={{width: "min-content"}} direction="row">
+      <ToggleButton selected={settingsActive} onChange={switchSettings}>
+        <SettingsIcon />
+      </ToggleButton>
+      <IconButton onClick={switchShowContent} color="">
+        {
+          (showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>
+        }
+      </IconButton>
+    </Stack>
+  )
+}
+export const TopPanel = memo(() => {
   return (
     <BackgroundPaper>
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="column" justifyContent="space-between">
           <AutoUpdatingTimePanel/>
-          <Stack sx={{width: "min-content"}} direction="row">
-            <ToggleButton selected={settingsActive} onChange={switchSettings}>
-              <SettingsIcon />
-            </ToggleButton>
-            <IconButton onClick={switchShowContent} color="">
-              {
-                (showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>
-              }
-            </IconButton>
-          </Stack>
+          <Controls/>
         </Stack>
         <Bookmarks/>
-        <Calendar locale={locale}/>
+        <Calendar/>
       </Stack>
     </BackgroundPaper>
   )

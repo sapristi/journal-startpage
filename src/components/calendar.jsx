@@ -6,6 +6,9 @@ import { styled } from '@mui/material/styles';
 import dayjs  from 'dayjs';
 
 
+import {useSettingsStore} from 'stores/settings'
+
+
 
 
 const CustomPickersDay = styled(PickersDay, {
@@ -38,7 +41,8 @@ const renderCustomDay = (
 }
 
 
-export const Calendar = memo(({locale}) => {
+export const Calendar = () => {
+  const locale = useSettingsStore(state => state.locale)
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
       <CalendarPicker
@@ -50,4 +54,4 @@ export const Calendar = memo(({locale}) => {
       />
     </LocalizationProvider>
   )
-})
+}
