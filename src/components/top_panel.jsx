@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react'
 import { Typography, Stack, Box, ToggleButton } from '@mui/material';
-import {Table, TableRow, TableCell, TableBody} from '@mui/material';
+import {Table, TableRow, TableCell, TableBody, TableContainer} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton, ForegroundPaper} from "./base"
@@ -9,7 +9,6 @@ import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
 import { fetchCalendarObjects } from 'tsdav';
 import { DateTime } from "luxon";
-import {dayjs} from 'utils/locales'
 const ICAL = require("ical.js")
 const loadEvents = async ({url}) => {
 
@@ -43,14 +42,29 @@ const loadEvents = async ({url}) => {
     end: now.plus({year: 1}).toISO()
   }
   const res = await getEvents(timeRange)
-  console.log(res)
+  res.sort((a,b) => (a.startTime > b.startTime))
   return res
 }
+
+const getTextColor = (startTime) =>{
+  const nbDays = startTime.diff(DateTime.now(), "days").values.days
+  if (nbDays < 2) {return "text.primary"}
+  if (nbDays < 7) {return "text.secondary"}
+  return "text.disabled"
+}
+
+
 const Event = ({summary, startTime}) => {
+  const textColor = getTextColor(startTime)
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0, } }}>
-      <TableCell><Typography variant="body2">{startTime.toLocaleString(DateTime.DATETIME_SHORT)}</Typography></TableCell>
-      <TableCell><Typography>{summary}</Typography></TableCell>
+    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0, }}}>
+      <TableCell>
+        <Typography sx={{color: textColor}}>{summary}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography variant="body2" sx={{color: textColor}}>{startTime.toRelative()}</Typography>
+        <Typography variant="caption" sx={{color: textColor}}>{startTime.toLocaleString(DateTime.DATETIME_SHORT)}</Typography>
+      </TableCell>
     </TableRow>
   )
 }
@@ -65,11 +79,13 @@ const Events = () => {
   }, [])
   console.log("EVENTS", events)
   return (
-    <Table size="small" sx={{height: "min-content"}}>
-      <TableBody>
-      {events.map(event => <Event key={event.startTime.toLocaleString()} {...event}/>)}
-      </TableBody>
-    </Table>
+    <TableContainer sx={{width: "auto", maxHeight: "200px"}}>
+      <Table size="small">
+        <TableBody>
+          {events.map(event => <Event key={event.startTime.toLocaleString()} {...event}/>)}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 const AutoUpdatingTimePanel = () => {
@@ -84,8 +100,8 @@ const AutoUpdatingTimePanel = () => {
 
   return (
     <Box sx={{padding: 2}}>
-      <Typography variant="h3">{dayjs().format("LT")}</Typography>
-      <Typography variant="h4">{dayjs().format("dddd LL")}</Typography>
+      <Typography variant="h3">{DateTime.now().toLocaleString(DateTime.TIME_SIMPLE)}</Typography>
+      <Typography variant="h4">{DateTime.now().toLocaleString(DateTime.DATE_FULL)}</Typography>
     </Box>
   )
 }

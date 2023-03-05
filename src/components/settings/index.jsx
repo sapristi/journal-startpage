@@ -49,7 +49,7 @@ const BehaviourPanel = () => {
       <BookmarksFolderPicker/>
       <Switch label="Show content at startup"
               checked={showContentAtStart} onChange={switchShowContentAtStart}/>
-      <TextField label="url" value={caldavURL} onChange={handlecaldavURLChange}/>
+      <TextField label="CalDAV public url" value={caldavURL} onChange={handlecaldavURLChange}/>
     </SettingsSubPanel>
   )
 }

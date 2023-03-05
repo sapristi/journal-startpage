@@ -2,9 +2,8 @@ import React, { useState, memo } from 'react';
 
 import { Typography, Divider, Stack, TextField } from '@mui/material';
 
-import { CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton, IconButton } from "./base"
+import { CardList, BackgroundPaper, ForegroundPaper, Button, DeleteButton, IconButton,  DateElem } from "./base"
 import { EditableMarkdown } from "./editable"
-import { DateElem } from './date_elem'
 import { displayDate } from 'utils/locales'
 import { useLocalSettings } from "stores/local"
 import { AddBoxIcon } from "icons"

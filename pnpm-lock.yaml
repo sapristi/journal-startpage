@@ -8,7 +8,6 @@ specifiers:
   '@mui/material': ^5.11.7
   '@mui/x-data-grid': ^5.17.23
   '@mui/x-date-pickers': ^5.0.13
-  dayjs: ^1.11.7
   ical.js: ^1.5.0
   immer: ^9.0.17
   lodash: ^4.17.21
@@ -35,8 +34,7 @@ dependencies:
   '@mui/icons-material': 5.11.0_gcc4slj53ya266xgbug43l7pri
   '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
   '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
-  '@mui/x-date-pickers': 5.0.13_2duz22bpwl5umn2lktg77vashi
-  dayjs: 1.11.7
+  '@mui/x-date-pickers': 5.0.13_pooglhg4x4fut5rweex2qxi2vu
   ical.js: 1.5.0
   immer: 9.0.17
   lodash: 4.17.21
@@ -1639,7 +1637,7 @@ packages:
       '@date-io/core': 2.16.0
     dev: false
 
-  /@date-io/dayjs/2.16.0_dayjs@1.11.7:
+  /@date-io/dayjs/2.16.0:
     resolution: {integrity: sha512-y5qKyX2j/HG3zMvIxTobYZRGnd1FUW2olZLS0vTj7bEkBQkjd2RO7/FEwDY03Z1geVGlXKnzIATEVBVaGzV4Iw==}
     peerDependencies:
       dayjs: ^1.8.17
@@ -1648,7 +1646,6 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
-      dayjs: 1.11.7
     dev: false
 
   /@date-io/luxon/2.16.1_luxon@3.3.0:
@@ -2376,7 +2373,7 @@ packages:
       reselect: 4.1.7
     dev: false
 
-  /@mui/x-date-pickers/5.0.13_2duz22bpwl5umn2lktg77vashi:
+  /@mui/x-date-pickers/5.0.13_pooglhg4x4fut5rweex2qxi2vu:
     resolution: {integrity: sha512-nUc35Zvah/l4bEWcPNRtSvWBL+7uAlokd6G6PzQfLe2TQo4GNlK1JVRfoVpBY5FsdM09uWLrpvfWLbka87k7GA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -2407,7 +2404,7 @@ packages:
       '@babel/runtime': 7.20.7
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0
-      '@date-io/dayjs': 2.16.0_dayjs@1.11.7
+      '@date-io/dayjs': 2.16.0
       '@date-io/luxon': 2.16.1_luxon@3.3.0
       '@date-io/moment': 2.16.1
       '@emotion/react': 11.10.5_react@18.2.0
@@ -2416,7 +2413,6 @@ packages:
       '@mui/utils': 5.11.2_react@18.2.0
       '@types/react-transition-group': 4.4.5
       clsx: 1.2.1
-      dayjs: 1.11.7
       luxon: 3.3.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -4944,10 +4940,6 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
-    dev: false
-
-  /dayjs/1.11.7:
-    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: false
 
   /debounce/1.2.1:
