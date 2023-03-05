@@ -3,13 +3,14 @@ import { Typography, Stack, Box, ToggleButton } from '@mui/material';
 import {Table, TableRow, TableCell, TableBody, TableContainer} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
-import {BackgroundPaper, IconButton, ForegroundPaper} from "./base"
+import {BackgroundPaper, IconButton} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
 import { fetchCalendarObjects } from 'tsdav';
 import { DateTime } from "luxon";
 const ICAL = require("ical.js")
+
 const loadEvents = async ({url}) => {
 
   const parseRawEvent = (rawEvent) => {
@@ -71,13 +72,16 @@ const Event = ({summary, startTime}) => {
 
 
 const Events = () => {
+  // Trigger refresh on locale change
+  const locale = useSettingsStore(state => state.locale)
   const [events, setEvents ] = useState([])
   const caldavURL = useSettingsStore(state => state.caldavURL)
 
   useEffect(() => {
+    if (!caldavURL) {return}
     loadEvents({url: caldavURL}).then(events => setEvents(events))
-  }, [])
-  console.log("EVENTS", events)
+  }, [caldavURL, locale])
+
   return (
     <TableContainer sx={{width: "auto", maxHeight: "200px"}}>
       <Table size="small">
@@ -89,6 +93,8 @@ const Events = () => {
   )
 }
 const AutoUpdatingTimePanel = () => {
+  // Trigger refresh on locale change
+  const locale = useSettingsStore(state => state.locale)
   const [time, setTime] = useState(Date.now());
 
   useEffect(() => {

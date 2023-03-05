@@ -29,6 +29,10 @@ export const Bookmarks = () => {
         bookmarks => {
           log("BOOKMARKS", bookmarks)
           if (bookmarks === null) {setBookmarks([]); return}
+          if (!bookmarks[0]) {
+            log("MISSING BOOKMARK")
+            return
+          }
           const selectedChildren = bookmarks[0].children.filter(
             child => child.type === "bookmark"
           )
