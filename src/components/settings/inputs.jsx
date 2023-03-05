@@ -16,8 +16,8 @@ export const LocaleSelector = () => {
       id="locale-selector" label="Locale"
             value={locale} handleChange={setLocale}>
       {
-        Object.entries(locales).map(([locale, localeName])=>
-          <MenuItem key={locale} value={locale}>{localeName}</MenuItem>
+        locales.map(({code, name})=>
+          <MenuItem key={code} value={code}>{name}</MenuItem>
         )
       }
     </Select>

@@ -31,14 +31,21 @@ entries_raw = full_response.text.split("%%")
 
 entries = [parse_entry(entry) for entry in entries_raw]
 
-res = {
-    entry["Subtag"]: entry["Description"].replace("\n", " ")
+res = [
+    {
+        "code": entry["Subtag"],
+        "name": entry["Description"].replace("\n", " ")
+    }
     for entry in entries
     if "Subtag" in entry
     and entry["Subtag"] in selected_languages
     and entry["Type"] == "language"
     and not "Macrolanguage" in entry
     and not "Private use" in entry["Description"]
-}
+]
+res.sort(
+    key=lambda entry: entry["name"]
+)
+
 
 print(json.dumps(res))

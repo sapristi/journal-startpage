@@ -122,7 +122,7 @@ const HotKeysProvider = () => {
         const {target, key} = event;
 
         if (target.localName !== "body") {return}
-        log("received", key)
+        // log("received", key)
         switch (key) {
         case "Escape":
           if (settingsActive) {switchSettings()}
@@ -159,7 +159,7 @@ const HotKeysProvider = () => {
         }
       }
     },
-    [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent, settingsActive, switchSettings, log]
+    [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent, settingsActive, switchSettings]
   )
   useEffect(
     () => {
