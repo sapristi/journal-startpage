@@ -11,6 +11,7 @@ Tools:
  - tasks
  - display calendar
  - show bookmarks from selected folder
+ - show future events from a caldav public link
 
 Global shortcuts allow for keyboard-first usage.
 
@@ -36,7 +37,6 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
   - rework journal:
     - allow to change date ?
     - integrate with calendar ?
-  - integrate calendar (to show upcoming events)
 
 ### Done
 
@@ -48,6 +48,7 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 - browser sync storage
 - tabular notes
 - bookmarks
+- show events from calDAV calendar
 
 # Develop
 
