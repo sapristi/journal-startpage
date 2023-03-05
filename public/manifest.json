@@ -10,7 +10,8 @@
   },
   "permissions": [
     "storage",
-    "bookmarks"
+    "bookmarks",
+    "https://framagenda.org/*"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

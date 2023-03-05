@@ -8,9 +8,10 @@ specifiers:
   '@mui/material': ^5.11.7
   '@mui/x-data-grid': ^5.17.23
   '@mui/x-date-pickers': ^5.0.13
-  dayjs: ^1.11.7
+  ical.js: ^1.5.0
   immer: ^9.0.17
   lodash: ^4.17.21
+  luxon: ^3.3.0
   marked: ^4.2.5
   mui-color-input: ^1.0.4
   react: ^18.2.0
@@ -21,6 +22,7 @@ specifiers:
   react-scripts: 5.0.1
   remark-gfm: ^3.0.1
   sass: ^1.57.1
+  tsdav: ^2.0.3
   web-ext: ^7.4.0
   web-vitals: ^2.1.4
   zustand: ^4.2.0
@@ -32,10 +34,11 @@ dependencies:
   '@mui/icons-material': 5.11.0_gcc4slj53ya266xgbug43l7pri
   '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
   '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
-  '@mui/x-date-pickers': 5.0.13_hbec2hdowikcxry2p3aoafufcm
-  dayjs: 1.11.7
+  '@mui/x-date-pickers': 5.0.13_pooglhg4x4fut5rweex2qxi2vu
+  ical.js: 1.5.0
   immer: 9.0.17
   lodash: 4.17.21
+  luxon: 3.3.0
   marked: 4.2.5
   mui-color-input: 1.0.4_qo5tbv3wjsnulj3odbgeoxieku
   react: 18.2.0
@@ -44,6 +47,7 @@ dependencies:
   react-markdown: 8.0.4_react@18.2.0
   react-scripts: 5.0.1_react@18.2.0+sass@1.57.1
   remark-gfm: 3.0.1
+  tsdav: 2.0.3
   web-vitals: 2.1.4
   zustand: 4.2.0_immer@9.0.17+react@18.2.0
 
@@ -1633,7 +1637,7 @@ packages:
       '@date-io/core': 2.16.0
     dev: false
 
-  /@date-io/dayjs/2.16.0_dayjs@1.11.7:
+  /@date-io/dayjs/2.16.0:
     resolution: {integrity: sha512-y5qKyX2j/HG3zMvIxTobYZRGnd1FUW2olZLS0vTj7bEkBQkjd2RO7/FEwDY03Z1geVGlXKnzIATEVBVaGzV4Iw==}
     peerDependencies:
       dayjs: ^1.8.17
@@ -1642,10 +1646,9 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
-      dayjs: 1.11.7
     dev: false
 
-  /@date-io/luxon/2.16.1:
+  /@date-io/luxon/2.16.1_luxon@3.3.0:
     resolution: {integrity: sha512-aeYp5K9PSHV28946pC+9UKUi/xMMYoaGelrpDibZSgHu2VWHXrr7zWLEr+pMPThSs5vt8Ei365PO+84pCm37WQ==}
     peerDependencies:
       luxon: ^1.21.3 || ^2.x || ^3.x
@@ -1654,6 +1657,7 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
+      luxon: 3.3.0
     dev: false
 
   /@date-io/moment/2.16.1:
@@ -2369,7 +2373,7 @@ packages:
       reselect: 4.1.7
     dev: false
 
-  /@mui/x-date-pickers/5.0.13_hbec2hdowikcxry2p3aoafufcm:
+  /@mui/x-date-pickers/5.0.13_pooglhg4x4fut5rweex2qxi2vu:
     resolution: {integrity: sha512-nUc35Zvah/l4bEWcPNRtSvWBL+7uAlokd6G6PzQfLe2TQo4GNlK1JVRfoVpBY5FsdM09uWLrpvfWLbka87k7GA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -2400,8 +2404,8 @@ packages:
       '@babel/runtime': 7.20.7
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0
-      '@date-io/dayjs': 2.16.0_dayjs@1.11.7
-      '@date-io/luxon': 2.16.1
+      '@date-io/dayjs': 2.16.0
+      '@date-io/luxon': 2.16.1_luxon@3.3.0
       '@date-io/moment': 2.16.1
       '@emotion/react': 11.10.5_react@18.2.0
       '@emotion/styled': 11.10.5_hp5f5nkljdiwilp4rgxyefcplu
@@ -2409,7 +2413,7 @@ packages:
       '@mui/utils': 5.11.2_react@18.2.0
       '@types/react-transition-group': 4.4.5
       clsx: 1.2.1
-      dayjs: 1.11.7
+      luxon: 3.3.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -3933,6 +3937,10 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
+  /base-64/1.0.0:
+    resolution: {integrity: sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg==}
+    dev: false
+
   /base64-js/1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
     dev: true
@@ -4629,6 +4637,14 @@ packages:
       capture-stack-trace: 1.0.2
     dev: true
 
+  /cross-fetch/3.1.5:
+    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
+    dependencies:
+      node-fetch: 2.6.7
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /cross-spawn/5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
     dependencies:
@@ -4924,10 +4940,6 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
-    dev: false
-
-  /dayjs/1.11.7:
-    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
     dev: false
 
   /debounce/1.2.1:
@@ -6970,6 +6982,10 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: false
 
+  /ical.js/1.5.0:
+    resolution: {integrity: sha512-7ZxMkogUkkaCx810yp0ZGKvq1ZpRgJeornPttpoxe6nYZ3NLesZe1wWMXDdwTkj/b5NtXT+Y16Aakph/ao98ZQ==}
+    dev: false
+
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -8475,6 +8491,11 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /luxon/3.3.0:
+    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
+    engines: {node: '>=12'}
+    dev: false
+
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
     dependencies:
@@ -9163,6 +9184,18 @@ packages:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
     dev: true
+
+  /node-fetch/2.6.7:
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      whatwg-url: 5.0.0
+    dev: false
 
   /node-fetch/3.3.0:
     resolution: {integrity: sha512-BKwRP/O0UvoMKp7GNdwPlObhYGB5DQqwhEDQlNKuoqwVYSxkSZCSbHjnFFmUEtwSKRPU4kNK8PbDYYitwaE3QA==}
@@ -12331,6 +12364,10 @@ packages:
       url-parse: 1.5.10
     dev: false
 
+  /tr46/0.0.3:
+    resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    dev: false
+
   /tr46/1.0.1:
     resolution: {integrity: sha512-dTpowEjclQ7Kgx5SdBkqRzVhERQXov8/l9Ft9dVM9fmg0W0KQSVaXX9T4i6twCPNtYiZM53lpSSUAwJbFPOHxA==}
     dependencies:
@@ -12363,6 +12400,19 @@ packages:
       json5: 1.0.2
       minimist: 1.2.7
       strip-bom: 3.0.0
+    dev: false
+
+  /tsdav/2.0.3:
+    resolution: {integrity: sha512-/hCoeqWCqpi/uEaa553l7QZVGeRQS3+THkdMDCGFv6euoYDdat1ayjLvC6VQ2Jn+RNKDvxtny/u4b6cII0j27A==}
+    engines: {node: '>=10'}
+    dependencies:
+      base-64: 1.0.0
+      cross-fetch: 3.1.5
+      debug: 4.3.4
+      xml-js: 1.6.11
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
     dev: false
 
   /tslib/1.14.1:
@@ -12875,6 +12925,10 @@ packages:
     resolution: {integrity: sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg==}
     dev: false
 
+  /webidl-conversions/3.0.1:
+    resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    dev: false
+
   /webidl-conversions/4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: false
@@ -13048,6 +13102,13 @@ packages:
 
   /whatwg-mimetype/2.3.0:
     resolution: {integrity: sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==}
+    dev: false
+
+  /whatwg-url/5.0.0:
+    resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
     dev: false
 
   /whatwg-url/7.1.0:
@@ -13368,6 +13429,13 @@ packages:
     resolution: {integrity: sha512-GCPAHLvrIH13+c0SuacwvRYj2SxJXQ4kaVTT5xgL3kPrz56XxkF21IGhjSE1+W0aw7gpBWRGXLCPnPby6lSpmQ==}
     engines: {node: '>=12'}
     dev: true
+
+  /xml-js/1.6.11:
+    resolution: {integrity: sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==}
+    hasBin: true
+    dependencies:
+      sax: 1.2.4
+    dev: false
 
   /xml-name-validator/3.0.0:
     resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}

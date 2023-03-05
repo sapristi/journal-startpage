@@ -1,9 +1,8 @@
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 import { TinyColor } from '@ctrl/tinycolor'
-import {getBrowserLocale} from 'utils/locales'
+import { Settings as LuxonSettings } from "luxon";
 
-const dayjs = require('dayjs')
 
 const initValue = {
   backgroundColor: "rgba(32, 39, 64, 0.44)",
@@ -12,9 +11,10 @@ const initValue = {
   mode: "dark",
   backgroundImageURL: "https://raw.githubusercontent.com/sapristi/journal-startpage/master/assets/wallpaper_2.jpg",
   bookmarksFolder: "",
-  locale: getBrowserLocale(),
+  locale: navigator.language,
   panelBlur: 4,
   showContentAtStart: true,
+  caldavURL: "",
 }
 
 
@@ -37,7 +37,7 @@ export const useSettingsStore = create(
         }
       }),
       setLocale: (newLocale) => set(state => {
-        dayjs.locale(newLocale)
+        LuxonSettings.defaultLocale = newLocale
         return {
           locale: newLocale
         }

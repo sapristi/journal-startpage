@@ -1,4 +1,4 @@
-import { Typography, Stack, Divider, Link} from '@mui/material';
+import { Typography, Stack, Divider, Link, TextField} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import {makeLogger, helpText} from 'utils'
 import {Markdown} from "components/editable"
@@ -6,7 +6,7 @@ import {ForegroundPaper, BackgroundPaper, ActionInput, Button, Switch, IconButto
 import {DataExport, DataImport} from "./actions"
 import {
   LocaleSelector, ModeSlider, ControlledColorPicker,
-  BookmarksFolderPicker, BlurSelector
+  BookmarksFolderPicker, BlurSelector,
 } from './inputs'
 import {SaveIcon, CloseIcon} from 'icons'
 import {FileUpload} from "components/file_upload"
@@ -38,13 +38,18 @@ const HelpPanel = () => (
 )
 
 const BehaviourPanel = () => {
-  const {showContentAtStart, switchShowContentAtStart} = useSettingsStore()
+  const {
+    showContentAtStart, switchShowContentAtStart,
+    caldavURL, setValue
+  } = useSettingsStore()
+  const handlecaldavURLChange = (event) => {const newValue = event.target.value; setValue("caldavURL", newValue)}
   return (
     <SettingsSubPanel title="Behaviour">
       <LocaleSelector />
       <BookmarksFolderPicker/>
       <Switch label="Show content at startup"
               checked={showContentAtStart} onChange={switchShowContentAtStart}/>
+      <TextField label="CalDAV public url" value={caldavURL} onChange={handlecaldavURLChange}/>
     </SettingsSubPanel>
   )
 }
@@ -131,7 +136,11 @@ export const SettingsPanel = () => {
               <BehaviourPanel/><StatsPanel/>
             </Stack>
           </Grid>
-          <Grid xs={3}><ActionsPanel/></Grid>
+          <Grid xs={3}>
+            <Stack spacing={3}>
+              <ActionsPanel/>
+            </Stack>
+          </Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
         </Grid>
         <Divider/>

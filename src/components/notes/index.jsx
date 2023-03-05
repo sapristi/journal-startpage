@@ -1,9 +1,8 @@
 import React, { useState, memo } from 'react';
 
 import { Typography, Divider, Stack, TextField } from '@mui/material';
-import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteButton } from "components/base"
+import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteButton, DateElem } from "components/base"
 import { EditableMarkdown, EditableInput } from "components/editable"
-import { DateElem } from 'components/date_elem'
 import { getTimestamp } from 'utils'
 import { useLocalSettings } from "stores/local"
 

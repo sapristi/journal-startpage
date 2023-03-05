@@ -1,12 +1,13 @@
 import {useState, useEffect} from "react"
-import { Typography, Stack, Switch,  MenuItem, Slider, Box} from '@mui/material';
+import { Typography,  MenuItem, Slider, Box} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
-import {useSettingsStore} from 'stores/settings'
 import {locales} from 'utils/locales'
 import {Select} from "components/select"
 import {bookmarksApi, extractFolders} from 'utils/bookmarks_adapter'
 import {DualLabelSwitch} from 'components/base'
+
+import {useSettingsStore} from 'stores/settings'
 
 export const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -15,8 +16,8 @@ export const LocaleSelector = () => {
       id="locale-selector" label="Locale"
             value={locale} handleChange={setLocale}>
       {
-        locales.map(localeChoice =>
-          <MenuItem key={localeChoice.key} value={localeChoice.key}>{localeChoice.name}</MenuItem>
+        Object.entries(locales).map(([locale, localeName])=>
+          <MenuItem key={locale} value={locale}>{localeName}</MenuItem>
         )
       }
     </Select>
@@ -90,5 +91,3 @@ export const BlurSelector = ({propName}) => {
     </Box>
   )
 }
-
-

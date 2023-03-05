@@ -1,9 +1,9 @@
 import {memo} from 'react'
 import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { styled } from '@mui/material/styles';
-import dayjs  from 'dayjs';
+import { DateTime } from "luxon";
 
 
 import {useSettingsStore} from 'stores/settings'
@@ -32,8 +32,8 @@ const renderCustomDay = (
     selectedDates,
     pickersDayProps,
 ) => {
-    const isWeekEnd = date.weekday() === 5 || date.weekday() === 6;
-    const isToday = date.isSame(dayjs(), "day");
+  const isWeekEnd = date.weekday === 6 || date.weekday === 7;
+    const isToday = date.hasSame(DateTime.now(), "day");
     return <CustomPickersDay
              sx={{height: "22px", borderRadius: "25%"}}
              isToday={isToday} isWeekEnd={isWeekEnd} {...pickersDayProps}
@@ -44,7 +44,7 @@ const renderCustomDay = (
 export const Calendar = () => {
   const locale = useSettingsStore(state => state.locale)
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={locale}>
+    <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale={locale}>
       <CalendarPicker
         onChange={() => {}}
         reduceAnimations={true}

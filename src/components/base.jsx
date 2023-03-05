@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {displayRelativeDate, formatTimeProp} from 'utils/locales'
 import {
   Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton,
   FormGroup, FormControlLabel, Switch as MuiSwitch, Typography
@@ -87,4 +88,9 @@ export const DualLabelSwitch = ({leftLabel, rightLabel, ...props}) => {
     </Stack>
   )
 
+}
+export const DateElem = ({timestamp}) => {
+  return <time dateTime={formatTimeProp(timestamp)}>
+           {displayRelativeDate(timestamp)}
+         </time>
 }

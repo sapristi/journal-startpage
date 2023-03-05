@@ -17,8 +17,8 @@ import {addEmptyTask} from 'stores/tasks'
 import {useLocalSettings} from "stores/local"
 import {useSettingsStore} from 'stores/settings'
 import {useTransientSettings} from 'stores/transient'
+import { Settings as LuxonSettings } from "luxon";
 
-const dayjs = require('dayjs')
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}) =>{
   return createTheme({
@@ -76,7 +76,7 @@ const VisibleApp = () => {
     mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL,
   } = useSettingsStore()
 
-  if (dayjs.locale() !== locale) {dayjs.locale(locale)}
+  if (LuxonSettings.defaultLocale !== locale) {LuxonSettings.defaultLocale = locale}
 
   const currentTheme = useMemo(
     () => {
