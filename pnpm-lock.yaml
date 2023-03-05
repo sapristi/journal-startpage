@@ -12,6 +12,7 @@ specifiers:
   ical.js: ^1.5.0
   immer: ^9.0.17
   lodash: ^4.17.21
+  luxon: ^3.3.0
   marked: ^4.2.5
   mui-color-input: ^1.0.4
   react: ^18.2.0
@@ -34,11 +35,12 @@ dependencies:
   '@mui/icons-material': 5.11.0_gcc4slj53ya266xgbug43l7pri
   '@mui/material': 5.11.7_5rzy53przelm5jchjmb5vr6dxy
   '@mui/x-data-grid': 5.17.23_juhrskmuvyorwpajghq6zhdw2q
-  '@mui/x-date-pickers': 5.0.13_hbec2hdowikcxry2p3aoafufcm
+  '@mui/x-date-pickers': 5.0.13_2duz22bpwl5umn2lktg77vashi
   dayjs: 1.11.7
   ical.js: 1.5.0
   immer: 9.0.17
   lodash: 4.17.21
+  luxon: 3.3.0
   marked: 4.2.5
   mui-color-input: 1.0.4_qo5tbv3wjsnulj3odbgeoxieku
   react: 18.2.0
@@ -1649,7 +1651,7 @@ packages:
       dayjs: 1.11.7
     dev: false
 
-  /@date-io/luxon/2.16.1:
+  /@date-io/luxon/2.16.1_luxon@3.3.0:
     resolution: {integrity: sha512-aeYp5K9PSHV28946pC+9UKUi/xMMYoaGelrpDibZSgHu2VWHXrr7zWLEr+pMPThSs5vt8Ei365PO+84pCm37WQ==}
     peerDependencies:
       luxon: ^1.21.3 || ^2.x || ^3.x
@@ -1658,6 +1660,7 @@ packages:
         optional: true
     dependencies:
       '@date-io/core': 2.16.0
+      luxon: 3.3.0
     dev: false
 
   /@date-io/moment/2.16.1:
@@ -2373,7 +2376,7 @@ packages:
       reselect: 4.1.7
     dev: false
 
-  /@mui/x-date-pickers/5.0.13_hbec2hdowikcxry2p3aoafufcm:
+  /@mui/x-date-pickers/5.0.13_2duz22bpwl5umn2lktg77vashi:
     resolution: {integrity: sha512-nUc35Zvah/l4bEWcPNRtSvWBL+7uAlokd6G6PzQfLe2TQo4GNlK1JVRfoVpBY5FsdM09uWLrpvfWLbka87k7GA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -2405,7 +2408,7 @@ packages:
       '@date-io/core': 2.16.0
       '@date-io/date-fns': 2.16.0
       '@date-io/dayjs': 2.16.0_dayjs@1.11.7
-      '@date-io/luxon': 2.16.1
+      '@date-io/luxon': 2.16.1_luxon@3.3.0
       '@date-io/moment': 2.16.1
       '@emotion/react': 11.10.5_react@18.2.0
       '@emotion/styled': 11.10.5_hp5f5nkljdiwilp4rgxyefcplu
@@ -2414,6 +2417,7 @@ packages:
       '@types/react-transition-group': 4.4.5
       clsx: 1.2.1
       dayjs: 1.11.7
+      luxon: 3.3.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -8494,6 +8498,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+
+  /luxon/3.3.0:
+    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /magic-string/0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}

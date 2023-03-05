@@ -12,7 +12,7 @@
     "storage",
     "bookmarks",
     "webRequest",
-    "*://*/*"
+    "https://framagenda.org/*"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"

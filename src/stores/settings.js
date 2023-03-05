@@ -15,6 +15,7 @@ const initValue = {
   locale: getBrowserLocale(),
   panelBlur: 4,
   showContentAtStart: true,
+  caldavURL: "",
 }
 
 

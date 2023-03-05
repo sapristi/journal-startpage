@@ -2,13 +2,14 @@ const dayjs = require('dayjs')
 const relativeTime = require('dayjs/plugin/relativeTime')
 const localizedFormat = require('dayjs/plugin/localizedFormat')
 const weekday = require('dayjs/plugin/weekday')
-
+const objectSupport = require("dayjs/plugin/objectSupport");
 export const locales = require('dayjs/locale.json')
 locales.sort((value1, value2) => value1.name.localeCompare(value2.name))
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(weekday)
+dayjs.extend(objectSupport);
 
 export const displayRelativeDate = (timestamp) => {
   return dayjs(timestamp).fromNow()
@@ -175,3 +176,4 @@ dayjs.locale(require('dayjs/locale/zh'), null, true);
 dayjs.locale(require('dayjs/locale/rw'), null, true);
 dayjs.locale(require('dayjs/locale/se'), null, true);
 
+export {dayjs}

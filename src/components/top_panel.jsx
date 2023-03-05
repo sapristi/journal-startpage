@@ -1,33 +1,17 @@
 import { useState, useEffect, memo } from 'react'
 import { Typography, Stack, Box, ToggleButton } from '@mui/material';
+import {Table, TableRow, TableCell, TableBody} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
-import {BackgroundPaper, IconButton} from "./base"
+import {BackgroundPaper, IconButton, ForegroundPaper} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
-import { createDAVClient } from 'tsdav';
-import {useCalDAVStore} from 'stores/caldav'
+import { fetchCalendarObjects } from 'tsdav';
+import { DateTime } from "luxon";
+import {dayjs} from 'utils/locales'
 const ICAL = require("ical.js")
-const dayjs = require('dayjs')
-
-const encode = (value) => {
-  let utf8Encode = new TextEncoder()
-  return String.fromCharCode.apply(null, utf8Encode.encode(value))
-}
-
-
-const loadEvents = async ({username, password, url}) => {
-  const client = await createDAVClient({
-    serverUrl: url,
-    credentials: {
-      username,
-      password: encode(password),
-    },
-    authMethod: 'Basic',
-    defaultAccountType: 'caldav',
-  })
-
+const loadEvents = async ({url}) => {
 
   const parseRawEvent = (rawEvent) => {
     const jcalData = ICAL.parse(rawEvent.data)
@@ -35,14 +19,17 @@ const loadEvents = async ({username, password, url}) => {
     const vevent = comp.getFirstSubcomponent("vevent");
     const summary = vevent.getFirstPropertyValue("summary");
     const dtstart = vevent.getFirstPropertyValue("dtstart");
-    return {
+    delete dtstart._time.isDate
+    const dt = DateTime.fromObject(dtstart._time, {zone: dtstart.timezone})
+    const res =  {
       summary,
-      dstart: dtstart._time
+      startTime: dt
     }
+    return res
   }
 
   const getEvents = async (timeRange) => {
-    const events = await client.fetchCalendarObjects(
+    const events = await fetchCalendarObjects(
       {
         calendar: {url},
         timeRange,
@@ -50,59 +37,40 @@ const loadEvents = async ({username, password, url}) => {
     )
     return events.map(parseRawEvent)
   }
-  console.log("cleint", client, url)
-  const now = dayjs().hour(0).minute(0).second(0).millisecond(0)
+  const now = DateTime.now()
   let timeRange =  {
-    start: now.toISOString(),
-    end: now.year(now.year()+1).toISOString()
+    start: now.toISO(),
+    end: now.plus({year: 1}).toISO()
   }
-  console.log(timeRange, await getEvents(timeRange))
-
-  timeRange= {
-    start: '2023-01-01T00:00:00.000Z',
-    end: '2024-01-01T00:00:00.000Z'
-  }
-  console.log(timeRange, await getEvents(timeRange))
-  timeRange= {
-    start: "2023-01-01T23:00:00.000Z",
-    end: "2023-02-01T23:00:00.000Z"
-  }
-  console.log(timeRange, await getEvents(timeRange))
-
-  timeRange= {
-    start: "2023-02-03T23:00:00.000Z",
-    end: "2024-01-01T23:00:00.000Z"
-  }
-  console.log(timeRange, await getEvents(timeRange))
-
-  const rawEventsBis = await client.fetchCalendarObjects(
-    {
-      calendar: {url},
-      timeRange: {
-        start: '2023-01-01T00:00:00.000Z',
-        end: '2024-01-01T00:00:00.000Z'
-        // start: now.toISOString(),
-        // end: now.year(now.year()+1).toISOString()
-      },
-      // expand: true
-    }
-  )
-  console.log("RAWEVENTS", rawEventsBis)
-
-  const res = rawEventsBis.map(parseRawEvent)
-  console.log("RES", res)
+  const res = await getEvents(timeRange)
+  console.log(res)
   return res
+}
+const Event = ({summary, startTime}) => {
+  return (
+    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0, } }}>
+      <TableCell><Typography variant="body2">{startTime.toLocaleString(DateTime.DATETIME_SHORT)}</Typography></TableCell>
+      <TableCell><Typography>{summary}</Typography></TableCell>
+    </TableRow>
+  )
 }
 
 
 const Events = () => {
   const [events, setEvents ] = useState([])
-  const {username, password, url } = useCalDAVStore()
+  const caldavURL = useSettingsStore(state => state.caldavURL)
 
   useEffect(() => {
-    setEvents(loadEvents({username, password, url}))
+    loadEvents({url: caldavURL}).then(events => setEvents(events))
   }, [])
   console.log("EVENTS", events)
+  return (
+    <Table size="small" sx={{height: "min-content"}}>
+      <TableBody>
+      {events.map(event => <Event key={event.startTime.toLocaleString()} {...event}/>)}
+      </TableBody>
+    </Table>
+  )
 }
 const AutoUpdatingTimePanel = () => {
   const [time, setTime] = useState(Date.now());

@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react"
-import { Typography, Stack, Switch,  MenuItem, Slider, Box, TextField} from '@mui/material';
+import { Typography,  MenuItem, Slider, Box} from '@mui/material';
 import { MuiColorInput } from 'mui-color-input'
 import {debounce} from 'lodash';
 import {locales} from 'utils/locales'
@@ -8,7 +8,6 @@ import {bookmarksApi, extractFolders} from 'utils/bookmarks_adapter'
 import {DualLabelSwitch} from 'components/base'
 
 import {useSettingsStore} from 'stores/settings'
-import {useCalDAVStore} from 'stores/caldav'
 
 export const LocaleSelector = () => {
   const {locale, setLocale} = useSettingsStore()
@@ -91,19 +90,4 @@ export const BlurSelector = ({propName}) => {
       />
     </Box>
   )
-}
-
-
-export const CalDAVInputs = () => {
-  const {username, password, url, set } = useCalDAVStore()
-  const makeHandleChange = (field) => (event) => {
-    const value = event.target.value
-    set({[field]: value})
-  }
-  return (
-    <Stack>
-      <TextField label="url" value={url} onChange={makeHandleChange("url")}/>
-      <TextField label="username" value={username} onChange={makeHandleChange("username")}/>
-      <TextField label="password" value={password} type="password" onChange={makeHandleChange("password")}/>
-    </Stack>)
 }
