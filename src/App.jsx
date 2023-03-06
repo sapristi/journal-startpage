@@ -152,7 +152,7 @@ const HotKeysProvider = () => {
           break;
         case "s":
           if (!showContent) {setShowContent(true)}
-          switchActiveTab()
+          else {switchActiveTab()}
           break
         default:
           break
