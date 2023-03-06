@@ -12,6 +12,7 @@
     "storage",
     "bookmarks",
     "https://framagenda.org/*"
+    "https://calendar.google.com/*"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
