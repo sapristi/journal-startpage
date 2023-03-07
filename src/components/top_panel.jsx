@@ -11,6 +11,26 @@ import { fetchCalendarObjects } from 'tsdav';
 import { DateTime } from "luxon";
 const ICAL = require("ical.js")
 
+
+const matched = x => ({
+  on: () => matched(x),
+  otherwise: () => x,
+})
+
+const cleverEval = (fn, x) => (
+  (typeof(fn) === "function")
+    ? fn(x) : fn
+)
+
+export const match = (x, cmp = (a,b) => a===b) => ({
+  on: (pred, fn) => (
+    (typeof(pred) === "function")
+      ? (pred(x) ? matched(cleverEval(fn, x)) : match(x, cmp))
+      : ((cmp(x, pred)) ? matched(cleverEval(fn, x)) : match(x, cmp))
+  ),
+  otherwise: fn => cleverEval(fn, x),
+})
+
 const loadEvents = async ({url}) => {
 
   const parseRawEvent = (rawEvent) => {
@@ -20,7 +40,10 @@ const loadEvents = async ({url}) => {
     const summary = vevent.getFirstPropertyValue("summary");
     const dtstart = vevent.getFirstPropertyValue("dtstart");
     delete dtstart._time.isDate
-    const dt = DateTime.fromObject(dtstart._time, {zone: dtstart.timezone})
+    const zone = match(dtstart.timezone).on(
+      "Z", "UTC"
+    ).otherwise(x => x)
+    const dt = DateTime.fromObject(dtstart._time, {zone})
     const res =  {
       summary,
       startTime: dt
