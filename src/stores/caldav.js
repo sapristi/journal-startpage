@@ -5,9 +5,9 @@ import { persist } from 'zustand/middleware'
 export const useCalDAVStore = create(
   persist(
     (set) => ({
-      username: "",
-      password: "",
       url: "",
+      auth_method: "public",
+      credentials: {},
       set,
     }),
     {

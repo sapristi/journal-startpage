@@ -1,13 +1,13 @@
 import { useState, useEffect, memo } from 'react'
 import { Typography, Stack, Box, ToggleButton } from '@mui/material';
-import {Table, TableRow, TableCell, TableBody, TableContainer} from '@mui/material';
+import {Table, TableRow, TableCell, TableBody, TableContainer, Badge} from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton} from "./base"
 import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
-import { fetchCalendarObjects } from 'tsdav';
+import { fetchCalendarObjects, fetchCalendars, createDAVClient } from 'tsdav';
 import { DateTime } from "luxon";
 const ICAL = require("ical.js")
 
@@ -36,15 +36,17 @@ const loadEvents = async ({url}) => {
   const parseRawEvent = (rawEvent) => {
     const jcalData = ICAL.parse(rawEvent.data)
     const comp = new ICAL.Component(jcalData);
-    const vevent = comp.getFirstSubcomponent("vevent");
-    const summary = vevent.getFirstPropertyValue("summary");
-    const dtstart = vevent.getFirstPropertyValue("dtstart");
+    const vevent = comp.getFirstSubcomponent("vevent")
+    const uid = vevent.getFirstPropertyValue("uid")
+    const summary = vevent.getFirstPropertyValue("summary")
+    const dtstart = vevent.getFirstPropertyValue("dtstart")
     delete dtstart._time.isDate
     const zone = match(dtstart.timezone).on(
       "Z", "UTC"
     ).otherwise(x => x)
     const dt = DateTime.fromObject(dtstart._time, {zone})
     const res =  {
+      uid,
       summary,
       startTime: dt
     }
@@ -83,7 +85,9 @@ const Event = ({summary, startTime}) => {
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0, }}}>
       <TableCell>
-        <Typography sx={{color: textColor}}>{summary}</Typography>
+        {/* <Badge color="primary" badgeContent=" " variant="dot" anchorOrigin={{horizontal: 'left', vertical: 'top'}}> */}
+          <Typography sx={{color: textColor}}>{summary}</Typography>
+        {/* </Badge> */}
       </TableCell>
       <TableCell>
         <Typography variant="body2" sx={{color: textColor}}>{startTime.toRelative()}</Typography>
@@ -109,7 +113,7 @@ const Events = () => {
     <TableContainer sx={{width: "auto", maxHeight: "200px"}}>
       <Table size="small">
         <TableBody>
-          {events.map(event => <Event key={event.startTime.toLocaleString()} {...event}/>)}
+          {events.map(event => <Event key={event.uid} {...event}/>)}
         </TableBody>
       </Table>
     </TableContainer>

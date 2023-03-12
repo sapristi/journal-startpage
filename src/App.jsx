@@ -1,9 +1,10 @@
-import { useEffect, useMemo, memo, Fragment } from 'react'
+import { useEffect, useMemo, memo, Fragment, useState } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Container, Box} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useBottomScrollListener, BottomScrollListener } from 'react-bottom-scroll-listener';
 
 import {Journal} from './components/journal'
 import {Notes} from './components/notes'
@@ -41,7 +42,7 @@ const BottomPanel = memo(() =>{
   const {settingsActive, showContent, setShowContent} = useTransientSettings()
   const {activeTab} = useLocalSettings()
   const {showContentAtStart} = useSettingsStore()
-
+  const [scroll, setScroll] = useState(false)
   // show content at startup only if enabled
   useEffect(
     () => {
@@ -64,9 +65,10 @@ const BottomPanel = memo(() =>{
       </Grid>
       <Grid xs={8}>
         {
-          (activeTab === "journal")? <Journal/>: <Notes/>
+          (activeTab === "journal")? <Journal scroll={scroll}/>: <Notes scroll={scroll}/>
         }
       </Grid>
+      <BottomScrollListener onBottom={() => setScroll(scroll => (!scroll))}/>
     </>
   )
 })
@@ -87,26 +89,30 @@ const VisibleApp = () => {
 
   const backgroundTheme = useMemo( () =>
     (
-    (backgroundImageURL) ? {
-    backgroundImage: `url("${backgroundImageURL}")`,
-    backgroundSize: "cover",
-    } : {backgroundColor}),
+      (backgroundImageURL) ? {
+        backgroundImage: `url("${backgroundImageURL}")`,
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        margin: 0,
+        minHeight: "100vh",
+      } : {backgroundColor, minHeight: "100vh",}),
     [backgroundImageURL, backgroundColor]
   )
 
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <Box sx={{height: "100vh", overflow: "scroll", ...backgroundTheme}}>
-        <Container maxWidth="xl">
-          <Grid container spacing={3}>
-            <Grid xs={12}>
-              <TopPanel/>
-            </Grid>
-            <BottomPanel/>
+    <div style={{ ...backgroundTheme}}>
+      <Container maxWidth="xl">
+        <Grid container spacing={3} sx={{margin: 0}}>
+          <Grid xs={12}>
+            <TopPanel/>
           </Grid>
-        </Container>
-      </Box>
+          <BottomPanel/>
+        </Grid>
+
+      </Container>
+      </div>
     </ThemeProvider>
   );
 }

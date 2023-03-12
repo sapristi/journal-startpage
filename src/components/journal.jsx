@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 
 import { Typography, Divider, Stack, TextField } from '@mui/material';
 
@@ -13,7 +13,6 @@ import { useJournalStore,   setJournalEntry,
          removeJournalEntry,
          selectEntries,
  } from 'stores/journal'
-
 
 
 
@@ -53,15 +52,23 @@ const Entry = memo(({ entryKey, state }) => {
 })
 
 
-export const Journal = () => {
+export const Journal = ({scroll}) => {
   const { switchActiveTab } = useLocalSettings()
   const {entries} = useJournalStore()
   const [search, setSearch] = useState(() => "")
+  const [maxShown, setMaxShown] = useState(0)
+
+  const {selectedEntries, hasMore} = selectEntries({entries, search, maxShown})
+  useEffect(
+    ()=> {
+      hasMore && setMaxShown(maxShown => maxShown + 5)
+    },
+    [scroll, hasMore, setMaxShown]
+  )
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
 
-  const extractedEntries = selectEntries(entries, search)
 
   return (
     <BackgroundPaper>
@@ -79,7 +86,7 @@ export const Journal = () => {
         <Divider />
         <CardList>
           {
-            extractedEntries.map(([entryKey, entry]) =>
+            selectedEntries.map(([entryKey, entry]) =>
               <Entry
                 key={entryKey}
                 entryKey={entryKey}
@@ -87,6 +94,7 @@ export const Journal = () => {
               />
             )
           }
+
         </CardList>
       </Stack>
     </BackgroundPaper>

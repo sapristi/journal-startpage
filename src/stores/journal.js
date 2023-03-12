@@ -19,7 +19,7 @@ const {
 
 const addEmptyJournalEntry = () => addJournalEntry({ isDraft: true, content: "" })
 
-const selectEntries = (entries, search) => {
+const selectEntries = ({entries, search, maxShown}) => {
   const nonDeleted = Object.entries(entries).filter(
     ([key, value]) => (
       value !== null &&
@@ -28,7 +28,10 @@ const selectEntries = (entries, search) => {
     )
   )
   nonDeleted.sort(([key1, value1], [key2, value2]) => { return value2.date - value1.date })
-  return nonDeleted
+  return {
+    selectedEntries: nonDeleted.slice(0, maxShown),
+    hasMore: maxShown < Object.keys(entries).length
+  }
 }
 
 const editLastJournalEntry = () => {

@@ -16,6 +16,7 @@ specifiers:
   mui-color-input: ^1.0.4
   react: ^18.2.0
   react-app-rewired: ^2.2.1
+  react-bottom-scroll-listener: ^5.1.0
   react-devtools: ^4.27.2
   react-dom: ^18.2.0
   react-markdown: ^8.0.4
@@ -43,6 +44,7 @@ dependencies:
   mui-color-input: 1.0.4_qo5tbv3wjsnulj3odbgeoxieku
   react: 18.2.0
   react-app-rewired: 2.2.1_react-scripts@5.0.1
+  react-bottom-scroll-listener: 5.1.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-markdown: 8.0.4_react@18.2.0
   react-scripts: 5.0.1_react@18.2.0+sass@1.57.1
@@ -10730,6 +10732,18 @@ packages:
     dependencies:
       react-scripts: 5.0.1_react@18.2.0+sass@1.57.1
       semver: 5.7.1
+    dev: false
+
+  /react-bottom-scroll-listener/5.1.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-HI4qRKLbQ0Ox8xwIgYtLMk+1zETTaLtGBrhcTUFVRLL3OjVzfnyPPiXPGDnAPY6sGQh4KFH7Flp1dddnSmG33A==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      lodash.debounce: 4.0.8
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-dev-utils/12.0.1_hvhhvch5fcfceof5vvp2w4y5sa:

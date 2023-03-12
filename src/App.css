@@ -1,14 +1,5 @@
 /* see https://paletton.com/#uid=53B0G0kllll8+rqc5pQuAgQA2fg */
 
-.body {
-  width: 100%;
-  height: 100%;
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-}
 
 /* tighter calendar */
 .MuiDayPicker-slideTransition {
