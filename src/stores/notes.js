@@ -28,7 +28,7 @@ const addEmptyTabularNote = () => addNote({
   type: "table",
 })
 
-const selectEntries = (entries, search) => {
+const selectEntries = ({entries, search, maxShown}) => {
   let selected
   if (search === "") {
     selected = Object.entries(entries).filter(
@@ -50,7 +50,10 @@ const selectEntries = (entries, search) => {
     )
   }
   selected.sort(([key1, value1], [key2, value2]) => { return value2.lastModified - value1.lastModified })
-  return selected
+  return {
+    selectedEntries: selected.slice(0, maxShown),
+    hasMore: maxShown < Object.keys(selected).length
+  }
 }
 
 

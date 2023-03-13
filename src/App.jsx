@@ -68,7 +68,7 @@ const BottomPanel = memo(() =>{
           (activeTab === "journal")? <Journal scroll={scroll}/>: <Notes scroll={scroll}/>
         }
       </Grid>
-      <BottomScrollListener onBottom={() => setScroll(scroll => (!scroll))}/>
+      <BottomScrollListener offset={100} onBottom={() => setScroll(scroll => (!scroll))}/>
     </>
   )
 })

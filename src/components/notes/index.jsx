@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 
 import { Typography, Divider, Stack, TextField } from '@mui/material';
 import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteButton, DateElem } from "components/base"
@@ -77,15 +77,25 @@ const Note = memo(({ entryKey, state }) => {
   )
 })
 
-export const Notes = () => {
+export const Notes = ({scroll}) => {
   const { switchActiveTab } = useLocalSettings()
   const {entries} = useNotesStore()
   const [search, setSearch] = useState(() => "")
+  const [maxShown, setMaxShown] = useState(0)
+
+  const {selectedEntries, hasMore} = selectEntries({entries, search, maxShown})
+
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
 
-  const extractedEntries = selectEntries(entries, search)
+  useEffect(
+    ()=> {
+      hasMore && setMaxShown(maxShown => maxShown + 5)
+    },
+    [scroll, hasMore, setMaxShown]
+  )
+
 
   return (
     <BackgroundPaper>
@@ -106,7 +116,7 @@ export const Notes = () => {
         <Divider />
         <CardList>
           {
-            extractedEntries.map(([entryKey, entry]) =>
+            selectedEntries.map(([entryKey, entry]) =>
               <Note
                 key={entryKey}
                 entryKey={entryKey}

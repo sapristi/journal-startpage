@@ -20,17 +20,17 @@ const {
 const addEmptyJournalEntry = () => addJournalEntry({ isDraft: true, content: "" })
 
 const selectEntries = ({entries, search, maxShown}) => {
-  const nonDeleted = Object.entries(entries).filter(
+  const selected = Object.entries(entries).filter(
     ([key, value]) => (
       value !== null &&
         !value.deleted &&
         (!search || value.content.toLowerCase().includes(search.toLowerCase()))
     )
   )
-  nonDeleted.sort(([key1, value1], [key2, value2]) => { return value2.date - value1.date })
+  selected.sort(([key1, value1], [key2, value2]) => { return value2.date - value1.date })
   return {
-    selectedEntries: nonDeleted.slice(0, maxShown),
-    hasMore: maxShown < Object.keys(entries).length
+    selectedEntries: selected.slice(0, maxShown),
+    hasMore: maxShown < Object.keys(selected).length
   }
 }
 
