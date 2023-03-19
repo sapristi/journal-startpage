@@ -66,3 +66,24 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 - \`s\` to switch between journal and notes
 - \`e\` to edit the last entry (journal or note)
 `
+
+
+
+const matched = x => ({
+  on: () => matched(x),
+  otherwise: () => x,
+})
+
+const cleverEval = (fn, x) => (
+  (typeof(fn) === "function")
+    ? fn(x) : fn
+)
+
+export const match = (x, cmp = (a,b) => a===b) => ({
+  on: (pred, fn) => (
+    (typeof(pred) === "function")
+      ? (pred(x) ? matched(cleverEval(fn, x)) : match(x, cmp))
+      : ((cmp(x, pred)) ? matched(cleverEval(fn, x)) : match(x, cmp))
+  ),
+  otherwise: fn => cleverEval(fn, x),
+})

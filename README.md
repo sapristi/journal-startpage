@@ -30,6 +30,7 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 ### Todo
 
 - **Short term:**
+  - display total space usage
   - Reorder tasks
   - double click to delete entry
 
@@ -37,6 +38,9 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
   - rework journal:
     - allow to change date ?
     - integrate with calendar ?
+  - sync data:
+     - notion ?
+     - nextcloud notes ?
 
 ### Done
 
