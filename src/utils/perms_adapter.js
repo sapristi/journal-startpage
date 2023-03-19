@@ -3,7 +3,11 @@ const getPermissionssApi = () => {
     return {
       request: async () => {}
     }
-  } else {
+  } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
+    /* eslint-disable */
+    return chrome.permissions
+    /* eslint-enable */
+  } else if (navigator.userAgent.match(/firefox|fxios/i)){
     /* eslint-disable */
     return browser.permissions
     /* eslint-enable */

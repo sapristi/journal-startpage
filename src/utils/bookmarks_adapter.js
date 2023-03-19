@@ -106,7 +106,11 @@ const makeBookmarksAdapter = () => {
 const getBookmarksApi = () => {
   if (process.env.REACT_APP_MOCK_BROWSER_APIS === "true") {
     return makeBookmarksAdapter()
-  } else {
+  } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
+    /* eslint-disable */
+    return chrome.bookmarks
+    /* eslint-enable */
+  } else if (navigator.userAgent.match(/firefox|fxios/i)){
     /* eslint-disable */
     return browser.bookmarks
     /* eslint-enable */

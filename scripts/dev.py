@@ -46,6 +46,7 @@ def dev_patches():
     finally:
         for patch in patches:
             patch["filepath"].write_text(patch["initial_content"])
+
 def main(action):
     with dev_patches():
         if action == "build":
