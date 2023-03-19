@@ -16,6 +16,7 @@ import {useJournalStore} from 'stores/journal'
 import {useNotesStore} from 'stores/notes'
 import {useTasksStore} from 'stores/tasks'
 import {useTransientSettings} from 'stores/transient'
+import {permissionsAPI} from 'utils/perms_adapter'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -42,7 +43,10 @@ const BehaviourPanel = () => {
     showContentAtStart, switchShowContentAtStart,
     caldavURL, setValue
   } = useSettingsStore()
-  const handlecaldavURLChange = (event) => {const newValue = event.target.value; setValue("caldavURL", newValue)}
+  const handlecaldavURLChange = async (event) => {
+    const newValue = event.target.value; setValue("caldavURL", newValue)
+    await permissionsAPI.request({origins: [newValue]});
+  }
   return (
     <SettingsSubPanel title="Behaviour">
       <LocaleSelector />

@@ -61,7 +61,7 @@ def main(action):
                 "DEV_MODE": "true",
                 "REACT_APP_LOG": "true",
                 "REACT_APP_USE_LOCALSTORAGE": "true",
-                "REACT_APP_MOCK_BOOKMARKS": "true",
+                "REACT_APP_MOCK_BROWSER_APIS": "true",
                 **os.environ,
             })
 

@@ -104,7 +104,7 @@ const makeBookmarksAdapter = () => {
 }
 
 const getBookmarksApi = () => {
-  if (process.env.REACT_APP_MOCK_BOOKMARKS === "true") {
+  if (process.env.REACT_APP_MOCK_BROWSER_APIS === "true") {
     return makeBookmarksAdapter()
   } else {
     /* eslint-disable */
