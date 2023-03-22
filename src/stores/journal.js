@@ -34,10 +34,11 @@ const selectEntries = ({entries, search, maxShown}) => {
   }
 }
 
+
 const editLastJournalEntry = () => {
   getJournalEntries(
     entries => {
-      const [firstKey, firstEntry] = selectEntries(entries, "")[0]
+      const [firstKey, firstEntry] = selectEntries({entries, maxShown: 1}).selectedEntries[0]
       setJournalEntry(firstKey, {...firstEntry, isDraft: true})
     }
   )

@@ -29,26 +29,17 @@ const addEmptyTabularNote = () => addNote({
 })
 
 const selectEntries = ({entries, search, maxShown}) => {
-  let selected
-  if (search === "") {
-    selected = Object.entries(entries).filter(
-      ([key, value]) => (
-        value !== null
-          && !value.deleted
-      )
+  const selected = Object.entries(entries).filter(
+    ([key, value]) => (
+      value !== null
+        && !value.deleted
+        && (
+          !search
+            || value.title.toLowerCase().includes(search.toLowerCase())
+            || (value.type !== "table" && value.content.toLowerCase().includes(search.toLowerCase()))
+        )
     )
-  } else {
-    selected = Object.entries(entries).filter(
-      ([key, value]) => (
-        value !== null
-          && !value.deleted
-          && (
-            value.title.toLowerCase().includes(search.toLowerCase())
-              || (value.type !== "table" && value.content.toLowerCase().includes(search.toLowerCase()))
-          )
-      )
-    )
-  }
+  )
   selected.sort(([key1, value1], [key2, value2]) => { return value2.lastModified - value1.lastModified })
   return {
     selectedEntries: selected.slice(0, maxShown),
@@ -60,7 +51,7 @@ const selectEntries = ({entries, search, maxShown}) => {
 const editLastNote = () => {
   getNoteEntries(
     entries => {
-      const [firstKey, firstEntry] = selectEntries(entries, "")[0]
+      const [firstKey, firstEntry] = selectEntries({entries, maxShown: 1}).selectedEntries[0]
       if (firstEntry.type !== "note") {return}
       setNote(firstKey, {...firstEntry, isDraft: true})
     }
