@@ -64,6 +64,7 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 - \`t\` to create a new task
 - \`s\` to switch between journal and notes
 - \`e\` to edit the last entry (journal or note)
+- \`h\` to show/hide the main panel
 `
 
 

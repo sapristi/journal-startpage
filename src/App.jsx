@@ -19,7 +19,7 @@ import {useLocalSettings} from "stores/local"
 import {useSettingsStore} from 'stores/settings'
 import {useTransientSettings} from 'stores/transient'
 import { Settings as LuxonSettings } from "luxon";
-
+import { match } from 'utils'
 
 const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}) =>{
   return createTheme({
@@ -119,54 +119,44 @@ const VisibleApp = () => {
 
 
 const HotKeysProvider = () => {
-  const {showContent, setShowContent, settingsActive, switchSettings} = useTransientSettings()
-  const {setActiveTab, activeTab, switchActiveTab} = useLocalSettings()
+  const { showContent, setShowContent, settingsActive, switchSettings } = useTransientSettings()
+  const { setActiveTab, activeTab, switchActiveTab } = useLocalSettings()
   const log = makeLogger("HOTKEYS")
   const handleKeyUp = useMemo(
     () => {
       return (event) => {
-        const {target, key} = event;
+        const { target, key } = event;
 
-        if (target.localName !== "body") {return}
+        if (target.localName !== "body") { return }
         // log("received", key)
-        switch (key) {
-        case "Escape":
-          if (settingsActive) {switchSettings()}
-          break
-        case "n":
-          switch (activeTab) {
-          case "notes":
-            addEmptyNote()
-            break
-          case "journal":
-            addEmptyJournalEntry()
-            break
-          default:
-            break
+        match(key).on(
+          "Escape", () => { if (settingsActive) { switchSettings() } }
+        ).on(
+          "n", () => {
+            match(activeTab).on(
+              "notes", addEmptyNote
+            ).on(
+              "journal", addEmptyJournalEntry
+            )
           }
-          break;
-        case "t":
-          addEmptyTask()
-          break;
-        case "e":
-          switch (activeTab) {
-          case "notes":
-            editLastNote()
-            break
-          case "journal":
-            editLastJournalEntry()
-            break
-          default:
-            break
+        ).on(
+          "t", addEmptyTask
+        ).on(
+          "e", () => {
+            match(activeTab).on(
+              "notes", editLastNote
+            ).on(
+              "journal", editLastJournalEntry
+            )
           }
-          break;
-        case "s":
-          if (!showContent) {setShowContent(true)}
-          else {switchActiveTab()}
-          break
-        default:
-          break
-        }
+        ).on(
+          "s", () => {
+            if (!showContent) { setShowContent(true) }
+            else { switchActiveTab() }
+          }
+        ).on(
+          "h", () => setShowContent(!showContent)
+        )
       }
     },
     [setActiveTab, activeTab, switchActiveTab, setShowContent, showContent, settingsActive, switchSettings]
