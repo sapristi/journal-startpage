@@ -7,7 +7,9 @@
   "description": "Newtab page with productivity tools.",
   "homepage_url": "https://github.com/sapristi/journal-startpage",
   "icons": {
-    "192": "icon.svg"
+    "192": "icon_192.png",
+    "128": "icon_128.png",
+    "48": "icon_48.png"
   },
   "permissions": [
     "storage",
