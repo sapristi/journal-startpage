@@ -34,7 +34,7 @@ export const Bookmarks = () => {
             return
           }
           const selectedChildren = bookmarks[0].children.filter(
-            child => child.type === "bookmark"
+            child => Boolean(child.url)
           )
           setBookmarks(selectedChildren)
         }

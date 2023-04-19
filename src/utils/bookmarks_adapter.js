@@ -121,7 +121,7 @@ export const bookmarksApi = getBookmarksApi()
 
 const extractFoldersRec = (treeItem,  result) => {
 
-  if (treeItem.type === "folder") {
+  if (treeItem.children) {
     result.push(treeItem)
     for (const child of treeItem.children) {
       extractFoldersRec(child, result)
