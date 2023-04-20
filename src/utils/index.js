@@ -60,8 +60,7 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 
 ## Shortcuts
 
-- \`j\` to create a new journal entry
-- \`n\` to create a new note
+- \`n\` to create a new entry (journal or note)
 - \`t\` to create a new task
 - \`s\` to switch between journal and notes
 - \`e\` to edit the last entry (journal or note)

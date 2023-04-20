@@ -134,12 +134,16 @@ const HotKeysProvider = () => {
           if (settingsActive) {switchSettings()}
           break
         case "n":
-          setActiveTab("notes")
-          addEmptyNote()
-          break;
-        case "j":
-          setActiveTab("journal")
-          addEmptyJournalEntry()
+          switch (activeTab) {
+          case "notes":
+            addEmptyNote()
+            break
+          case "journal":
+            addEmptyJournalEntry()
+            break
+          default:
+            break
+          }
           break;
         case "t":
           addEmptyTask()
