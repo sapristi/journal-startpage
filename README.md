@@ -18,6 +18,7 @@ Global shortcuts allow for keyboard-first usage.
 It uses your browser sync storage, so that your data is safely backed-up, and can be shared between computers.
 
 - [Mozilla add-on](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)
+- [Chrome add-on](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec?hl=fr)
 
 
 **Credit:**
