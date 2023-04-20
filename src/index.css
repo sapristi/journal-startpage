@@ -4,6 +4,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 100%; /* fix for chrome https://github.com/microsoft/accessibility-insights-web/issues/1080#issuecomment-522738159  */
 }
 
 code {
