@@ -12,7 +12,7 @@ from contextlib import contextmanager
 
 def add_permission_to_manifest(content:str):
     data = json.loads(content)
-    data["content_security_policy"] = "connect-src ws://localhost:8097"
+    data["content_security_policy"] = {"extension_pages": "script-src 'self'; connect-src ws://localhost:8097"}
     return json.dumps(data)
 
 def add_devtools_import(content: str):
