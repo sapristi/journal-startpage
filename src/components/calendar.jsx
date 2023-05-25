@@ -1,4 +1,3 @@
-import {memo} from 'react'
 import { CalendarPicker, LocalizationProvider, } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';

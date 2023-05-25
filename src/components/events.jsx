@@ -1,11 +1,11 @@
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect } from 'react'
 import { Typography } from '@mui/material';
 import { DateTime } from "luxon";
-import {Table, TableRow, TableCell, TableBody, TableContainer} from '@mui/material';
-import { fetchCalendarObjects, fetchCalendars, createDAVClient , calendarQuery} from 'tsdav';
-import {match} from 'utils'
+import { Table, TableRow, TableCell, TableBody, TableContainer } from '@mui/material';
+import { fetchCalendarObjects, calendarQuery } from 'tsdav';
+import { match } from 'utils'
 
-import {useSettingsStore} from 'stores/settings'
+import { useSettingsStore } from 'stores/settings'
 
 const ICAL = require("ical.js")
 

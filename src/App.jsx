@@ -2,9 +2,9 @@ import { useEffect, useMemo, memo, Fragment, useState } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Container, Box} from '@mui/material';
+import {Container} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useBottomScrollListener, BottomScrollListener } from 'react-bottom-scroll-listener';
+import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
 import {Journal} from './components/journal'
 import {Notes} from './components/notes'
