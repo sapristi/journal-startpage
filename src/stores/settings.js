@@ -15,6 +15,7 @@ const initValue = {
   panelBlur: 4,
   showContentAtStart: true,
   caldavURL: "",
+  escapeCancels: true
 }
 
 
@@ -42,7 +43,8 @@ export const useSettingsStore = create(
           locale: newLocale
         }
       }),
-      switchShowContentAtStart: () => set(state => ({showContentAtStart: !state.showContentAtStart}))
+      switchShowContentAtStart: () => set(state => ({showContentAtStart: !state.showContentAtStart})),
+      switchEscapeCancels: () => set(state => ({ escapeCancels: !state.escapeCancels }))
     }),
     {
       name: "settings"

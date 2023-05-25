@@ -3,11 +3,14 @@ import ReactMarkdown from 'react-markdown';
 import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
 import remarkGfm from 'remark-gfm'
 import {makeLogger} from 'utils'
+import { useSettingsStore } from 'stores/settings'
+
 const log = makeLogger("EditableComp")
 
 const useEditableState = ({initial, onChange, isDraft, handleCancelDraft}) => {
   const [active, setActive] = useState(isDraft)
   const [curValue, setCurValue] = useState(initial)
+
 
   /* update curValue if the initial value was changed externally */
   useEffect(
@@ -73,6 +76,8 @@ export const EditableInput = ({
   value, onChange, Component, componentProps, textFieldProps,
   isDraft, handleCancelDraft, placeholder
 }) => {
+
+  const escapeCancels = useSettingsStore(state => state.escapeCancels)
   const {curValue, active, handleChange, commitChange, handleClick, handleCancelAction} = useEditableState(
     {initial: value, onChange, isDraft, handleCancelDraft}
   )
@@ -83,7 +88,11 @@ export const EditableInput = ({
   }
   const handleKeyUp = (event) => {
     if (event.code === "Escape") {
-      handleCancelAction()
+      if (escapeCancels) {
+        handleCancelAction()
+      } else {
+        commitChange()
+      }
     }
   }
   if (active) {

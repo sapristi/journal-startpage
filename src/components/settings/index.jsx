@@ -41,7 +41,8 @@ const HelpPanel = () => (
 const BehaviourPanel = () => {
   const {
     showContentAtStart, switchShowContentAtStart,
-    caldavURL, setValue
+    caldavURL, setValue,
+    escapeCancels, switchEscapeCancels
   } = useSettingsStore()
   const handlecaldavURLChange = async (event) => {
     const newValue = event.target.value; setValue("caldavURL", newValue)
@@ -54,6 +55,8 @@ const BehaviourPanel = () => {
       <Switch label="Show content at startup"
               checked={showContentAtStart} onChange={switchShowContentAtStart}/>
       <TextField label="CalDAV public url" value={caldavURL} onChange={handlecaldavURLChange}/>
+      <Switch label="Escape cancels edition"
+              checked={escapeCancels} onChange={switchEscapeCancels}/>
     </SettingsSubPanel>
   )
 }
