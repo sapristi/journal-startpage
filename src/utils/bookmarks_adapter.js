@@ -76,6 +76,19 @@ const mockBookmarks = [{
 }]
 
 
+export const createFaviconURL = (u) => {
+  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
+    /* eslint-disable */
+    const urlFavicon = new URL(chrome.runtime.getURL("/_favicon/"));
+    /* eslint-enable */
+    urlFavicon.searchParams.set("pageUrl", u);
+    urlFavicon.searchParams.set("size", "32");
+    return urlFavicon.toString()
+  } else{
+    return `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${u}&size=32`
+  }
+}
+
 
 const makeBookmarksAdapter = () => {
   const getTree = () => {
