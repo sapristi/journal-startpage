@@ -93,9 +93,10 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 <!-- INSTALLATION -->
 ## Installation
 
-|[![](./assets/f.svg)](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)<br>Firefox|[![](./assets/c.svg)](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec)<br>Chrome|[![](./assets/e.svg)](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec)<br>Edge|
-|:---:|:---:|:---:|
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+
+|[![](./assets/firefox.svg)](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/)<br>Firefox|[![](./assets/chrome.svg)](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec)<br>Chrome|
+|:---:|:---:|
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 
 
 
