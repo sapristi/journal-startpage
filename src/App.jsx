@@ -50,6 +50,8 @@ const BottomPanel = memo(() =>{
     }, []
   )
 
+  if (!showContent) {return null}
+
   if (settingsActive) {
     return (
       <Grid xs={12}>
@@ -57,7 +59,7 @@ const BottomPanel = memo(() =>{
       </Grid>
     )
   }
-  if (!showContent) {return null}
+  
   return (
     <>
       <Grid xs={4}>
