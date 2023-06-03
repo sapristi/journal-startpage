@@ -68,7 +68,8 @@ def publish_AMO(channel):
         env={
             **os.environ,
             **load_env()
-        }
+        },
+        check=True
     )
 
 def print_header(*args):
