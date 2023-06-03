@@ -13,7 +13,8 @@
   },
   "permissions": [
     "storage",
-    "bookmarks"
+    "bookmarks",
+    "favicon"
   ],
   "host_permissions": [
     "*://*/"

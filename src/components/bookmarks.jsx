@@ -3,18 +3,18 @@ import { Stack, Link} from '@mui/material';
 import {ForegroundPaper} from 'components/base'
 import {useSettingsStore} from 'stores/settings'
 import {makeLogger } from 'utils'
-import {bookmarksApi} from 'utils/bookmarks_adapter'
+import {bookmarksApi, createFaviconURL} from 'utils/bookmarks_adapter'
 
 
 const log = makeLogger("bookmarks")
 
 
 export const Bookmark = ({title, url})=> {
-  const imgSrc = `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=32`
+  
   return (
     <ForegroundPaper sx={{ padding: 1, height: "min-content"}}>
       <Link href={url}>
-        <img src={imgSrc} alt={title}/>
+        <img src={createFaviconURL(url)} alt={title}/>
       </Link>
     </ForegroundPaper>
   )
