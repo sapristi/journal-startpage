@@ -57,9 +57,7 @@ const BottomPanel = memo(() =>{
       </Grid>
     )
   }
-
   if (!showContent) {return null}
-
   return (
     <>
       <Grid xs={4}>
