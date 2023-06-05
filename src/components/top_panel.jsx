@@ -41,11 +41,14 @@ const Controls = () => {
       <ToggleButton selected={settingsActive} onChange={switchSettings} value="settings">
         <SettingsIcon />
       </ToggleButton>
-      <IconButton onClick={switchShowContent} color="">
-        {
-          (showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>
-        }
-      </IconButton>
+      {
+        !settingsActive &&
+        <IconButton onClick={switchShowContent} color="">
+          
+            {(showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>}
+          
+        </IconButton>
+      }
     </Stack>
   )
 }
