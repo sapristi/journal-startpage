@@ -35,7 +35,8 @@
     "eject": "react-scripts eject",
     "package-ext": "scripts/package.sh",
     "package-source": "scripts/package_source.sh",
-    "publish-ext": "scripts/publish.sh"
+    "publish-ext": "scripts/publish.sh",
+    "package-chrome": "zip -r build.zip build"
   },
   "eslintConfig": {
     "extends": [
