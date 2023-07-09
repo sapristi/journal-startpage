@@ -33,9 +33,6 @@
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "build:dev": "scripts/dev.py build",
     "eject": "react-scripts eject",
-    "package-ext": "scripts/package.sh",
-    "package-source": "scripts/package_source.sh",
-    "publish-ext": "scripts/publish.sh",
     "package-chrome": "zip -r build.zip build"
   },
   "eslintConfig": {
