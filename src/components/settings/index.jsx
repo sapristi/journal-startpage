@@ -17,6 +17,7 @@ import {useNotesStore} from 'stores/notes'
 import {useTasksStore} from 'stores/tasks'
 import {useTransientSettings} from 'stores/transient'
 import {permissionsAPI} from 'utils/perms_adapter'
+import ff from 'utils/feature_flags'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -167,7 +168,10 @@ export const SettingsPanel = () => {
           <Grid xs={3}>
             <Stack spacing={3}>
               <ActionsPanel/>
-              <NextcloudPanel/>
+              {
+                ff.CLOUD_SYNC &&
+                <NextcloudPanel/>
+              }
             </Stack>
           </Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>

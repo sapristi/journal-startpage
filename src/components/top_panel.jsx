@@ -9,6 +9,7 @@ import {useSettingsStore} from 'stores/settings'
 import { DateTime } from "luxon";
 import {Events} from './events'
 import {syncNotes} from 'utils/sync_nextcloud'
+import ff from 'utils/feature_flags'
 
 
 
@@ -41,7 +42,10 @@ const Controls = () => {
       <ToggleButton selected={settingsActive} onChange={switchSettings} value={true}>
         <SettingsIcon />
       </ToggleButton>
-      <ToggleButton onClick={syncNotes} value={true}><CloudSyncIcon/></ToggleButton>
+      {
+        ff.CLOUD_SYNC &
+        <ToggleButton onClick={syncNotes} value={true}><CloudSyncIcon/></ToggleButton>
+      }
       {
         !settingsActive &&
         <IconButton onClick={switchShowContent} color="">

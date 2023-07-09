@@ -1,5 +1,7 @@
+import ff from 'utils/feature_flags'
+
 const getPermissionssApi = () => {
-  if (process.env.REACT_APP_MOCK_BROWSER_APIS === "true") {
+  if (ff.MOCK_BROWSER_APIS === "true") {
     return {
       request: async () => {}
     }

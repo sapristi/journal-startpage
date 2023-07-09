@@ -1,3 +1,5 @@
+import ff from 'utils/feature_flags'
+
 export const getTimestamp = () => {
   return Date.now()
 }
@@ -9,7 +11,7 @@ export const getRandomId = () => {
 
 export const makeLogger = (name) => {
   const log = (...args) => {
-    if (process.env.REACT_APP_LOG === "true") {
+    if (ff.LOG === "true") {
       console.log(name, ...args)
     }
   }

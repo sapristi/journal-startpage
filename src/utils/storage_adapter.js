@@ -1,4 +1,5 @@
 import {mapObject, makeLogger} from 'utils'
+import ff from 'utils/feature_flags'
 
 const parse_safe = (value) => {
   try {
@@ -85,7 +86,7 @@ const makeLocalStorageAdapter = () => {
 
 const getStorage = () => {
   /* eslint-disable */
-  if (process.env.REACT_APP_USE_LOCALSTORAGE === "true") {
+  if (ff.USE_LOCALSTORAGE === "true") {
     // used to generate demo
     return makeLocalStorageAdapter()
   } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){

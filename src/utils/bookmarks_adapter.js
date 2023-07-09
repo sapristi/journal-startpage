@@ -1,3 +1,5 @@
+import ff from 'utils/feature_flags'
+
 const mockBookmarks = [{
   "id": "root________",
   "title": "",
@@ -117,7 +119,7 @@ const makeBookmarksAdapter = () => {
 }
 
 const getBookmarksApi = () => {
-  if (process.env.REACT_APP_MOCK_BROWSER_APIS === "true") {
+  if (ff.MOCK_BROWSER_APIS === "true") {
     return makeBookmarksAdapter()
   } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
     /* eslint-disable */
