@@ -17,7 +17,7 @@ def load_env():
         for line in f.readlines():
             if line.startswith("#"):
                 continue
-            if len(line) == 0:
+            if len(line.strip()) == 0:
                 continue
             key, value = [
                 entry.strip()
