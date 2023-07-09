@@ -43,7 +43,7 @@ const Controls = () => {
         <SettingsIcon />
       </ToggleButton>
       {
-        ff.CLOUD_SYNC &
+        ff.CLOUD_SYNC &&
         <ToggleButton onClick={syncNotes} value={true}><CloudSyncIcon/></ToggleButton>
       }
       {
