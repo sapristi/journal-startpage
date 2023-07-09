@@ -119,7 +119,7 @@ const makeBookmarksAdapter = () => {
 }
 
 const getBookmarksApi = () => {
-  if (ff.MOCK_BROWSER_APIS === "true") {
+  if (ff.MOCK_BROWSER_APIS) {
     return makeBookmarksAdapter()
   } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
     /* eslint-disable */

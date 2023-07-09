@@ -11,7 +11,7 @@ export const getRandomId = () => {
 
 export const makeLogger = (name) => {
   const log = (...args) => {
-    if (ff.LOG === "true") {
+    if (ff.LOG) {
       console.log(name, ...args)
     }
   }

@@ -86,7 +86,7 @@ const makeLocalStorageAdapter = () => {
 
 const getStorage = () => {
   /* eslint-disable */
-  if (ff.USE_LOCALSTORAGE === "true") {
+  if (ff.USE_LOCALSTORAGE) {
     // used to generate demo
     return makeLocalStorageAdapter()
   } else  if (navigator.userAgent.match(/chrome|chromium|crios/i)){
