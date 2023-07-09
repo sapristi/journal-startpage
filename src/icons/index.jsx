@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
+import CloudSyncIcon from '@mui/icons-material/CloudSync';
 
 import {ReactComponent as IconTableAddSvg} from './table-add.svg'
 
@@ -20,5 +20,6 @@ const IconTableAdd = (props) => (
 
 export {
   AddBoxIcon, DeleteIcon, SaveIcon, AddIcon, IconTableAdd,
-  CloseIcon, SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon
+  CloseIcon, SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon,
+  CloudSyncIcon
 }

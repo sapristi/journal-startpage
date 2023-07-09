@@ -15,7 +15,10 @@ const initValue = {
   panelBlur: 4,
   showContentAtStart: true,
   caldavURL: "",
-  escapeCancels: true
+  escapeCancels: true,
+  nextcloudURL: "",
+  nextcloudCredentials: "",
+  nextcloudLastSync: null
 }
 
 

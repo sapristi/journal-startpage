@@ -1,14 +1,14 @@
 import { useState, useEffect, memo } from 'react'
-import { Typography, Stack, Box, ToggleButton } from '@mui/material';
+import { Typography, Stack, Box, ToggleButton, Button } from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton} from "./base"
-import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon} from 'icons'
+import {SettingsIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon, CloudSyncIcon} from 'icons'
 import {useTransientSettings} from 'stores/transient'
 import {useSettingsStore} from 'stores/settings'
 import { DateTime } from "luxon";
 import {Events} from './events'
-
+import {syncNotes} from 'utils/sync_nextcloud'
 
 
 
@@ -38,15 +38,14 @@ const Controls = () => {
   const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
   return (
     <Stack sx={{width: "min-content"}} direction="row">
-      <ToggleButton selected={settingsActive} onChange={switchSettings} value="settings">
+      <ToggleButton selected={settingsActive} onChange={switchSettings} value={true}>
         <SettingsIcon />
       </ToggleButton>
+      <ToggleButton onClick={syncNotes} value={true}><CloudSyncIcon/></ToggleButton>
       {
         !settingsActive &&
         <IconButton onClick={switchShowContent} color="">
-          
             {(showContent)? <KeyboardArrowUpIcon/>: <KeyboardArrowDownIcon/>}
-          
         </IconButton>
       }
     </Stack>

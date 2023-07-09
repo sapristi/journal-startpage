@@ -48,6 +48,7 @@ const BehaviourPanel = () => {
     const newValue = event.target.value; setValue("caldavURL", newValue)
     await permissionsAPI.request({origins: [newValue]});
   }
+
   return (
     <SettingsSubPanel title="Behaviour">
       <LocaleSelector />
@@ -57,6 +58,26 @@ const BehaviourPanel = () => {
       <TextField label="CalDAV public url" value={caldavURL} onChange={handlecaldavURLChange}/>
       <Switch label="Escape cancels edition"
               checked={escapeCancels} onChange={switchEscapeCancels}/>
+    </SettingsSubPanel>
+  )
+}
+
+const NextcloudPanel = () => {
+  const {
+    nextcloudURL,nextcloudCredentials, setValue,
+  } = useSettingsStore()
+
+  const handleNextcloudURLChange = async (event) => {
+    const newValue = event.target.value; setValue("nextcloudURL", newValue)
+  }
+  const handleNextcloudCredentialsChange = async (event) => {
+    const newValue = event.target.value; setValue("nextcloudCredentials", newValue)
+  }
+
+  return (
+    <SettingsSubPanel title="NextCloud (experimental)">
+      <TextField label="Nextcloud url" value={nextcloudURL} onChange={handleNextcloudURLChange}/>
+      <TextField label="Nextcloud credentials" type="password" value={nextcloudCredentials} onChange={handleNextcloudCredentialsChange}/>
     </SettingsSubPanel>
   )
 }
@@ -146,6 +167,7 @@ export const SettingsPanel = () => {
           <Grid xs={3}>
             <Stack spacing={3}>
               <ActionsPanel/>
+              <NextcloudPanel/>
             </Stack>
           </Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>

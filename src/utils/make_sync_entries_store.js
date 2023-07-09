@@ -18,6 +18,13 @@ export const makeSyncEntriesStore = (name, initData) => {
       }
     )
   }
+  const updateEntry = (key, updateValue) => {
+    checkKey(key)
+    log("UPDATE", key, updateValue)
+    storage.get(key, storageData => {
+      storage.set({[key]: {...storageData[key], ...updateValue}})
+    })
+  }
 
   const setEntries = (payload) => {
     Object.keys(payload).forEach(checkKey)
@@ -44,6 +51,17 @@ export const makeSyncEntriesStore = (name, initData) => {
       return callback(filterObject(entries, ([key, value]) => key.startsWith(prefix)))
     }
   )
+  const getEntriesAsync = () => {
+    return new Promise((resolve, reject) => {
+      storage.get(
+        null,
+        (entries) => {
+          const result = filterObject(entries, ([key, value]) => key.startsWith(prefix))
+          resolve(result)
+        }
+      )
+    });
+  }
 
   const reducer = (state, action) => {
     log("ACTION", state, action)
@@ -129,8 +147,10 @@ export const makeSyncEntriesStore = (name, initData) => {
     useStore,
     setEntry,
     addEntry,
+    updateEntry,
     removeEntry,
-    getEntries
+    getEntries,
+    getEntriesAsync
   }
 }
 

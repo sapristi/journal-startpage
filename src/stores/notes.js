@@ -8,8 +8,10 @@ const {
   useStore: useNotesStore,
   setEntry: setNote,
   addEntry: addNote,
+  updateEntry: updateNote,
   removeEntry: removeNote,
   getEntries: getNoteEntries,
+  getEntriesAsync: getNoteEntriesAsync,
 } = makeSyncEntriesStore("notes", initData)
 
 const addEmptyNote = () => addNote({
@@ -60,10 +62,14 @@ const editLastNote = () => {
 
 export {
   useNotesStore,
+  addNote,
   addEmptyNote,
   addEmptyTabularNote,
   setNote,
+  updateNote,
   removeNote,
   selectEntries,
   editLastNote,
+  getNoteEntries,
+  getNoteEntriesAsync,
 }
