@@ -18,7 +18,9 @@ const initValue = {
   escapeCancels: true,
   nextcloudURL: "",
   nextcloudCredentials: "",
-  nextcloudLastSync: null
+  nextcloudLastSync: null,
+  hideTasks: false,
+  minimalTopPanel: false,
 }
 
 
@@ -47,7 +49,8 @@ export const useSettingsStore = create(
         }
       }),
       switchShowContentAtStart: () => set(state => ({showContentAtStart: !state.showContentAtStart})),
-      switchEscapeCancels: () => set(state => ({ escapeCancels: !state.escapeCancels }))
+      switchEscapeCancels: () => set(state => ({ escapeCancels: !state.escapeCancels })),
+      switchValue: (key) => () => set(state => ({ [key]: !state[key] }))
     }),
     {
       name: "settings"

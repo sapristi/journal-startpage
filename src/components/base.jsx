@@ -11,7 +11,7 @@ export const BackgroundPaper = ({children, ...props}) => {
   const {panelBlur} = useSettingsStore()
   const sxProps = props.sx || {}
   return (
-      <Paper elevation={3} {...props} sx={{p: 3, backdropFilter: `blur(${panelBlur}px)`, ...sxProps}}>
+    <Paper elevation={3} {...props} sx={{p: 3, backdropFilter: `blur(${panelBlur}px)`, ...sxProps}}>
       {children}
     </Paper>
   )

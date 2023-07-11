@@ -70,3 +70,12 @@ export const TopPanel = memo(() => {
     </BackgroundPaper>
   )
 })
+
+
+export const MinimalTopPanel = memo(() => {
+  return (
+    <BackgroundPaper sx={{paddingTop: 1, paddingBottom: 1}}>
+      <Controls/>
+    </BackgroundPaper>
+  )
+})

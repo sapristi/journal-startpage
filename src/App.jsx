@@ -9,7 +9,7 @@ import { BottomScrollListener } from 'react-bottom-scroll-listener';
 import {Journal} from './components/journal'
 import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
-import {TopPanel} from "./components/top_panel"
+import {TopPanel, MinimalTopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
 import { makeLogger} from 'utils'
 import {addEmptyJournalEntry, editLastJournalEntry} from 'stores/journal'
@@ -41,7 +41,7 @@ const createCustomTheme = ({mode, primaryColor, secondaryColor, backgroundColor}
 const BottomPanel = memo(() =>{
   const {settingsActive, showContent, setShowContent} = useTransientSettings()
   const {activeTab} = useLocalSettings()
-  const {showContentAtStart} = useSettingsStore()
+  const {showContentAtStart, hideTasks} = useSettingsStore()
   const [scroll, setScroll] = useState(false)
   // show content at startup only if enabled
   useEffect(
@@ -60,10 +60,13 @@ const BottomPanel = memo(() =>{
   if (!showContent) {return null}
   return (
     <>
+      {
+      !hideTasks &&
       <Grid xs={4}>
         <Tasks/>
       </Grid>
-      <Grid xs={8}>
+      }
+      <Grid xs>
         {
           (activeTab === "journal")? <Journal scroll={scroll}/>: <Notes scroll={scroll}/>
         }
@@ -76,6 +79,7 @@ const BottomPanel = memo(() =>{
 const VisibleApp = () => {
   const {
     mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL,
+    minimalTopPanel
   } = useSettingsStore()
 
   if (LuxonSettings.defaultLocale !== locale) {LuxonSettings.defaultLocale = locale}
@@ -106,7 +110,9 @@ const VisibleApp = () => {
       <Container maxWidth="xl">
         <Grid container spacing={3} sx={{margin: 0}}>
           <Grid xs={12}>
-            <TopPanel/>
+            {
+              minimalTopPanel? <MinimalTopPanel/> : <TopPanel/>
+            }
           </Grid>
           <BottomPanel/>
         </Grid>

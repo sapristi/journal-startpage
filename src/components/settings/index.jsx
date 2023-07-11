@@ -84,6 +84,10 @@ const NextcloudPanel = () => {
 }
 
 const AppearancePanel = () => {
+  const {
+    hideTasks, minimalTopPanel, switchValue
+  } = useSettingsStore()
+
   return (
     <SettingsSubPanel title="Appearance">
       <ModeSlider />
@@ -91,6 +95,10 @@ const AppearancePanel = () => {
       {/* <ControlledColorPicker propName="secondaryColor"/> */}
       <ControlledColorPicker  propName="backgroundColor"/>
       <BlurSelector propName="panelBlur"/>
+      <Switch label="Hide tasks"
+              checked={hideTasks} onChange={switchValue("hideTasks")}/>
+      <Switch label="Minimal top-panel"
+              checked={minimalTopPanel} onChange={switchValue("minimalTopPanel")}/>
     </SettingsSubPanel>
   )
 }
