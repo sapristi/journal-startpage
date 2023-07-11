@@ -51,7 +51,7 @@ def update_blog(version):
     pnpm(["build"], env={
         **os.environ,
         "REACT_APP_USE_LOCALSTORAGE": "true",
-        "REACT_APP_MOCK_BOOKMARKS": "true",
+        "REACT_APP_MOCK_BROWSER_APIS": "true",
     })
     rmtree("../sapristi.github.io/journal-startpage")
     copytree("./build", "../sapristi.github.io/journal-startpage")
