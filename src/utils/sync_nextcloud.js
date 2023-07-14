@@ -1,4 +1,4 @@
-import {makeLogger, helpText} from 'utils'
+import {makeLogger} from 'utils'
 import {useSettingsStore} from 'stores/settings'
 import {getNoteEntriesAsync, addNote, setNote, updateNote, removeNote} from 'stores/notes'
 const log = makeLogger("NextCloud sync")
@@ -84,12 +84,9 @@ If a note is on cloud but not local:
 const mergeNotes = async (NC) => {
   const local = await getNoteEntriesAsync()
   const cloud = await NC.listNotes()
-  const nextCloudLastSync = useSettingsStore.getState().nextcloudLastSync
+  const nextcloudLastSync = useSettingsStore.getState().nextcloud.lastSync
 
   const cloudById = Object.fromEntries(cloud.map(note => [note.id, note]))
-  console.log("Local", local)
-  console.log("cloud", cloud)
-
   const localCloudIds = new Set()
   for (let [noteId, note] of Object.entries(local)) {
     const noteModifiedSec = Math.trunc(note.lastModified / 1000)
@@ -97,8 +94,7 @@ const mergeNotes = async (NC) => {
       localCloudIds.add(note.ncId)
       const cloudNote = cloudById[note.ncId]
       if (cloudNote) {
-        log("FOUND NOTE", note, cloudNote)
-        log("modified", note.lastModified, noteModifiedSec, cloudNote.modified)
+        log("NOTE", note, cloudNote)
         if (cloudNote.modified === noteModifiedSec) {
           log("Same modified, skip")
           continue
@@ -153,9 +149,8 @@ const mergeNotes = async (NC) => {
 
 
 export const syncNotes = async () => {
-  const nextCloudURL = useSettingsStore.getState().nextcloudURL
-  const nextCloudCredentials = useSettingsStore.getState().nextcloudCredentials
-  const NC = nextCloud(nextCloudURL, nextCloudCredentials)
+  const {url, credentials} = useSettingsStore.getState().nextcloud
+  const NC = nextCloud(url, credentials)
   mergeNotes(NC)
   useSettingsStore.setState({nextcloudLastSync: Date.now()})
 }

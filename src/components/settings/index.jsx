@@ -41,9 +41,9 @@ const HelpPanel = () => (
 
 const BehaviourPanel = () => {
   const {
-    showContentAtStart, switchShowContentAtStart,
+    showContentAtStart, switchValue,
     caldavURL, setValue,
-    escapeCancels, switchEscapeCancels
+    escapeCancels
   } = useSettingsStore()
   const handlecaldavURLChange = async (event) => {
     const newValue = event.target.value; setValue("caldavURL", newValue)
@@ -55,30 +55,31 @@ const BehaviourPanel = () => {
       <LocaleSelector />
       <BookmarksFolderPicker/>
       <Switch label="Show content at startup"
-              checked={showContentAtStart} onChange={switchShowContentAtStart}/>
+              checked={showContentAtStart} onChange={switchValue("showContentAtStart")}/>
       <TextField label="CalDAV public url" value={caldavURL} onChange={handlecaldavURLChange}/>
       <Switch label="Escape cancels edition"
-              checked={escapeCancels} onChange={switchEscapeCancels}/>
+              checked={escapeCancels} onChange={switchValue("escapeCancels")}/>
     </SettingsSubPanel>
   )
 }
 
 const NextcloudPanel = () => {
   const {
-    nextcloudURL,nextcloudCredentials, setValue,
-  } = useSettingsStore()
+    url, credentials,
+  } = useSettingsStore(state => state.nextcloud)
+  const setValue = useSettingsStore(state => state.setValue)
 
   const handleNextcloudURLChange = async (event) => {
-    const newValue = event.target.value; setValue("nextcloudURL", newValue)
+    const newValue = event.target.value; setValue(["nextcloud", "url"], newValue)
   }
   const handleNextcloudCredentialsChange = async (event) => {
-    const newValue = event.target.value; setValue("nextcloudCredentials", newValue)
+    const newValue = event.target.value; setValue(["nextcloud", "credentials"], newValue)
   }
 
   return (
     <SettingsSubPanel title="NextCloud (experimental)">
-      <TextField label="Nextcloud url" value={nextcloudURL} onChange={handleNextcloudURLChange}/>
-      <TextField label="Nextcloud credentials" type="password" value={nextcloudCredentials} onChange={handleNextcloudCredentialsChange}/>
+      <TextField label="Nextcloud url" value={url} onChange={handleNextcloudURLChange}/>
+      <TextField label="Nextcloud credentials" type="password" value={credentials} onChange={handleNextcloudCredentialsChange}/>
     </SettingsSubPanel>
   )
 }

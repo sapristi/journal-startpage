@@ -2,6 +2,7 @@ import create from 'zustand'
 import { persist } from 'zustand/middleware'
 import { TinyColor } from '@ctrl/tinycolor'
 import { Settings as LuxonSettings } from "luxon";
+import {changeDeepState} from 'utils'
 
 
 const initValue = {
@@ -16,43 +17,52 @@ const initValue = {
   showContentAtStart: true,
   caldavURL: "",
   escapeCancels: true,
-  nextcloudURL: "",
-  nextcloudCredentials: "",
-  nextcloudLastSync: null,
+  nextcloud: {
+    url: "",
+    credentials: "",
+    lastSync: null
+  },
   hideTasks: false,
   minimalTopPanel: false,
 }
-
+const makeActions = (set) => ({
+  setValue: (key, value) => {
+    if (Array.isArray(key)) {
+      set(state => changeDeepState(key, value, state))
+    } else {
+      set(state => ({[key]: value}))
+    }
+  },
+  switchMode: () => set(state => {
+    if (state.mode === "dark") {
+      return {
+        mode: "light",
+        backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()
+      }
+    } else {
+      return {
+        mode: "dark",
+        backgroundColor: new TinyColor(state.backgroundColor).darken(70).toString()
+      }
+    }
+  }),
+  setLocale: (newLocale) => set(state => {
+    LuxonSettings.defaultLocale = newLocale
+    return {
+      locale: newLocale
+    }
+  }),
+  switchValue: (key) => () => set(state => ({ [key]: !state[key] }))
+})
 
 export const useSettingsStore = create(
   persist(
     (set) => ({
       ...initValue,
-      setValue: (key, value) => set(state => ({[key]: value})),
-      switchMode: () => set(state => {
-        if (state.mode === "dark") {
-          return {
-            mode: "light",
-            backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()
-          }
-        } else {
-          return {
-            mode: "dark",
-            backgroundColor: new TinyColor(state.backgroundColor).darken(70).toString()
-          }
-        }
-      }),
-      setLocale: (newLocale) => set(state => {
-        LuxonSettings.defaultLocale = newLocale
-        return {
-          locale: newLocale
-        }
-      }),
-      switchShowContentAtStart: () => set(state => ({showContentAtStart: !state.showContentAtStart})),
-      switchEscapeCancels: () => set(state => ({ escapeCancels: !state.escapeCancels })),
-      switchValue: (key) => () => set(state => ({ [key]: !state[key] }))
+      ...makeActions(set)
     }),
     {
+      version: 0,
       name: "settings"
     }
   )

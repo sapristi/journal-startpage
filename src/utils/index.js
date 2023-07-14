@@ -89,3 +89,18 @@ export const match = (x, cmp = (a,b) => a===b) => ({
   ),
   otherwise: fn => cleverEval(fn, x),
 })
+
+export const changeDeepState = (key, value, state) => {
+  if (key.length === 1) {
+    return {
+      ...state,
+      [key[0]]: value
+    }
+  } else {
+    const [key0, ...remainder] = key
+    return {
+      ...state,
+      [key0]: changeDeepState(remainder, value, state[key0])
+    }
+  }
+}

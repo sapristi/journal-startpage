@@ -1,5 +1,5 @@
 module.exports = function override(config) {
-  if (process.env.DEV_MODE) {
+  if (process.env.REACT_APP_DEV_MODE) {
     console.log("DEV MODE")
     config.mode = 'development';
     config.optimization.minimize = false;

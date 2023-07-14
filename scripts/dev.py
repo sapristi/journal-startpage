@@ -52,15 +52,13 @@ def main(action):
         if action == "build":
             sp.run(["pnpm", "react-app-rewired", "build"], env={
                 "INLINE_RUNTIME_CHUNK": "false",
-                "DEV_MODE": "true",
-                "REACT_APP_LOG": "true",
+                "REACT_APP_DEV_MODE": "true",
                 **os.environ,
             })
         elif action == "start":
             sp.run(["pnpm", "react-scripts", "start"], env={
                 "INLINE_RUNTIME_CHUNK": "false",
-                "DEV_MODE": "true",
-                "REACT_APP_LOG": "true",
+                "REACT_APP_DEV_MODE": "true",
                 "REACT_APP_USE_LOCALSTORAGE": "true",
                 "REACT_APP_MOCK_BROWSER_APIS": "true",
                 **os.environ,
