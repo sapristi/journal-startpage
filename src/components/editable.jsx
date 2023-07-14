@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import ReactMarkdown from 'react-markdown';
-import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material';
+import {Link,  TextField, Table, TableBody, TableCell, TableHead, TableRow, Chip} from '@mui/material';
 import remarkGfm from 'remark-gfm'
 import {makeLogger} from 'utils'
 import { useSettingsStore } from 'stores/settings'
+import rehypeRaw from 'rehype-raw'
 
 const log = makeLogger("EditableComp")
 
@@ -120,14 +121,17 @@ const mdComponents = {
   tr: (node, ...props) => <TableRow>{node.children}</TableRow>,
   td: (node, ...props) => <TableCell>{node.children}</TableCell>,
   th: (node, ...props) => <TableCell>{node.children}</TableCell>,
+  kbd: (node, ...props) => <Chip sx={{borderRadius: 1}}label={node.children} size="small"/>,
 }
 
 
 export const Markdown = ({children}) => {
   return <ReactMarkdown
            remarkPlugins={[remarkGfm]}
+           rehypePlugins={[rehypeRaw]}
            components={mdComponents}
-                                    >{children}</ReactMarkdown>
+           es
+         >{children}</ReactMarkdown>
 }
 
 
@@ -137,7 +141,7 @@ export const EditableMarkdown = (props) => {
       onDoubleClick={onDoubleClick}
       style={{ flexGrow: 1 }}
     >
-      <Markdown>{children}</Markdown>
+      <Markdown >{children}</Markdown>
     </div>
   )
   return <EditableInput {...props} textFieldProps={{multiline: true, ...props.textFieldProps}} Component={Component}/>

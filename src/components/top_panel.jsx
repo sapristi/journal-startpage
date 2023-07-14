@@ -37,13 +37,14 @@ const AutoUpdatingTimePanel = () => {
 
 const Controls = () => {
   const {settingsActive, switchSettings, showContent, switchShowContent} = useTransientSettings()
+  const nextcloudActive = useSettingsStore(state => state.nextcloudActive())
   return (
     <Stack sx={{width: "min-content"}} direction="row">
       <ToggleButton selected={settingsActive} onChange={switchSettings} value={true}>
         <SettingsIcon />
       </ToggleButton>
       {
-        ff.CLOUD_SYNC &&
+        nextcloudActive &&
         <ToggleButton onClick={syncNotes} value={true}><CloudSyncIcon/></ToggleButton>
       }
       {

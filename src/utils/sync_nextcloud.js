@@ -149,8 +149,8 @@ const mergeNotes = async (NC) => {
 
 
 export const syncNotes = async () => {
-  const {url, credentials} = useSettingsStore.getState().nextcloud
-  const NC = nextCloud(url, credentials)
+  const {url, username, password} = useSettingsStore.getState().nextcloud
+  const NC = nextCloud(url, `${username}:${password}`)
   mergeNotes(NC)
   useSettingsStore.setState({nextcloudLastSync: Date.now()})
 }

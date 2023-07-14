@@ -19,47 +19,59 @@ const initValue = {
   escapeCancels: true,
   nextcloud: {
     url: "",
-    credentials: "",
+    username: "",
+    password: "",
     lastSync: null
   },
   hideTasks: false,
   minimalTopPanel: false,
 }
-const makeActions = (set) => ({
-  setValue: (key, value) => {
+const makeActions = (set, get) => {
+  const setValue = (key, value) => {
     if (Array.isArray(key)) {
       set(state => changeDeepState(key, value, state))
     } else {
       set(state => ({[key]: value}))
     }
-  },
-  switchMode: () => set(state => {
-    if (state.mode === "dark") {
-      return {
-        mode: "light",
-        backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()
+  }
+  return {
+    setValue,
+    makeSetValueFromEvent: (key) => (event) => {
+      const newValue = event.target.value;
+      setValue(key, newValue)
+    },
+    switchMode: () => set(state => {
+      if (state.mode === "dark") {
+        return {
+          mode: "light",
+          backgroundColor: new TinyColor(state.backgroundColor).lighten(70).toString()
+        }
+      } else {
+        return {
+          mode: "dark",
+          backgroundColor: new TinyColor(state.backgroundColor).darken(70).toString()
+        }
       }
-    } else {
+    }),
+    setLocale: (newLocale) => set(state => {
+      LuxonSettings.defaultLocale = newLocale
       return {
-        mode: "dark",
-        backgroundColor: new TinyColor(state.backgroundColor).darken(70).toString()
+        locale: newLocale
       }
+    }),
+    switchValue: (key) => () => set(state => ({ [key]: !state[key] })),
+    nextcloudActive: () => {
+      const {url, username, password} = get().nextcloud
+      return Boolean(url && username && password)
     }
-  }),
-  setLocale: (newLocale) => set(state => {
-    LuxonSettings.defaultLocale = newLocale
-    return {
-      locale: newLocale
-    }
-  }),
-  switchValue: (key) => () => set(state => ({ [key]: !state[key] }))
-})
+  }
+}
 
 export const useSettingsStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...initValue,
-      ...makeActions(set)
+      ...makeActions(set, get)
     }),
     {
       version: 0,

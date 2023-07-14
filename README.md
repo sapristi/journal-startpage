@@ -58,6 +58,7 @@
     <li>
       <a href="#installation">Installation</a>
     </li>
+    <li><a href="#how-to-use">How to use</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#develop">Develop</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -99,6 +100,40 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://addons.mozilla.org/fr/firefox/addon/journal-startpage/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [Download](https://chrome.google.com/webstore/detail/journal-startpage/bkafbgknnlmlmkhpbenogcjmcdhmieec) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 
 
+## How to use
+
+Create new notes / journal entries tasks.
+
+To edit a field, double click on it. Once you are done editing:
+- <kbd>Ctrl</kbd> + <kbd>Enter</kbd> will save your changes
+- <kbd>Esc</kbd> will revert your changes (you can disable this in the settings, and make <kbd>Esc</kbd> save your changes as well).
+
+
+### Browser sync
+
+If you are using your browser with an account, then the data will also be synchronised with that account. This means the your notes will be available on other computers, if you are using the same browser account.
+
+Note that:
+- synchronisation is managed by the browser - every change may not always be synced immediatly.
+- settings are not synchronised.
+
+See:
+- [firefox account](https://www.mozilla.org/firefox/accounts/)
+- [chrome account](https://accounts.google.com/ServiceLogin?service=chromiumsync)
+
+### NextCloud sync - experimental
+
+NextCloud sync allows you to synchronise your notes with the [notes app](https://apps.nextcloud.com/apps/notes) of a NextCloud instance.
+
+The feature is still incomplete, and a bit experimental:
+- To enable, set the nextcloud host (e.g. `https://my-nexcloud.com`), username and password (you can generate a service account in your nextcloud security settings).
+- The synchronisation button will then be available ![./assets/help_images/nextcloud_sync.png]. Synchronisation is manual only.
+- Synchronisation will:
+  - create a note on NextCloud for each new note in the extension (with the category `journal-notes`)
+  - when a note was already synchronised, the last modification will be synchronised (whether it comes from the extension or nextcloud)
+  - a note deleted on nextcloud will be deleted in the extension
+  - a note created on NextCloud will **not** be created in the extension
+  - a note deleted on the extension will **not** be deleted in NextCloud
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -119,10 +154,11 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 - [ ] Long term:
     - [ ] Rework journal:
       - [ ] Allow to change date ?
-      - [ ] Integrate with calendar ?  
+      - [ ] Integrate with calendar ?
     - [ ] Sync data:
       - [ ] Notion ?
-      - [ ] Nextcloud notes ? 
+      - [ ] Nextcloud notes ?
+    - [ ] Trash bin
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 
@@ -136,10 +172,9 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 - `pnpm start` to run in develop mode (using localStorage instead of sync storage, because it cannot register as an extension this way)
 - `pnpm build:dev` to build development version of the extension
 - `pnpm build` to build the production assets
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing

@@ -57,16 +57,17 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 ## Text inputs
 
 - Double click to edit
-- Ctrl+Enter to validate (or click outside)
-- Escape to cancel edition
+- <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to validate (or click outside)
+- <kbd>Escape</kbd> to cancel edition
 
 ## Shortcuts
 
-- \`n\` to create a new entry (journal or note)
-- \`t\` to create a new task
-- \`s\` to switch between journal and notes
-- \`e\` to edit the last entry (journal or note)
-- \`h\` to show/hide the main panel
+- <kbd>n</kbd> to create a new entry (journal or note)
+- <kbd>t</kbd> to create a new task
+- <kbd>s</kbd> to switch between journal and notes
+- <kbd>e</kbd> to edit the last entry (journal or note)
+- <kbd>h</kbd> to show/hide the main panel
+
 `
 
 

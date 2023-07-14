@@ -17,7 +17,6 @@ import {useNotesStore} from 'stores/notes'
 import {useTasksStore} from 'stores/tasks'
 import {useTransientSettings} from 'stores/transient'
 import {permissionsAPI} from 'utils/perms_adapter'
-import ff from 'utils/feature_flags'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -65,21 +64,16 @@ const BehaviourPanel = () => {
 
 const NextcloudPanel = () => {
   const {
-    url, credentials,
+    url, username, password,
   } = useSettingsStore(state => state.nextcloud)
-  const setValue = useSettingsStore(state => state.setValue)
-
-  const handleNextcloudURLChange = async (event) => {
-    const newValue = event.target.value; setValue(["nextcloud", "url"], newValue)
-  }
-  const handleNextcloudCredentialsChange = async (event) => {
-    const newValue = event.target.value; setValue(["nextcloud", "credentials"], newValue)
-  }
+  const makeSetValueFromEvent = useSettingsStore(state => state.makeSetValueFromEvent)
 
   return (
     <SettingsSubPanel title="NextCloud (experimental)">
-      <TextField label="Nextcloud url" value={url} onChange={handleNextcloudURLChange}/>
-      <TextField label="Nextcloud credentials" type="password" value={credentials} onChange={handleNextcloudCredentialsChange}/>
+      <span>Sync with nextcloud notes. See <Link href="https://github.com/sapristi/journal-startpage#nextcloud-sync-experimental">the doc</Link></span><kbd>TEST</kbd>
+      <TextField label="Nextcloud url" value={url} onChange={makeSetValueFromEvent(["nextcloud", "url"])}/>
+      <TextField label="Nextcloud username" value={username} onChange={makeSetValueFromEvent(["nextcloud", "username"])}/>
+      <TextField label="Nextcloud credentials" type="password" value={password} onChange={makeSetValueFromEvent(["nextcloud", "password"])}/>
     </SettingsSubPanel>
   )
 }
@@ -177,10 +171,7 @@ export const SettingsPanel = () => {
           <Grid xs={3}>
             <Stack spacing={3}>
               <ActionsPanel/>
-              {
-                ff.CLOUD_SYNC &&
-                <NextcloudPanel/>
-              }
+              <NextcloudPanel/>
             </Stack>
           </Grid>
           <Grid xs={3} sx={{ paddingRight: 0 }}><HelpPanel/></Grid>
