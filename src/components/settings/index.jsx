@@ -70,7 +70,7 @@ const NextcloudPanel = () => {
 
   return (
     <SettingsSubPanel title="NextCloud (experimental)">
-      <span>Sync with nextcloud notes. See <Link href="https://github.com/sapristi/journal-startpage#nextcloud-sync---experimental">the doc</Link></span><kbd>TEST</kbd>
+      <span>Sync with nextcloud notes. See <Link href="https://github.com/sapristi/journal-startpage#nextcloud-sync---experimental">the doc</Link></span>
       <TextField label="Nextcloud url" value={url} onChange={makeSetValueFromEvent(["nextcloud", "url"])}/>
       <TextField label="Nextcloud username" value={username} onChange={makeSetValueFromEvent(["nextcloud", "username"])}/>
       <TextField label="Nextcloud credentials" type="password" value={password} onChange={makeSetValueFromEvent(["nextcloud", "password"])}/>

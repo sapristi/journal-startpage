@@ -127,7 +127,7 @@ NextCloud sync allows you to synchronise your notes with the [notes app](https:/
 
 The feature is still incomplete, and a bit experimental:
 - To enable, set the nextcloud host (e.g. `https://my-nexcloud.com`), username and password (you can generate a service account in your nextcloud security settings).
-- The synchronisation button will then be available ![./assets/help_images/nextcloud_sync.png]. Synchronisation is manual only.
+- The synchronisation button will then be available ![sync button](./assets/help_images/nextcloud_sync.png). Synchronisation is manual only.
 - Synchronisation will:
   - create a note on NextCloud for each new note in the extension (with the category `journal-notes`)
   - when a note was already synchronised, the last modification will be synchronised (whether it comes from the extension or nextcloud)
