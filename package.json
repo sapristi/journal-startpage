@@ -4,30 +4,30 @@
   "version": "1.12.7",
   "private": true,
   "dependencies": {
-    "@ctrl/tinycolor": "^3.5.0",
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.11.0",
-    "@mui/material": "^5.11.7",
-    "@mui/x-data-grid": "^5.17.23",
-    "@mui/x-date-pickers": "^5.0.13",
+    "@ctrl/tinycolor": "^3.6.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.1",
+    "@mui/material": "^5.14.2",
+    "@mui/x-data-grid": "^5.17.26",
+    "@mui/x-date-pickers": "^5.0.20",
     "ical.js": "^1.5.0",
-    "immer": "^9.0.17",
+    "immer": "^9.0.21",
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
-    "marked": "^4.2.5",
-    "mui-color-input": "^1.0.4",
+    "marked": "^4.3.0",
+    "mui-color-input": "^1.1.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-bottom-scroll-listener": "^5.1.0",
     "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.4",
+    "react-markdown": "^8.0.7",
     "react-scripts": "5.0.1",
     "rehype-raw": "^6.1.1",
     "remark-gfm": "^3.0.1",
-    "tsdav": "^2.0.3",
+    "tsdav": "^2.0.5",
     "web-vitals": "^2.1.4",
-    "zustand": "^4.2.0"
+    "zustand": "^4.3.9"
   },
   "scripts": {
     "start": "scripts/dev.py start",
@@ -55,8 +55,8 @@
     ]
   },
   "devDependencies": {
-    "react-devtools": "^4.27.2",
-    "sass": "^1.57.1",
+    "react-devtools": "^4.28.0",
+    "sass": "^1.64.1",
     "web-ext": "^7.6.2"
   }
 }
