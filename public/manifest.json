@@ -16,7 +16,10 @@
     "bookmarks",
     "favicon"
   ],
-  "host_permissions": [
+ "optional_permissions": [
+    "*://*/"
+ ],
+  "optional_host_permissions": [
     "*://*/"
   ],
   "chrome_url_overrides": {

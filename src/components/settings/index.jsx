@@ -16,7 +16,7 @@ import {useJournalStore} from 'stores/journal'
 import {useNotesStore} from 'stores/notes'
 import {useTasksStore} from 'stores/tasks'
 import {useTransientSettings} from 'stores/transient'
-import {permissionsAPI} from 'utils/perms_adapter'
+import {requestUrlPermission} from 'utils/perms_adapter'
 
 const log = makeLogger("Settings component")
 const { version } = require('../../../package.json');
@@ -45,8 +45,9 @@ const BehaviourPanel = () => {
     escapeCancels
   } = useSettingsStore()
   const handlecaldavURLChange = async (event) => {
-    const newValue = event.target.value; setValue("caldavURL", newValue)
-    await permissionsAPI.request({origins: [newValue]});
+    const newValue = event.target.value;
+    await requestUrlPermission(newValue)
+    setValue("caldavURL", newValue)
   }
 
   return (
@@ -66,12 +67,21 @@ const NextcloudPanel = () => {
   const {
     url, username, password,
   } = useSettingsStore(state => state.nextcloud)
-  const makeSetValueFromEvent = useSettingsStore(state => state.makeSetValueFromEvent)
+  const {setValue, makeSetValueFromEvent} = useSettingsStore(
+    state => ({
+      makeSetValueFromEvent: state.makeSetValueFromEvent,
+      setValue: state.setValue
+    }))
+  const handleNextcloudURLChange = async (event) => {
+    const newValue = event.target.value;
+    await requestUrlPermission(newValue)
+    setValue(["nextcloud", "url"], newValue)
+  }
 
   return (
     <SettingsSubPanel title="NextCloud (experimental)">
       <span>Sync with nextcloud notes. See <Link href="https://github.com/sapristi/journal-startpage#nextcloud-sync---experimental">the doc</Link></span>
-      <TextField label="Nextcloud url" value={url} onChange={makeSetValueFromEvent(["nextcloud", "url"])}/>
+      <TextField label="Nextcloud url" value={url} onChange={handleNextcloudURLChange}/>
       <TextField label="Nextcloud username" value={username} onChange={makeSetValueFromEvent(["nextcloud", "username"])}/>
       <TextField label="Nextcloud credentials" type="password" value={password} onChange={makeSetValueFromEvent(["nextcloud", "password"])}/>
     </SettingsSubPanel>

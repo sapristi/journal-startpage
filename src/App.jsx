@@ -2,7 +2,7 @@ import { useEffect, useMemo, memo, Fragment, useState } from 'react'
 import './App.css';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Container} from '@mui/material';
+import {Container, Snackbar as MuiSnackbar, Alert} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { BottomScrollListener } from 'react-bottom-scroll-listener';
 
@@ -11,13 +11,12 @@ import {Notes} from './components/notes'
 import {Tasks} from './components/tasks'
 import {TopPanel, MinimalTopPanel} from "./components/top_panel"
 import {SettingsPanel} from "./components/settings"
+
 import { makeLogger} from 'utils'
 import {addEmptyJournalEntry, editLastJournalEntry} from 'stores/journal'
 import {addEmptyNote, editLastNote} from 'stores/notes'
 import {addEmptyTask} from 'stores/tasks'
-import {useLocalSettings} from "stores/local"
-import {useSettingsStore} from 'stores/settings'
-import {useTransientSettings} from 'stores/transient'
+import {useLocalSettings, useSettingsStore, useTransientSettings} from "stores"
 import { Settings as LuxonSettings } from "luxon";
 import { match } from 'utils'
 
@@ -76,6 +75,17 @@ const BottomPanel = memo(() =>{
   )
 })
 
+export const Snackbar = () => {
+  const {snackbar, closeSnackbar} = useTransientSettings(state => ({snackbar: state.snackbar, closeSnackbar: state.closeSnackbar}))
+  if (!snackbar) {return null}
+  return (
+    <MuiSnackbar open={Boolean(snackbar)} onClose={closeSnackbar}>
+      <Alert severity={snackbar.severity} onClose={closeSnackbar} variant="filled" elevation={6}>
+        {snackbar.message}
+      </Alert>
+    </MuiSnackbar>
+  )
+}
 const VisibleApp = () => {
   const {
     mode, primaryColor, secondaryColor, backgroundColor, locale, backgroundImageURL,
@@ -103,7 +113,6 @@ const VisibleApp = () => {
     [backgroundImageURL, backgroundColor]
   )
 
-
   return (
     <ThemeProvider theme={currentTheme}>
     <div style={{ ...backgroundTheme}}>
@@ -116,9 +125,9 @@ const VisibleApp = () => {
           </Grid>
           <BottomPanel/>
         </Grid>
-
+        <Snackbar/>
       </Container>
-      </div>
+    </div>
     </ThemeProvider>
   );
 }

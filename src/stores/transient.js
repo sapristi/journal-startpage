@@ -18,5 +18,8 @@ export const useTransientSettings = create(
       triggerRenderLocaleValue: !state.triggerRenderLocaleValue
     })),
 
+    snackbar: null,
+    setSnackbar: (snackbar) => set({snackbar}),
+    closeSnackbar: () => set({snackbar: null})
   })
 )

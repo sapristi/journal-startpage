@@ -3,11 +3,15 @@ import { Typography } from '@mui/material';
 import { DateTime } from "luxon";
 import { Table, TableRow, TableCell, TableBody, TableContainer } from '@mui/material';
 import { fetchCalendarObjects, calendarQuery } from 'tsdav';
-import { match } from 'utils'
+import { checkUrlPermission } from 'utils/perms_adapter'
+import { match, permRequestText, makeLogger } from 'utils'
+import {PermSnackBarMessage} from 'components/base'
 
-import { useSettingsStore } from 'stores/settings'
+import { useSettingsStore, useTransientSettings } from 'stores'
 
 const ICAL = require("ical.js")
+
+const log = makeLogger("EVENTS")
 
 const loadEvents = async ({url}) => {
 
@@ -79,7 +83,7 @@ const loadEventsBis = async ({url}) => {
     ],
     depth: '1'
   })
-  console.log("CALDAV ENTRIES", entries)
+  log("CALDAV ENTRIES", entries)
 }
 
 const getTextColor = (startTime) =>{
@@ -114,10 +118,22 @@ export const Events = () => {
   const locale = useSettingsStore(state => state.locale)
   const [events, setEvents ] = useState([])
   const caldavURL = useSettingsStore(state => state.caldavURL)
+  const setSnackbar = useTransientSettings(state => state.setSnackbar)
+
+  const asyncEffect = async () => {
+    if (!caldavURL) {return}
+    const hasPerm = await checkUrlPermission(caldavURL)
+    if (! hasPerm) {
+      setSnackbar({
+        message: <PermSnackBarMessage/>,
+        severity: "warning"})
+      return
+    }
+    loadEvents({url: caldavURL}).then(events => setEvents(events))
+  }
 
   useEffect(() => {
-    if (!caldavURL) {return}
-    loadEvents({url: caldavURL}).then(events => setEvents(events))
+    asyncEffect()
   }, [caldavURL, locale])
 
   return (

@@ -70,8 +70,6 @@ See [source and more](https://github.com/sapristi/journal-startpage).
 
 `
 
-
-
 const matched = x => ({
   on: () => matched(x),
   otherwise: () => x,
@@ -105,3 +103,12 @@ export const changeDeepState = (key, value, state) => {
     }
   }
 }
+
+
+export const permRequestText = (reason, host) => `
+Journal startpage recently changed to opt-in requests to external websites. In order to ${reason} (for ${host}),
+you will have to
+- remove the url value in settings
+- put it again,
+- then accept the permission request.
+`

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {displayRelativeDate, formatTimeProp} from 'utils/locales'
 import {
   Paper, Stack, TextField,  InputAdornment, Button as MuiButton, IconButton as MuiIconButton,
-  FormGroup, FormControlLabel, Switch as MuiSwitch, Typography
+  FormGroup, FormControlLabel, Switch as MuiSwitch, Typography, Link
 } from '@mui/material';
 import {DeleteIcon} from "icons"
 import {useSettingsStore} from 'stores/settings'
@@ -93,4 +93,12 @@ export const DateElem = ({timestamp}) => {
   return <time dateTime={formatTimeProp(timestamp)}>
            {displayRelativeDate(timestamp)}
          </time>
+}
+
+export const PermSnackBarMessage = () => {
+  return (
+    <Typography>
+      Journal startpage now needs explicit permissions, see <Link href="https://github.com/sapristi/journal-startpage/#permissions" target="_blank">the readme</Link>
+    </Typography>
+  )
 }

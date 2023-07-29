@@ -102,12 +102,13 @@ It uses your browser sync storage, so that your data is safely backed-up, and ca
 
 ## How to use
 
+### Basic usage
+
 Create new notes / journal entries tasks.
 
 To edit a field, double click on it. Once you are done editing:
 - <kbd>Ctrl</kbd> + <kbd>Enter</kbd> will save your changes
 - <kbd>Esc</kbd> will revert your changes (you can disable this in the settings, and make <kbd>Esc</kbd> save your changes as well).
-
 
 ### Browser sync
 
@@ -121,7 +122,33 @@ See:
 - [firefox account](https://www.mozilla.org/firefox/accounts/)
 - [chrome account](https://accounts.google.com/ServiceLogin?service=chromiumsync)
 
-### NextCloud sync - experimental
+### Advanced topics
+
+#### Display events
+
+You can display incoming events of a given calendar by setting the public sharing URL for this calendar in the *CalDAV public url* setting field:
+
+<table>
+  <tr>
+    <td>
+      <img src="./assets/help_images/caldav_input.png" alt="caldav input" style="max-width: 100%;">
+    </td>
+    <td>
+      <img src="./assets/help_images/share_google_calendar.png" alt="share google calendar" style="max-width: 100%;">
+    </td>
+    <td>
+      <img src="./assets/help_images/share_nextcloud_calendar.png" alt="share nextcloud calendar" style="max-width: 100%;">
+    </td>
+  </tr>
+  <tr>
+    <td>CaalDAV input</td>
+    <td>Google calendar share link</td>
+    <td>Nextcloud calendar share link</td>
+  </tr>
+</table>
+
+
+#### NextCloud sync - experimental
 
 NextCloud sync allows you to synchronise your notes with the [notes app](https://apps.nextcloud.com/apps/notes) of a NextCloud instance.
 
@@ -135,6 +162,16 @@ The feature is still incomplete, and a bit experimental:
   - a note created on NextCloud will **not** be created in the extension
   - a note deleted on the extension will **not** be deleted in NextCloud
 
+
+#### Permissions
+
+In order to interact with external services (such as Google, NextCloud, etc), the extension needs permission to do so. When accessing a new service, a pop-up should appear requesting for "access to your data" - which is necessary to perform HTTP calls to this service. This extension only accesses the data necessary to provide the advertised features, and does not share anything with third parties.
+
+![permission request](./assets/help_images/permission_request.png)
+
+
+**Important Note:** if a value for CalDAV url or nextCloud url was already set, you will need to remove it, then add it again, for the permission request to take effect.
+
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Customize colors
@@ -147,18 +184,18 @@ The feature is still incomplete, and a bit experimental:
 - [x] Bookmarks
 - [x] Show events from calDAV calendar
 - [ ] Short term:
-  - [ ] Display total space usage
+  - [x] Display total space usage
   - [ ] Reorder tasks
   - [ ] Double click to delete entry
 
 - [ ] Long term:
+    - [ ] Trash bin
+    - [ ] Sync data:
+      - [ ] Notion ?
+      - [x] Nextcloud notes ?
     - [ ] Rework journal:
       - [ ] Allow to change date ?
       - [ ] Integrate with calendar ?
-    - [ ] Sync data:
-      - [ ] Notion ?
-      - [ ] Nextcloud notes ?
-    - [ ] Trash bin
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
 

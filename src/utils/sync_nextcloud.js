@@ -1,6 +1,9 @@
 import {makeLogger} from 'utils'
-import {useSettingsStore} from 'stores/settings'
-import {getNoteEntriesAsync, addNote, setNote, updateNote, removeNote} from 'stores/notes'
+import {useSettingsStore, useTransientSettings} from 'stores'
+import {getNoteEntriesAsync, updateNote, removeNote} from 'stores/notes'
+import { checkUrlPermission } from 'utils/perms_adapter'
+import {PermSnackBarMessage} from 'components/base'
+
 const log = makeLogger("NextCloud sync")
 
 const NCCAT = 'journal-notes'
@@ -149,7 +152,17 @@ const mergeNotes = async (NC) => {
 
 
 export const syncNotes = async () => {
+
+  const setSnackbar = useTransientSettings.getState().setSnackbar
   const {url, username, password} = useSettingsStore.getState().nextcloud
+  const hasPerm = await checkUrlPermission(url)
+  if (! hasPerm) {
+    setSnackbar({
+      message: <PermSnackBarMessage/>,
+      severity: "warning"})
+    return
+  }
+
   const NC = nextCloud(url, `${username}:${password}`)
   mergeNotes(NC)
   useSettingsStore.setState({nextcloudLastSync: Date.now()})
