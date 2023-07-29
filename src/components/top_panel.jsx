@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from 'react'
-import { Typography, Stack, Box, ToggleButton, Button } from '@mui/material';
+import { Typography, Stack, Box, ToggleButton } from '@mui/material';
 import {Calendar} from "./calendar"
 import {Bookmarks} from "./bookmarks"
 import {BackgroundPaper, IconButton} from "./base"
@@ -9,9 +9,6 @@ import {useSettingsStore} from 'stores/settings'
 import { DateTime } from "luxon";
 import {Events} from './events'
 import {syncNotes} from 'utils/sync_nextcloud'
-import ff from 'utils/feature_flags'
-
-
 
 
 const AutoUpdatingTimePanel = () => {
