@@ -1,7 +1,7 @@
 {
   "name": "journal-startpage",
   "homepage": ".",
-  "version": "1.12.6",
+  "version": "1.12.7",
   "private": true,
   "dependencies": {
     "@ctrl/tinycolor": "^3.5.0",
