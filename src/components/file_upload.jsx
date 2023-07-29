@@ -1,8 +1,14 @@
-import {Button} from './base';
-import {Fragment} from "react"
+import { Button } from "./base";
+import { Fragment } from "react";
 
-export const FileUpload = ({id, label, accept, handler, readerMethod, buttonProps}) => {
-
+export const FileUpload = ({
+  id,
+  label,
+  accept,
+  handler,
+  readerMethod,
+  buttonProps,
+}) => {
   const handleFileUpload = (event) => {
     if (!event.target.files) {
       return;
@@ -16,7 +22,7 @@ export const FileUpload = ({id, label, accept, handler, readerMethod, buttonProp
         return;
       }
       const { result } = evt.target;
-      handler({name, content: result})
+      handler({ name, content: result });
     };
     reader[readerMethod](file);
   };
@@ -25,16 +31,16 @@ export const FileUpload = ({id, label, accept, handler, readerMethod, buttonProp
     <Fragment>
       <input
         accept={accept}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         id={id}
         type="file"
         onChange={handleFileUpload}
       />
       <label htmlFor={id}>
-        <Button component="span" {...buttonProps} >
+        <Button component="span" {...buttonProps}>
           {label}
         </Button>
       </label>
     </Fragment>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-import { makeSyncEntriesStore } from 'utils/make_sync_entries_store'
+import { makeSyncEntriesStore } from "utils/make_sync_entries_store";
 
 const initData = {
   0: {
@@ -8,7 +8,7 @@ const initData = {
 this is a task
 - with some
 - items
-`
+`,
   },
   1: {
     lastModified: 1,
@@ -16,24 +16,18 @@ this is a task
     content: `
 this is done task
 - with one item
-`
-  }
-}
-
+`,
+  },
+};
 
 const {
   useStore: useTasksStore,
   setEntry: setTask,
   addEntry: addTask,
-  removeEntry: removeTask
-} = makeSyncEntriesStore("tasks", initData)
+  removeEntry: removeTask,
+} = makeSyncEntriesStore("tasks", initData);
 
-const addEmptyTask = () => addTask({ status: "todo", content: "", isDraft: true })
+const addEmptyTask = () =>
+  addTask({ status: "todo", content: "", isDraft: true });
 
-
-export {
-  useTasksStore,
-  addEmptyTask,
-  setTask,
-  removeTask,
-}
+export { useTasksStore, addEmptyTask, setTask, removeTask };

@@ -1,11 +1,10 @@
 /* see https://paletton.com/#uid=53B0G0kllll8+rqc5pQuAgQA2fg */
 
-
 /* tighter calendar */
 .MuiDayPicker-slideTransition {
-    min-height: 100px !important;
+  min-height: 100px !important;
 }
-.MuiDayPicker-header .MuiTypography-root{
+.MuiDayPicker-header .MuiTypography-root {
   height: 20px !important;
 }
 

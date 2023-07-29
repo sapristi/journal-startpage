@@ -1,13 +1,21 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect } from "react";
 
-import { Typography, Divider, Stack, TextField } from '@mui/material';
-import { CardList, BackgroundPaper, ForegroundPaper, IconButton, Button, DeleteButton, DateElem } from "components/base"
-import { EditableMarkdown, EditableInput } from "components/editable"
-import { getTimestamp } from 'utils'
-import { useLocalSettings } from "stores/local"
+import { Typography, Divider, Stack, TextField } from "@mui/material";
+import {
+  CardList,
+  BackgroundPaper,
+  ForegroundPaper,
+  IconButton,
+  Button,
+  DeleteButton,
+  DateElem,
+} from "components/base";
+import { EditableMarkdown, EditableInput } from "components/editable";
+import { getTimestamp } from "utils";
+import { useLocalSettings } from "stores/local";
 
-import { TabularNoteBody } from "./table"
-import { AddBoxIcon , IconTableAdd} from "icons"
+import { TabularNoteBody } from "./table";
+import { AddBoxIcon, IconTableAdd } from "icons";
 import {
   useNotesStore,
   addEmptyNote,
@@ -15,45 +23,52 @@ import {
   setNote,
   removeNote,
   selectEntries,
-} from 'stores/notes'
+} from "stores/notes";
 
 const TextualNoteBody = ({ entryKey, state, handleDelete }) => {
-  const { content, isDraft } = state
+  const { content, isDraft } = state;
   const handleContentChange = (newValue) => {
     setNote(entryKey, {
       ...state,
       content: newValue,
       lastModified: getTimestamp(),
-      isDraft: false
-    })
-  }
+      isDraft: false,
+    });
+  };
   return (
-    <EditableMarkdown value={content} onChange={handleContentChange}
-      isDraft={isDraft} handleCancelDraft={handleDelete}
+    <EditableMarkdown
+      value={content}
+      onChange={handleContentChange}
+      isDraft={isDraft}
+      handleCancelDraft={handleDelete}
       textFieldProps={{ placeholder: "..." }}
     />
-
-  )
-}
+  );
+};
 
 const Note = memo(({ entryKey, state }) => {
-
-  const { lastModified, title, type } = state
+  const { lastModified, title, type } = state;
   const handleTitleChange = (newValue) => {
     setNote(entryKey, {
       ...state,
       title: newValue,
-      lastModified: getTimestamp()
-    })
-  }
-  const BodyComponent = (type === "table") ? TabularNoteBody : TextualNoteBody
+      lastModified: getTimestamp(),
+    });
+  };
+  const BodyComponent = type === "table" ? TabularNoteBody : TextualNoteBody;
 
-  const handleDelete = () => { removeNote(entryKey) }
+  const handleDelete = () => {
+    removeNote(entryKey);
+  };
 
   return (
     <ForegroundPaper sx={{ p: 1, pl: 2 }}>
       <Stack>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <div style={{ flexGrow: 1 }}>
             <EditableInput
               value={title}
@@ -62,70 +77,79 @@ const Note = memo(({ entryKey, state }) => {
               componentProps={{ variant: "h5" }}
             />
             {/* <Typography variant="h5">{title}</Typography> */}
-            <Typography color="text.secondary"><DateElem timestamp={lastModified} /></Typography>
+            <Typography color="text.secondary">
+              <DateElem timestamp={lastModified} />
+            </Typography>
           </div>
           <div>
             <DeleteButton onClick={handleDelete} />
           </div>
         </Stack>
         <Divider />
-        <BodyComponent entryKey={entryKey} state={state}
-                       handleDelete={handleDelete}
+        <BodyComponent
+          entryKey={entryKey}
+          state={state}
+          handleDelete={handleDelete}
         />
       </Stack>
     </ForegroundPaper>
-  )
-})
+  );
+});
 
-export const Notes = ({scroll}) => {
-  const { switchActiveTab } = useLocalSettings()
-  const {entries} = useNotesStore()
-  const [search, setSearch] = useState(() => "")
-  const [maxShown, setMaxShown] = useState(0)
+export const Notes = ({ scroll }) => {
+  const { switchActiveTab } = useLocalSettings();
+  const { entries } = useNotesStore();
+  const [search, setSearch] = useState(() => "");
+  const [maxShown, setMaxShown] = useState(0);
 
-  const {selectedEntries, hasMore} = selectEntries({entries, search, maxShown})
+  const { selectedEntries, hasMore } = selectEntries({
+    entries,
+    search,
+    maxShown,
+  });
 
   const handleSearchChange = (event) => {
-    setSearch(event.target.value)
-  }
+    setSearch(event.target.value);
+  };
 
-  useEffect(
-    ()=> {
-      hasMore && setMaxShown(maxShown => maxShown + 5)
-    },
-    [scroll, hasMore, setMaxShown]
-  )
-
+  useEffect(() => {
+    hasMore && setMaxShown((maxShown) => maxShown + 5);
+  }, [scroll, hasMore, setMaxShown]);
 
   return (
     <BackgroundPaper>
       <Stack spacing={1}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={2} alignItems="center">
-            <Typography component="h1" variant="h3">Notes</Typography>
+            <Typography component="h1" variant="h3">
+              Notes
+            </Typography>
 
-            <IconButton onClick={addEmptyNote}><AddBoxIcon /></IconButton>
-            <IconButton onClick={addEmptyTabularNote}><IconTableAdd /></IconButton>
+            <IconButton onClick={addEmptyNote}>
+              <AddBoxIcon />
+            </IconButton>
+            <IconButton onClick={addEmptyTabularNote}>
+              <IconTableAdd />
+            </IconButton>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button onClick={switchActiveTab}>Show Journal</Button>
-            <TextField label="search" value={search} onChange={handleSearchChange} size="small"/>
+            <TextField
+              label="search"
+              value={search}
+              onChange={handleSearchChange}
+              size="small"
+            />
           </Stack>
         </Stack>
 
         <Divider />
         <CardList>
-          {
-            selectedEntries.map(([entryKey, entry]) =>
-              <Note
-                key={entryKey}
-                entryKey={entryKey}
-                state={entry}
-              />
-            )
-          }
+          {selectedEntries.map(([entryKey, entry]) => (
+            <Note key={entryKey} entryKey={entryKey} state={entry} />
+          ))}
         </CardList>
       </Stack>
     </BackgroundPaper>
-  )
-}
+  );
+};
