@@ -116,17 +116,20 @@ def main(
     print_header("Commit, tag, push")
     git(["add", "-u"])
     git(["commit", "-m", f"bump to version {version}"])
-    git(["tag", tag_name])
-    git(["push"])
-    git(["push", "origin", tag_name])
 
 
     # Very long when using the API, so put it at the end
+    # except we only want to commit changes if no fail
     print_header(f"Publish as {channel}")
     publish_AMO(channel)
 
     print_header("Updating blog")
     update_blog(version)
+
+    git(["tag", tag_name])
+    git(["push"])
+    git(["push", "origin", tag_name])
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
