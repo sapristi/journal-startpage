@@ -77,7 +77,15 @@ export const Events = () => {
       });
       return;
     }
-    loadEvents({ url: caldavURL }).then((events) => setEvents(events));
+
+    loadEvents({ url: caldavURL })
+      .then((events) => setEvents(events))
+      .catch((error) => {
+        setSnackbar({
+          message: `Failed fetching Calendar events from ${caldavURL} (${error}). Check that the url is correct.`,
+          severity: "warning",
+        });
+      });
   };
 
   useEffect(() => {

@@ -19,24 +19,28 @@ const getPermissionssApi = () => {
 
 export const permissionsAPI = getPermissionssApi();
 
-const urlRe = /^(https?|wss?|file|ftp|\*):\/\/(\*|\*\.[^*/]+|[^*/]+)\/.*$/;
+const getUrlForPerm = (url) => {
+  const URLobj = new URL(url);
+  return `${URLobj.origin}/`;
+};
+
 export const requestUrlPermission = async (url) => {
   if (!url) {
     return false;
   }
-  if (urlRe.test(url)) {
-    return await permissionsAPI.request({ origins: [url] });
-  } else {
-    console.warn("Cannot request permission for invalid url", url);
+  try {
+    return await permissionsAPI.request({ origins: [getUrlForPerm(url)] });
+  } catch (error) {
+    console.warn(`Cannot request permission for invalid url (${error})`, url);
     return false;
   }
 };
 
 export const checkUrlPermission = async (url) => {
-  if (urlRe.test(url)) {
-    return await permissionsAPI.contains({ origins: [url] });
-  } else {
-    console.warn("Cannot check permission for invalid url", url);
+  try {
+    return await permissionsAPI.contains({ origins: [getUrlForPerm(url)] });
+  } catch (error) {
+    console.warn(`Cannot check permission for invalid url (${error})`, url);
     return false;
   }
 };
