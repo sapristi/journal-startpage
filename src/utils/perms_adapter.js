@@ -4,7 +4,7 @@ const getPermissionssApi = () => {
   if (ff.MOCK_BROWSER_APIS) {
     return {
       request: async () => {},
-      contains: async () => {},
+      contains: async () => true,
     };
   } else if (navigator.userAgent.match(/chrome|chromium|crios/i)) {
     /* eslint-disable */

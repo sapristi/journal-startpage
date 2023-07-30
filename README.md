@@ -126,7 +126,7 @@ See:
 
 #### Display events
 
-You can display incoming events of a given calendar by setting the public sharing URL for this calendar in the *CalDAV public url* setting field:
+You can display incoming events of a given calendar by setting the public CalDAV URL for this calendar in the *CalDAV public url* setting field:
 
 <table>
   <tr>

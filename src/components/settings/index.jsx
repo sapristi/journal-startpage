@@ -59,7 +59,10 @@ const BehaviourPanel = () => {
     escapeCancels,
   } = useSettingsStore();
   const handlecaldavURLChange = async (event) => {
-    const newValue = event.target.value;
+    let newValue = event.target.value;
+    if (newValue.endsWith("?export")) {
+      newValue = newValue.replace("?export", "");
+    }
     await requestUrlPermission(newValue);
     setValue("caldavURL", newValue);
   };
@@ -96,7 +99,7 @@ const NextcloudPanel = () => {
     setValue: state.setValue,
   }));
   const handleNextcloudURLChange = async (event) => {
-    const newValue = event.target.value;
+    let newValue = event.target.value;
     await requestUrlPermission(newValue);
     setValue(["nextcloud", "url"], newValue);
   };

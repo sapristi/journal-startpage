@@ -10,90 +10,20 @@ import {
 } from "@mui/material";
 import { fetchCalendarObjects, calendarQuery } from "tsdav";
 import { checkUrlPermission } from "utils/perms_adapter";
-import { match, makeLogger } from "utils";
 import { PermSnackBarMessage } from "components/base";
+import { match, makeLogger } from "utils";
 
 import { useSettingsStore, useTransientSettings } from "stores";
-
-const ICAL = require("ical.js");
+import { loadICSEvents, loadCalDAVEvents } from "utils/ical_helpers";
 
 const log = makeLogger("EVENTS");
 
 const loadEvents = async ({ url }) => {
-  const parseRawEvent = (rawEvent) => {
-    const jcalData = ICAL.parse(rawEvent.data);
-    const comp = new ICAL.Component(jcalData);
-    const vevent = comp.getFirstSubcomponent("vevent");
-    const uid = vevent.getFirstPropertyValue("uid");
-    const summary = vevent.getFirstPropertyValue("summary");
-    const dtstart = vevent.getFirstPropertyValue("dtstart");
-    delete dtstart._time.isDate;
-    const zone = match(dtstart.timezone)
-      .on("Z", "UTC")
-      .otherwise((x) => x);
-    const dt = DateTime.fromObject(dtstart._time, { zone });
-    const res = {
-      uid,
-      summary,
-      startTime: dt,
-    };
-    return res;
-  };
-
-  const getEvents = async (timeRange) => {
-    const events = await fetchCalendarObjects({
-      calendar: { url },
-      timeRange,
-    });
-    return events.map(parseRawEvent);
-  };
-  const now = DateTime.now();
-  let timeRange = {
-    start: now.toISO(),
-    end: now.plus({ month: 2 }).toISO(),
-  };
-  const res = await getEvents(timeRange);
-  res.sort((a, b) => a.startTime > b.startTime);
-  return res;
-};
-/* Would use some less resources to only query for the entries first,
-  then download those that have changed (would need localstorage as well).
-  Though it's not much more efficient, and a bit more complicated.
-*/
-const loadEventsBis = async ({ url }) => {
-  const dateToCalFormat = (date) => {
-    return date
-      .startOf("second")
-      .setZone("UTC")
-      .toFormat("yyyyLLdd'T'HHmmss'Z'");
-  };
-  const now = DateTime.now();
-  const start = dateToCalFormat(now);
-  const end = dateToCalFormat(now.plus({ month: 2 }));
-
-  const entries = await calendarQuery({
-    url,
-    prop: [
-      {
-        name: "getetag",
-      },
-    ],
-    filters: [
-      {
-        "comp-filter": {
-          _attributes: { name: "VCALENDAR" },
-          "comp-filter": {
-            _attributes: { name: "VEVENT" },
-            "time-range": {
-              _attributes: { start, end },
-            },
-          },
-        },
-      },
-    ],
-    depth: "1",
-  });
-  log("CALDAV ENTRIES", entries);
+  if (url.startsWith("https://calendar.google.com/")) {
+    return await loadICSEvents({ url });
+  } else {
+    return await loadCalDAVEvents({ url });
+  }
 };
 
 const getTextColor = (startTime) => {
