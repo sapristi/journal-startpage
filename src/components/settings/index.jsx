@@ -51,35 +51,15 @@ const HelpPanel = () => (
 );
 
 const BehaviourPanel = () => {
-  const {
-    showContentAtStart,
-    switchValue,
-    caldavURL,
-    setValue,
-    escapeCancels,
-  } = useSettingsStore();
-  const handlecaldavURLChange = async (event) => {
-    let newValue = event.target.value;
-    if (newValue.endsWith("?export")) {
-      newValue = newValue.replace("?export", "");
-    }
-    await requestUrlPermission(newValue);
-    setValue("caldavURL", newValue);
-  };
+  const { showContentAtStart, switchValue, escapeCancels } = useSettingsStore();
 
   return (
     <SettingsSubPanel title="Behaviour">
       <LocaleSelector />
-      <BookmarksFolderPicker />
       <Switch
         label="Show content at startup"
         checked={showContentAtStart}
         onChange={switchValue("showContentAtStart")}
-      />
-      <TextField
-        label="CalDAV public url"
-        value={caldavURL}
-        onChange={handlecaldavURLChange}
       />
       <Switch
         label="Escape cancels edition"
@@ -90,6 +70,28 @@ const BehaviourPanel = () => {
   );
 };
 
+const TopDisplayPanel = () => {
+  const { caldavURL, setValue } = useSettingsStore();
+  const handlecaldavURLChange = async (event) => {
+    let newValue = event.target.value;
+    if (newValue.endsWith("?export")) {
+      newValue = newValue.replace("?export", "");
+    }
+    await requestUrlPermission(newValue);
+    setValue("caldavURL", newValue);
+  };
+
+  return (
+    <SettingsSubPanel title="Top Panel extras">
+      <BookmarksFolderPicker />
+      <TextField
+        label="CalDAV public url"
+        value={caldavURL}
+        onChange={handlecaldavURLChange}
+      />
+    </SettingsSubPanel>
+  );
+};
 const NextcloudPanel = () => {
   const { url, username, password } = useSettingsStore(
     (state) => state.nextcloud,
@@ -244,6 +246,7 @@ export const SettingsPanel = () => {
           <Grid xs={3}>
             <Stack spacing={3}>
               <BehaviourPanel />
+              <TopDisplayPanel />
               <StatsPanel />
             </Stack>
           </Grid>
@@ -262,7 +265,7 @@ export const SettingsPanel = () => {
           <Typography>Journal Startpage version: {version}</Typography>
           <Typography>
             <Link href="https://github.com/sapristi/journal-startpage/">
-              See source on GitHub
+              See sources, give feedback or request help on GitHub
             </Link>
           </Typography>
         </Stack>
