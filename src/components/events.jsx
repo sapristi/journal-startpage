@@ -81,10 +81,12 @@ export const Events = () => {
     loadEvents({ url: caldavURL })
       .then((events) => setEvents(events))
       .catch((error) => {
-        setSnackbar({
-          message: `Failed fetching Calendar events from ${caldavURL} (${error}). Check that the url is correct.`,
-          severity: "warning",
-        });
+        if (error.name !== "AbortError") {
+          setSnackbar({
+            message: `Failed fetching Calendar events from ${caldavURL} (${error}). Check that the url is correct.`,
+            severity: "warning",
+          });
+        }
       });
   };
 
